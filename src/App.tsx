@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SidebarLayout />}>
           <Route index element={<Home />} />
-          <Route path="/hero-section" element={<HeroSection />} />
+          <Route path="hero-section" element={<HeroSection />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
