@@ -4,6 +4,7 @@ import {
   MdContentPaste as ContentIcon,
 } from "react-icons/md";
 import { FaList as ListIcon } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
 import {
   Sidebar,
@@ -20,8 +21,12 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import SidebarItem from "./SidebarItem";
+import { complexSidebarLinkType } from "@/lib/interfaces-types";
 
 function AppSidebar() {
+  const location = useLocation();
+  const pathname = location.pathname;
+
   const menuItems = [
     {
       name: "Dashboard",
@@ -47,6 +52,13 @@ function AppSidebar() {
     },
   ];
 
+  // Function to check if a sub-menu item is to open by default
+  const isOpenByDefault = (items: complexSidebarLinkType) => {
+    const subItems = items?.subMenuItems;
+    if (!subItems) return false;
+    return subItems.some((item) => item.path === pathname);
+  };
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -65,7 +77,10 @@ function AppSidebar() {
                 name={item.name}
               />
             ) : (
-              <Collapsible className=" group/collapsible">
+              <Collapsible
+                className=" group/collapsible "
+                defaultOpen={isOpenByDefault(item)}
+              >
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton className="py-6">

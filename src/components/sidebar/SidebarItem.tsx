@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/hooks/use-redux";
 
 import {
   SidebarMenuItem,
@@ -7,6 +7,7 @@ import {
   SidebarMenuSubItem,
 } from "../ui/sidebar";
 import { replacePageName } from "@/store/features/generalSlice";
+import { useEffect } from "react";
 
 interface Props {
   pathname: string;
@@ -18,14 +19,19 @@ interface Props {
 function SidebarItem({ pathname, Icon, name, isSubItem = false }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const currentPath = location.pathname;
 
   const handleClick = () => {
     navigate(pathname);
-    dispatch(replacePageName(name));
   };
+
+  useEffect(() => {
+    if (currentPath === pathname) {
+      dispatch(replacePageName(name));
+    }
+  }, [currentPath, pathname, dispatch]);
 
   return (
     <>

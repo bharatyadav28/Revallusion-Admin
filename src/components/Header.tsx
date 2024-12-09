@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store/store";
+import { useAppSelector } from "@/hooks/use-redux";
 
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 function Header() {
-  const { pageName } = useSelector((state: RootState) => state.general);
+  const { pageName } = useAppSelector((state) => state.general);
 
   const isMobile = useIsMobile();
 

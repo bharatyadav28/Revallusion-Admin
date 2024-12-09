@@ -76,7 +76,7 @@ export const CustomInput = ({ maxChars, text, setText, className }: Props) => {
   );
 };
 
-interface BtnProps {
+interface BtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   handleClick: () => void;
   className?: string;
@@ -85,11 +85,12 @@ export const PurpleButton = ({
   children,
   handleClick,
   className,
+  ...props
 }: BtnProps) => {
   const classes = `bg-[var(--lightpurple)] w-max ${className} hover:bg-[var(--softpurple)] text-[#fff] transition`;
 
   return (
-    <Button className={classes} onClick={handleClick}>
+    <Button className={classes} onClick={handleClick} {...props}>
       {children}
     </Button>
   );
