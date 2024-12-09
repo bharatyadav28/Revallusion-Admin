@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import SidebarLayout from "./components/Layout";
 import NotFound from "./pages/Notfound";
 import HeroSection from "./pages/content-pages/HeroSection";
+import Faq from "./pages/content-pages/FAQ/Faq";
+import ViewFaqs from "./pages/content-pages/FAQ/ViewFaqs";
 
 function App() {
   return (
@@ -14,6 +16,11 @@ function App() {
         <Route path="/" element={<SidebarLayout />}>
           <Route index element={<Home />} />
           <Route path="hero-section" element={<HeroSection />} />
+          <Route path="faq">
+            <Route index element={<ViewFaqs />} />
+            <Route path=":id" element={<Faq />} />
+            <Route path="add" element={<Faq />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />

@@ -1,8 +1,19 @@
 import React from "react";
+import { CiEdit as EditIcon } from "react-icons/ci";
+import { MdDelete as DeleteIcon } from "react-icons/md";
 
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface Props {
   maxChars?: number;
@@ -30,7 +41,7 @@ export const CustomTextArea = ({
     <>
       <Textarea
         id="message"
-        placeholder="Type your caption here..."
+        placeholder="Type your description here..."
         value={text}
         onChange={handleChange}
         className={classes}
@@ -77,21 +88,97 @@ export const CustomInput = ({ maxChars, text, setText, className }: Props) => {
 };
 
 interface BtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   handleClick: () => void;
   className?: string;
+  isDeleting?: boolean;
 }
-export const PurpleButton = ({
+
+export const CustomButton = ({
   children,
   handleClick,
   className,
   ...props
 }: BtnProps) => {
-  const classes = `bg-[var(--lightpurple)] w-max ${className} hover:bg-[var(--softpurple)] text-[#fff] transition`;
+  const classes = `w-max ${className}  transition`;
 
   return (
     <Button className={classes} onClick={handleClick} {...props}>
       {children}
     </Button>
+  );
+};
+
+export const UpdateButton = ({
+  handleClick,
+  className,
+  ...props
+}: BtnProps) => {
+  return (
+    <Button
+      variant="outline"
+      size="icon"
+      className={`green-button ${className}`}
+      onClick={handleClick}
+      {...props}
+    >
+      <EditIcon size={20} />
+    </Button>
+  );
+};
+
+export const DeleteButton = ({
+  children,
+  handleClick,
+  className,
+  isDeleting,
+  ...props
+}: BtnProps) => {
+  return (
+    <Button
+      variant="destructive"
+      size="icon"
+      className="ml-3"
+      onClick={handleClick}
+      disabled={isDeleting}
+      {...props}
+    >
+      {isDeleting ? <LoadingSpinner /> : <DeleteIcon size={20} />}
+    </Button>
+  );
+};
+
+interface SelectProps {
+  menu: string[];
+  value: string;
+  onChange: React.Dispatch<React.SetStateAction<string>>;
+  className?: string;
+}
+export const CustomSelect = ({
+  menu,
+  value,
+  onChange,
+  className,
+  ...props
+}: SelectProps) => {
+  const classes = `py-5 border-gray-400 ${className}`;
+
+  return (
+    <>
+      <Select onValueChange={onChange} value={value} {...props}>
+        <SelectTrigger className={classes}>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {menu?.map((item) => {
+            return (
+              <SelectItem key={item} value={item}>
+                {item}
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
+      </Select>
+    </>
   );
 };

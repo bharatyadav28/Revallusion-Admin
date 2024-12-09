@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import {
   CustomInput,
   CustomTextArea,
-  PurpleButton,
+  CustomButton,
 } from "@/components/common/Inputs";
 import {
   useGetHeroSectionQuery,
@@ -37,10 +37,7 @@ function HeroSection() {
     });
   };
 
-  console.log("data: ", data, isLoading);
-
   useEffect(() => {
-    console.log("use Effect");
     if (!isLoading && data) {
       const { caption, description } = data?.data?.heroSection;
       setCaption(caption);
@@ -68,10 +65,10 @@ function HeroSection() {
 
   return (
     <>
-      <div className="bg-[hsl(var(--border));] pt-8 pb-10 px-6 rounded-sm flex flex-col gap-5">
-        <div className="flex w-full lg:flex-row flex-col lg:gap-0 gap-2">
-          <div className="lg:w-[17.3rem] w-auto  font-medium">Caption</div>
-          <div className="grow max-w-[47rem]">
+      <div className="main-container">
+        <div className="input-container">
+          <div className="label">Caption</div>
+          <div className="user-input">
             <CustomInput
               maxChars={30}
               text={caption}
@@ -81,9 +78,9 @@ function HeroSection() {
           </div>
         </div>
 
-        <div className="flex w-full lg:flex-row flex-col lg:gap-0 gap-2">
-          <div className="lg:w-[17.3rem] w-auto font-medium ">Description</div>
-          <div className="grow max-w-[47rem] flex flex-col">
+        <div className="input-container">
+          <div className="label">Description</div>
+          <div className="user-input">
             <CustomTextArea
               maxChars={50}
               text={description}
@@ -93,13 +90,13 @@ function HeroSection() {
           </div>
         </div>
 
-        <PurpleButton
-          className="mt-2 lg:ml-[17.3rem]"
+        <CustomButton
+          className="purple-button mt-2 lg:ml-[17.3rem]"
           handleClick={handleSubmit}
           disabled={isUpdating}
         >
           {isUpdating ? <LoadingSpinner /> : "Save"}
-        </PurpleButton>
+        </CustomButton>
       </div>
 
       {isLoading && (

@@ -14,3 +14,10 @@ export interface complexSidebarLinkType {
   hasSubMenu?: boolean;
   subMenuItems: simpleSidebarLinkType[];
 }
+
+export interface faqType {
+  _id?: string;
+  title: string;
+  description: string;
+  status: string;
+}

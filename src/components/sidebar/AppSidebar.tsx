@@ -43,10 +43,15 @@ function AppSidebar() {
           Icon: ListIcon,
           path: "/hero-section",
         },
+        // {
+        //   name: "Carousals",
+        //   Icon: ListIcon,
+        //   path: "/carousals",
+        // },
         {
-          name: "Carousals",
+          name: "Faqs",
           Icon: ListIcon,
-          path: "/carousals",
+          path: "/faq",
         },
       ],
     },
@@ -56,7 +61,9 @@ function AppSidebar() {
   const isOpenByDefault = (items: complexSidebarLinkType) => {
     const subItems = items?.subMenuItems;
     if (!subItems) return false;
-    return subItems.some((item) => item.path === pathname);
+    return subItems.some(
+      (item) => item.path === pathname || pathname.startsWith(item.path)
+    );
   };
 
   return (

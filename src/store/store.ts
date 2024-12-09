@@ -1,17 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
 
 import generalReducer from "./features/generalSlice";
 import heroSectionApi from "./apis/content-management";
-import { setupListeners } from "@reduxjs/toolkit/query";
+import faqApi from "./apis/faq-apis";
 
 export const store = configureStore({
   reducer: {
     general: generalReducer,
     [heroSectionApi.reducerPath]: heroSectionApi.reducer,
+    [faqApi.reducerPath]: faqApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(heroSectionApi.middleware),
+    getDefaultMiddleware()
+      .concat(heroSectionApi.middleware)
+      .concat(faqApi.middleware),
 });
 
 setupListeners(store.dispatch);

@@ -33,13 +33,17 @@ function SidebarItem({ pathname, Icon, name, isSubItem = false }: Props) {
     }
   }, [currentPath, pathname, dispatch]);
 
+  const isActive =
+    currentPath === pathname ||
+    (pathname !== "/" && currentPath.startsWith(pathname));
+
   return (
     <>
       {!isSubItem && (
         <SidebarMenuItem>
           {" "}
           <SidebarMenuButton
-            isActive={currentPath === pathname}
+            isActive={isActive}
             className="py-5 data-[active=true]:bg-[var(--lightpurple)]"
             onClick={handleClick}
           >
@@ -51,7 +55,7 @@ function SidebarItem({ pathname, Icon, name, isSubItem = false }: Props) {
       {isSubItem && (
         <SidebarMenuSubItem>
           <SidebarMenuButton
-            isActive={currentPath === pathname}
+            isActive={isActive}
             className="py-2 data-[active=true]:bg-[var(--lightpurple)]"
             onClick={handleClick}
           >
