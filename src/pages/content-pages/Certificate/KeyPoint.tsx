@@ -1,21 +1,14 @@
-// Carousal key points
-
+// Certificate key points
 import { useEffect, useState } from "react";
 
 import { CustomDialog } from "@/components/common/CustomDialog";
-import {
-  CustomButton,
-  CustomInput,
-  CustomTextArea,
-} from "@/components/common/Inputs";
-import { carousalPointType } from "@/lib/interfaces-types";
-import { generateRandomId } from "@/lib/reusable-funs";
+import { CustomButton, CustomTextArea } from "@/components/common/Inputs";
 
 interface Props {
   open: boolean;
   handleOpen: () => void;
-  keyPoints: carousalPointType[];
-  setKeyPoints: React.Dispatch<React.SetStateAction<carousalPointType[]>>;
+  keyPoints: string[];
+  setKeyPoints: React.Dispatch<React.SetStateAction<string[]>>;
   updateId?: string;
   setUpdateId?: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -28,19 +21,14 @@ function KeyPoint({
   setUpdateId,
 }: Props) {
   const [title, setTitle] = useState("");
-  const [explanation, setExplanation] = useState("");
 
   // Initialise data
   useEffect(() => {
     if (updateId) {
-      const keyPoint = keyPoints.find((keyPoint) => keyPoint._id === updateId);
-      if (keyPoint) {
-        setTitle(keyPoint.title);
-        setExplanation(keyPoint.explanation);
-      }
+      const keyPoint = keyPoints[Number(updateId)];
+      if (keyPoint) setTitle(keyPoint);
     } else {
       setTitle("");
-      setExplanation("");
     }
   }, [updateId, keyPoints]);
 
@@ -49,18 +37,9 @@ function KeyPoint({
     const newKeyPoints = [...keyPoints];
 
     if (updateId) {
-      const index = newKeyPoints.findIndex(
-        (keyPoint) => keyPoint._id === updateId
-      );
-      if (index !== -1) {
-        newKeyPoints[index] = { title, explanation, _id: updateId };
-      }
+      newKeyPoints[Number(updateId)] = title;
     } else {
-      newKeyPoints.push({
-        title,
-        explanation,
-        _id: updateId || generateRandomId(),
-      });
+      newKeyPoints.push(title);
     }
 
     setKeyPoints(newKeyPoints);
@@ -80,24 +59,11 @@ function KeyPoint({
         <div className="flex flex-col gap-2">
           <div className="label">Title</div>
           <div className="user-input">
-            <CustomInput
+            <CustomTextArea
               text={title}
               setText={setTitle}
-              className="py-5"
               placeholder="Type your title here..."
-              maxChars={30}
-            />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <div className="label">Description</div>
-          <div className="user-input">
-            <CustomTextArea
-              text={explanation}
-              setText={setExplanation}
-              className="h-20"
-              maxChars={150}
+              maxChars={70}
             />
           </div>
         </div>

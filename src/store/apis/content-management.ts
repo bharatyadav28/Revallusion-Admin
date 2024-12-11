@@ -15,7 +15,7 @@ interface ResponseType {
 export const heroSectionApi = createApi({
   reducerPath: "heroSectionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://revallusion.onrender.com/api/v1/",
+    baseUrl: "/api/v1/",
   }),
   tagTypes: ["HeroSection"],
   endpoints: (builder) => ({

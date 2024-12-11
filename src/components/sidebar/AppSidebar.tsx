@@ -54,6 +54,11 @@ function AppSidebar() {
           path: "/mentor",
         },
         {
+          name: "Certificate",
+          Icon: ListIcon,
+          path: "/certificate",
+        },
+        {
           name: "Faqs",
           Icon: ListIcon,
           path: "/faq",

@@ -13,7 +13,7 @@ interface ResponseType {
 export const mentorApi = createApi({
   reducerPath: "mentorApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://revallusion.onrender.com/api/v1/",
+    baseUrl: "/api/v1/",
   }),
   tagTypes: ["Mentor"],
   endpoints: (builder) => ({

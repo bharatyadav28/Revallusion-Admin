@@ -13,7 +13,7 @@ interface ResponseType {
 export const carousalApi = createApi({
   reducerPath: "carousalApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://revallusion.onrender.com/api/v1/",
+    baseUrl: "/api/v1/",
   }),
   tagTypes: ["Carousal"],
   endpoints: (builder) => ({

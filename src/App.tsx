@@ -11,6 +11,7 @@ import ViewFaqs from "./pages/content-pages/FAQ/ViewFaqs";
 import ViewCarousal from "./pages/content-pages/Carousal/ViewCarousals";
 import Carousal from "./pages/content-pages/Carousal/Carousal";
 import Mentor from "./pages/content-pages/Mentor/Mentor";
+import Certificate from "./pages/content-pages/Certificate/Certificate";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
           </Route>
 
           <Route path="mentor" element={<Mentor />} />
+
+          <Route path="certificate" element={<Certificate />} />
 
           <Route path="faq">
             <Route index element={<ViewFaqs />} />

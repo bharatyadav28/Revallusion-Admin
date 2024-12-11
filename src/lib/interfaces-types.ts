@@ -54,3 +54,10 @@ export interface mentorType {
   about: string;
   networks: networkType[];
 }
+
+export interface certificateType {
+  _id?: string;
+  caption: string;
+  key_points: string[];
+  image: string;
+}

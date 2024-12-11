@@ -12,4 +12,14 @@ export default defineConfig({
   build: {
     sourcemap: true, // Enable source maps for better error tracing
   },
+
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://revallusion.onrender.com",
+        // target: "http://localhost:4000",
+        changeOrigin: true, // This is required to ensure the Host header matches the target domain
+      },
+    },
+  },
 });

@@ -6,6 +6,7 @@ import heroSectionApi from "./apis/content-management";
 import faqApi from "./apis/faq-apis";
 import carousalApi from "./apis/carousal-apis";
 import mentorApi from "./apis/mentor-apis";
+import certificateApi from "./apis/certificate-apis";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [faqApi.reducerPath]: faqApi.reducer,
     [carousalApi.reducerPath]: carousalApi.reducer,
     [mentorApi.reducerPath]: mentorApi.reducer,
+    [certificateApi.reducerPath]: certificateApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -21,7 +23,10 @@ export const store = configureStore({
       .concat(heroSectionApi.middleware)
       .concat(faqApi.middleware)
       .concat(carousalApi.middleware)
-      .concat(mentorApi.middleware),
+      .concat(mentorApi.middleware)
+      .concat(certificateApi.middleware),
+
+  devTools: true,
 });
 
 setupListeners(store.dispatch);

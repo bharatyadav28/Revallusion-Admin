@@ -1,4 +1,4 @@
-import { HashLoader, ClipLoader } from "react-spinners";
+import { HashLoader, ClipLoader, BeatLoader } from "react-spinners";
 
 // Whole page loading spinner
 const PageLoadingSpinner = () => {
@@ -20,4 +20,8 @@ const LoadingSpinner = () => {
   );
 };
 
-export { PageLoadingSpinner, LoadingSpinner };
+// UploadSpinner
+const UploadSpinner = () => {
+  return <BeatLoader />;
+};
+export { PageLoadingSpinner, LoadingSpinner, UploadSpinner };
