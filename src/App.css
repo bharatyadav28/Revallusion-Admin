@@ -1,9 +1,17 @@
+*{
+    box-sizing: border-box
+}
+
 .main-container{
     @apply bg-[hsl(var(--border));] pt-8 pb-10 px-6 rounded-sm flex flex-col gap-5
 }
 
 .custom-table th, td{
     @apply border border-[#a7a8a8] !py-4 !px-3
+}
+
+.custom-table .action-btns{
+    @apply  w-[10rem]
 }
 
 .purple-button{
@@ -25,3 +33,4 @@
 .input-container .user-input{
 @apply grow max-w-[47rem]
 }
+

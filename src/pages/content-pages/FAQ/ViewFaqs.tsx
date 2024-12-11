@@ -1,6 +1,9 @@
+// View all faqs data
+import { useEffect } from "react";
 import { CustomButton, UpdateButton } from "@/components/common/Inputs";
 import { useNavigate } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
+
 import {
   Table,
   TableBody,
@@ -10,11 +13,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { useGetFaqsQuery } from "@/store/apis/faq-apis";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 import { faqType } from "@/lib/interfaces-types";
-import { useEffect } from "react";
 import { showError } from "@/lib/reusable-funs";
 import DeleteFaq from "./DeleteFaq";
 
@@ -27,6 +28,7 @@ function ViewFaqs() {
     isFetching: isLoading,
   } = useGetFaqsQuery();
 
+  // Show error
   useEffect(() => {
     if (loadingError) {
       showError(loadingError);
@@ -68,18 +70,20 @@ function ViewFaqs() {
                   </CustomButton>
                 </TableCell>
                 <TableCell>
-                  <UpdateButton
-                    handleClick={() => {
-                      navigate(`/faq/${faq._id}`, {
-                        state: {
-                          isEdit: true,
-                          faq: faq,
-                        },
-                      });
-                    }}
-                  />
+                  <div className="flex">
+                    <UpdateButton
+                      handleClick={() => {
+                        navigate(`/faq/${faq._id}`, {
+                          state: {
+                            isEdit: true,
+                            faq: faq,
+                          },
+                        });
+                      }}
+                    />
 
-                  <DeleteFaq id={faq._id || ""} />
+                    <DeleteFaq id={faq._id || ""} />
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

@@ -43,11 +43,16 @@ function AppSidebar() {
           Icon: ListIcon,
           path: "/hero-section",
         },
-        // {
-        //   name: "Carousals",
-        //   Icon: ListIcon,
-        //   path: "/carousals",
-        // },
+        {
+          name: "Carousals",
+          Icon: ListIcon,
+          path: "/carousals",
+        },
+        {
+          name: "Mentor",
+          Icon: ListIcon,
+          path: "/mentor",
+        },
         {
           name: "Faqs",
           Icon: ListIcon,
