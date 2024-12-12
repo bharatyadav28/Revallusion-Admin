@@ -156,43 +156,45 @@ function ModuleItem() {
           </div>
         </div>
 
-        <div className="input-container mt-4 gap-2">
-          <div className="label">Key points</div>
-          <div className=" grow lg:max-w-[47rem] ">
-            <Table className="custom-table !rounded-[100rem] ">
-              <TableCaption>{`A list of certficate key points (${key_points.length}/${allowedKeyPoints})`}</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="">Key point</TableHead>
-                  <TableHead className="action-btns">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-
-              <TableBody>
-                {key_points?.map((point: string, index) => (
-                  <TableRow key={point}>
-                    <TableCell>{point}</TableCell>
-                    <TableCell>
-                      <UpdateButton
-                        handleClick={() => {
-                          setOpen(true);
-                          setUpdateId(String(index));
-                        }}
-                      />
-                      <DeleteButton
-                        handleClick={() => {
-                          setKeyPoints((prev) =>
-                            prev.filter((_, i) => i !== index)
-                          );
-                        }}
-                      />
-                    </TableCell>
+        {key_points.length > 0 && (
+          <div className="input-container mt-4 gap-2">
+            <div className="label">Key points</div>
+            <div className=" grow lg:max-w-[47rem] ">
+              <Table className="custom-table !rounded-[100rem] ">
+                <TableCaption>{`A list of certficate key points (${key_points.length}/${allowedKeyPoints})`}</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="">Key point</TableHead>
+                    <TableHead className="action-btns">Action</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+
+                <TableBody>
+                  {key_points?.map((point: string, index) => (
+                    <TableRow key={point}>
+                      <TableCell>{point}</TableCell>
+                      <TableCell>
+                        <UpdateButton
+                          handleClick={() => {
+                            setOpen(true);
+                            setUpdateId(String(index));
+                          }}
+                        />
+                        <DeleteButton
+                          handleClick={() => {
+                            setKeyPoints((prev) =>
+                              prev.filter((_, i) => i !== index)
+                            );
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="lg:ml-[17.3rem] flex gap-2">
           <CustomButton
