@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAppDispatch } from "@/hooks/use-redux";
 
 import {
   Table,
@@ -24,6 +25,7 @@ import { toast } from "react-hot-toast";
 import { showError } from "@/lib/reusable-funs";
 import { UpdateButton, DeleteButton } from "@/components/common/Inputs";
 import KeyPoint from "@/components/common/KeyPoint";
+import { replacePageName } from "@/store/features/generalSlice";
 
 function ModuleItem() {
   const [name, setName] = useState("");
@@ -33,6 +35,7 @@ function ModuleItem() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   const isEdit = location.state?.isEdit;
   const data = location.state?.module;
@@ -87,13 +90,16 @@ function ModuleItem() {
 
   // Initialise data on edit
   useEffect(() => {
-    if (data) {
+    if (data && isEdit) {
       const { name, description, key_points } = data;
       setName(name);
       setDescription(description);
       setKeyPoints(key_points);
+      dispatch(replacePageName("Edit Module"));
+    } else {
+      dispatch(replacePageName("Add Module"));
     }
-  }, [data]);
+  }, [data, isEdit]);
 
   // Handle errors
   useEffect(() => {

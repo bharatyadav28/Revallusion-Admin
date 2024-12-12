@@ -19,6 +19,7 @@ import { useGetModulesQuery } from "@/store/apis/modules-apis";
 import { showError } from "@/lib/reusable-funs";
 import { moduleType } from "@/lib/interfaces-types";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
+import DeleteModule from "./DeleteModule";
 
 function StaticPages() {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ function StaticPages() {
           <TableCaption>A list of modules</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
+              <TableHead className="min-w-[6rem]">Name</TableHead>
               <TableHead className="">Description</TableHead>
               <TableHead className="">Action</TableHead>
             </TableRow>
@@ -77,6 +78,7 @@ function StaticPages() {
                         });
                       }}
                     />
+                    <DeleteModule id={module._id} />
                   </div>
                 </TableCell>
               </TableRow>

@@ -68,7 +68,7 @@ function Faq() {
       setDescription(faq.description);
       setStatus(faq.status);
     }
-  }, [dispatch]);
+  }, [dispatch, location.state]);
 
   // Handle errors
   useEffect(() => {
