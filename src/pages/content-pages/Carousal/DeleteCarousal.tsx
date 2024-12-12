@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 import { DeleteButton } from "@/components/common/Inputs";
-import { useDeleteCarousalMutation } from "@/store/apis/carousal-apis";
+import { useDeleteCarousalMutation } from "@/store/apis/content-mangement/carousal-apis";
 import { showError } from "@/lib/reusable-funs";
 
 interface Props {

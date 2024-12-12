@@ -1,8 +1,10 @@
 import { ChevronDown } from "lucide-react";
 import {
-  MdOutlineDashboardCustomize as DashboardIcon,
-  MdContentPaste as ContentIcon,
+  MdDashboard as DashboardIcon,
+  MdDescription as PageIcon,
 } from "react-icons/md";
+import { RiEditBoxLine as ContentIcon } from "react-icons/ri";
+import { GiBookshelf as ModuleIcon } from "react-icons/gi";
 import { FaList as ListIcon } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
@@ -49,6 +51,11 @@ function AppSidebar() {
           path: "/carousals",
         },
         {
+          name: "Plans",
+          Icon: ListIcon,
+          path: "/plans",
+        },
+        {
           name: "Mentor",
           Icon: ListIcon,
           path: "/mentor",
@@ -64,6 +71,24 @@ function AppSidebar() {
           path: "/faq",
         },
       ],
+    },
+
+    {
+      name: "Pages",
+      Icon: PageIcon,
+      hasSubMenu: true,
+      subMenuItems: [
+        {
+          name: "Pages",
+          Icon: ListIcon,
+          path: "/static-pages",
+        },
+      ],
+    },
+    {
+      name: "Modules",
+      Icon: ModuleIcon,
+      path: "/modules",
     },
   ];
 
@@ -100,7 +125,7 @@ function AppSidebar() {
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton className="py-6">
+                    <SidebarMenuButton className="ps-4 pr-2">
                       <item.Icon />
                       <span> {item.name} </span>
                       <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />

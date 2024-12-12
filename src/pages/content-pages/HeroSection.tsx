@@ -8,7 +8,7 @@ import {
 import {
   useGetHeroSectionQuery,
   useUpdateHeroSectionMutation,
-} from "@/store/apis/content-management";
+} from "@/store/apis/content-mangement/hero-section-apis";
 import {
   LoadingSpinner,
   PageLoadingSpinner,

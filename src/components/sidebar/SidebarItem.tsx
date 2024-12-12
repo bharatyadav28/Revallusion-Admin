@@ -44,7 +44,7 @@ function SidebarItem({ pathname, Icon, name, isSubItem = false }: Props) {
           {" "}
           <SidebarMenuButton
             isActive={isActive}
-            className="py-5 data-[active=true]:bg-[var(--lightpurple)]"
+            className="py-4 ps-4 pr-2 data-[active=true]:bg-[var(--lightpurple)]"
             onClick={handleClick}
           >
             <Icon /> <span> {name} </span>

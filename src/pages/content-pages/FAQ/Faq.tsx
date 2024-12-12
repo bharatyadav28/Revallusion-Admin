@@ -10,7 +10,10 @@ import {
   CustomSelect,
 } from "@/components/common/Inputs";
 import { CustomButton } from "@/components/common/Inputs";
-import { useAddFaqMutation, useUpdateFaqMutation } from "@/store/apis/faq-apis";
+import {
+  useAddFaqMutation,
+  useUpdateFaqMutation,
+} from "@/store/apis/content-mangement/faq-apis";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { showError } from "@/lib/reusable-funs";
 

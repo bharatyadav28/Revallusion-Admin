@@ -13,7 +13,7 @@ function SidebarLayout() {
       <main className="ps-6 pr-6 w-full h-screen flex flex-col">
         <Header />
 
-        <div className="relative flex-grow overflow-auto ">
+        <div className="relative flex-grow overflow-auto pb-4 ">
           <Toaster
           // position="bottom-right"
           // toastOptions={{

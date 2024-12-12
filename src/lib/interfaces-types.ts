@@ -61,3 +61,25 @@ export interface certificateType {
   key_points: string[];
   image: string;
 }
+
+export interface staticPageType {
+  _id: string;
+  title: string;
+  type: string;
+  description: string;
+  status: string;
+}
+
+export interface planType {
+  _id: string;
+  plan_type: string;
+  inr_price: string;
+  validity: number;
+}
+
+export interface moduleType {
+  _id?: string;
+  name: string;
+  description: string;
+  key_points: string[];
+}

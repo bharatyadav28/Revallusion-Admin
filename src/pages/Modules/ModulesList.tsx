@@ -1,6 +1,6 @@
-// View all faqs data
+// View all modules
+
 import { useEffect } from "react";
-import { CustomButton, UpdateButton } from "@/components/common/Inputs";
 import { useNavigate } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 
@@ -13,20 +13,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetFaqsQuery } from "@/store/apis/content-mangement/faq-apis";
-import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
-import { faqType } from "@/lib/interfaces-types";
+import { CustomButton } from "@/components/common/Inputs";
+import { UpdateButton } from "@/components/common/Inputs";
+import { useGetModulesQuery } from "@/store/apis/modules-apis";
 import { showError } from "@/lib/reusable-funs";
-import DeleteFaq from "./DeleteFaq";
+import { moduleType } from "@/lib/interfaces-types";
+import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 
-function ViewFaqs() {
+function StaticPages() {
   const navigate = useNavigate();
 
   const {
     data,
     error: loadingError,
     isFetching: isLoading,
-  } = useGetFaqsQuery();
+  } = useGetModulesQuery();
 
   // Show error
   useEffect(() => {
@@ -41,63 +42,56 @@ function ViewFaqs() {
         <CustomButton
           className="green-button px-2 py-4"
           handleClick={() => {
-            navigate("/faq/add");
+            navigate("/modules/add");
           }}
         >
-          <AddIcon size={30} className="p-0 m-0" /> Add Faq
+          <AddIcon size={30} className="p-0 m-0" /> Add Module
         </CustomButton>
-
         <Table className="custom-table">
-          <TableCaption>A list of FAQs</TableCaption>
+          <TableCaption>A list of modules</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead className="w-[12rem]">Status</TableHead>
-              <TableHead className="w-[15rem]">Action</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead className="">Description</TableHead>
+              <TableHead className="">Action</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {data?.data?.faqs.map((faq: faqType) => (
-              <TableRow key={faq._id}>
-                <TableCell className="min-w-[10rem]">{faq.title}</TableCell>
-                <TableCell>
-                  <CustomButton
-                    className="green-button w-[5rem]"
-                    handleClick={() => {}}
-                  >
-                    {faq.status}
-                  </CustomButton>
+            {data?.data?.modules.map((module: moduleType) => (
+              <TableRow key={module._id}>
+                <TableCell>{module.name}</TableCell>
+                <TableCell className="min-w-[10rem] ">
+                  {module.description}
                 </TableCell>
+
                 <TableCell>
                   <div className="flex">
                     <UpdateButton
                       handleClick={() => {
-                        navigate(`/faq/${faq._id}`, {
+                        navigate(`/modules/${module._id}`, {
                           state: {
                             isEdit: true,
-                            faq: faq,
+                            module,
                           },
                         });
                       }}
                     />
-
-                    <DeleteFaq id={faq._id || ""} />
                   </div>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </div>
 
-      {isLoading && (
-        <div>
-          <PageLoadingSpinner />
-        </div>
-      )}
+        {isLoading && (
+          <div>
+            <PageLoadingSpinner />
+          </div>
+        )}
+      </div>
     </>
   );
 }
 
-export default ViewFaqs;
+export default StaticPages;

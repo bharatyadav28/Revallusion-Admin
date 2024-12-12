@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   Table,
@@ -10,104 +10,142 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CustomInput } from "@/components/common/Inputs";
-import { UpdateButton, DeleteButton } from "@/components/common/Inputs";
-import { CustomButton } from "@/components/common/Inputs";
 import {
-  PageLoadingSpinner,
-  LoadingSpinner,
-} from "@/components/common/LoadingSpinner";
-import KeyPoint from "../../../components/common/KeyPoint";
+  CustomInput,
+  CustomTextArea,
+  CustomButton,
+} from "@/components/common/Inputs";
 import {
-  useGetCertificateQuery,
-  useUpdateCertificateMutation,
-} from "@/store/apis/content-mangement/certificate-apis";
+  useAddModuleMutation,
+  useUpdateModuleMutation,
+} from "@/store/apis/modules-apis";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { toast } from "react-hot-toast";
 import { showError } from "@/lib/reusable-funs";
-import ImageUploader from "@/components/common/ImageUpload";
+import { UpdateButton, DeleteButton } from "@/components/common/Inputs";
+import KeyPoint from "@/components/common/KeyPoint";
 
-function Certificate() {
-  const [caption, setCaption] = useState("");
+function ModuleItem() {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [key_points, setKeyPoints] = useState<string[]>([]);
-  const [image, setImage] = useState("");
   const [updateId, setUpdateId] = useState("");
 
-  const allowedKeyPoints = 5;
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isEdit = location.state?.isEdit;
+  const data = location.state?.module;
 
   const [open, setOpen] = useState(false);
   const handleDialogOpen = () => {
     setOpen((prev) => !prev);
   };
 
-  const {
-    data,
-    error: loadingError,
-    isFetching: isLoading,
-  } = useGetCertificateQuery();
+  const allowedKeyPoints = 5;
 
   const [
-    updateCertificate,
-    { isLoading: isUpdating, error: updateError, isSuccess, data: updateData },
-  ] = useUpdateCertificateMutation();
+    addModule,
+    {
+      isLoading: isAdding,
+      error: additionError,
+      isSuccess: additionSuccess,
+      data: additionData,
+    },
+  ] = useAddModuleMutation();
 
-  // Handle updation
+  const [
+    updateModule,
+    {
+      isLoading: isUpdating,
+      error: updateError,
+      isSuccess: updationSuccess,
+      data: updateData,
+    },
+  ] = useUpdateModuleMutation();
+
+  // Handle module updation or additon
   const handleSubmit = () => {
-    updateCertificate({
-      caption,
-      key_points,
-      image,
-    });
-  };
-  console.log("image", image);
-
-  // Initialize values while updating
-  useEffect(() => {
-    if (!isLoading && data) {
-      const { caption, key_points, image } = data?.data?.certificate;
-      setCaption(caption);
-      setKeyPoints(key_points || []);
-      setImage(image);
+    if (isEdit) {
+      updateModule({
+        module: {
+          _id: data?._id,
+          name,
+          description,
+          key_points,
+        },
+        id: data?._id,
+      });
+    } else {
+      addModule({
+        name,
+        description,
+        key_points,
+      });
     }
-  }, [data?.data?.certificate, isLoading]);
+  };
 
-  // Show errors
+  // Initialise data on edit
+  useEffect(() => {
+    if (data) {
+      const { name, description, key_points } = data;
+      setName(name);
+      setDescription(description);
+      setKeyPoints(key_points);
+    }
+  }, [data]);
+
+  // Handle errors
+  useEffect(() => {
+    if (additionError) {
+      showError(additionError);
+    }
+  }, [additionError]);
+
   useEffect(() => {
     if (updateError) {
       showError(updateError);
     }
   }, [updateError]);
 
+  // Handle success on addition or updation
   useEffect(() => {
-    if (loadingError) {
-      showError(loadingError);
+    if (additionSuccess && additionData) {
+      toast.success(additionData?.message);
+      navigate("/modules");
     }
-  }, [loadingError]);
+  }, [additionSuccess]);
 
-  // Show success message on mutation
   useEffect(() => {
-    if (isSuccess && updateData) {
+    if (updationSuccess && updateData) {
       toast.success(updateData?.message);
+      navigate("/modules");
     }
-  }, [isSuccess]);
+  }, [updationSuccess]);
 
   return (
     <>
       <div className="main-container">
         <div className="input-container">
-          <div className="label">Image</div>
-          <div className="user-input ">
-            <ImageUploader imageSrc={image} setImageSrc={setImage} />
+          <div className="label">Name</div>
+          <div className="user-input">
+            <CustomInput
+              maxChars={50}
+              text={name}
+              setText={setName}
+              className="py-5"
+            />
           </div>
         </div>
 
         <div className="input-container">
-          <div className="label">Caption</div>
+          <div className="label">Description</div>
           <div className="user-input">
-            <CustomInput
-              maxChars={30}
-              text={caption}
-              setText={setCaption}
-              className="py-5"
-              placeholder="Type caption here..."
+            <CustomTextArea
+              maxChars={200}
+              text={description}
+              setText={setDescription}
+              className="h-32"
             />
           </div>
         </div>
@@ -156,14 +194,14 @@ function Certificate() {
             handleClick={handleSubmit}
             disabled={isUpdating}
           >
-            {isUpdating ? <LoadingSpinner /> : "Save"}
+            {isUpdating || isAdding ? <LoadingSpinner /> : "Save"}
           </CustomButton>
           <CustomButton
             className="green-button mt-2"
             handleClick={() => {
               if (key_points.length >= allowedKeyPoints) {
                 toast.error(
-                  `You can't add more than ${allowedKeyPoints} networks`
+                  `You can't add more than ${allowedKeyPoints} key points`
                 );
                 return;
               }
@@ -173,24 +211,18 @@ function Certificate() {
             {"Add key point"}
           </CustomButton>
         </div>
-
-        <KeyPoint
-          open={open}
-          handleOpen={handleDialogOpen}
-          keyPoints={key_points}
-          setKeyPoints={setKeyPoints}
-          updateId={updateId}
-          setUpdateId={setUpdateId}
-        />
-
-        {isLoading && (
-          <div>
-            <PageLoadingSpinner />
-          </div>
-        )}
       </div>
+
+      <KeyPoint
+        open={open}
+        handleOpen={handleDialogOpen}
+        keyPoints={key_points}
+        setKeyPoints={setKeyPoints}
+        updateId={updateId}
+        setUpdateId={setUpdateId}
+      />
     </>
   );
 }
 
-export default Certificate;
+export default ModuleItem;

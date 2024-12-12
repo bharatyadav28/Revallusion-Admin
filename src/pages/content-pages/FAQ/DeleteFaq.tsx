@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 import { DeleteButton } from "@/components/common/Inputs";
-import { useDeleteFaqMutation } from "@/store/apis/faq-apis";
+import { useDeleteFaqMutation } from "@/store/apis/content-mangement/faq-apis";
 import { showError } from "@/lib/reusable-funs";
 
 interface Props {

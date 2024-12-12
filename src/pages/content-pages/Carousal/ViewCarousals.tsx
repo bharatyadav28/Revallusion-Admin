@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/table";
 import { CustomButton } from "@/components/common/Inputs";
 import { UpdateButton } from "@/components/common/Inputs";
-import { useGetCarousalQuery } from "@/store/apis/carousal-apis";
+import { useGetCarousalQuery } from "@/store/apis/content-mangement/carousal-apis";
 import { showError } from "@/lib/reusable-funs";
 import { carousalType } from "@/lib/interfaces-types";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";

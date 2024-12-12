@@ -17,7 +17,7 @@ import {
 import {
   useGetMentorQuery,
   useUpdateMentorMutation,
-} from "@/store/apis/mentor-apis";
+} from "@/store/apis/content-mangement/mentor-apis";
 import {
   LoadingSpinner,
   PageLoadingSpinner,

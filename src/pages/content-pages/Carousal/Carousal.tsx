@@ -19,7 +19,7 @@ import { CustomButton } from "@/components/common/Inputs";
 import {
   useAddCarousalMutation,
   useUpdateCarousalMutation,
-} from "@/store/apis/carousal-apis";
+} from "@/store/apis/content-mangement/carousal-apis";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { showError } from "@/lib/reusable-funs";
 import KeyPoint from "./KeyPoint";

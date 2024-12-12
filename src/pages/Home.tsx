@@ -1,14 +1,7 @@
-// import React from "react";
-
-// import { Button } from "@/components/ui/button";
+import WorkInProgress from "@/components/common/WorkInProgress";
 
 function Home() {
-  return (
-    <div>
-      {/* <h1>Dashboard Page</h1>
-      <Button>Button</Button> */}
-    </div>
-  );
+  return <WorkInProgress />;
 }
 
 export default Home;
