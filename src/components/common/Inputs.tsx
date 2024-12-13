@@ -1,6 +1,7 @@
 import React from "react";
 import { CiEdit as EditIcon } from "react-icons/ci";
 import { MdDelete as DeleteIcon } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
 
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
@@ -164,6 +165,21 @@ export const DeleteButton = ({
       {...props}
     >
       {isDeleting ? <LoadingSpinner /> : <DeleteIcon size={20} />}
+    </Button>
+  );
+};
+
+// View button
+export const ViewButton = ({ handleClick, className, ...props }: BtnProps) => {
+  return (
+    <Button
+      variant="outline"
+      size="icon"
+      className={`bg-[var(--golden)] hover:bg-[var(--dark-golden)] ${className} transition`}
+      onClick={handleClick}
+      {...props}
+    >
+      <FaEye size={20} />
     </Button>
   );
 };

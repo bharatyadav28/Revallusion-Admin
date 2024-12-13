@@ -1,3 +1,5 @@
+import { useLocation } from "react-router-dom";
+
 import { ChevronDown } from "lucide-react";
 import {
   MdDashboard as DashboardIcon,
@@ -6,7 +8,7 @@ import {
 import { RiEditBoxLine as ContentIcon } from "react-icons/ri";
 import { GiBookshelf as ModuleIcon } from "react-icons/gi";
 import { FaList as ListIcon } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
 
 import {
   Sidebar,
@@ -89,6 +91,11 @@ function AppSidebar() {
       name: "Modules",
       Icon: ModuleIcon,
       path: "/modules",
+    },
+    {
+      name: "Queries",
+      Icon: QueryIcon,
+      path: "/queries",
     },
   ];
 

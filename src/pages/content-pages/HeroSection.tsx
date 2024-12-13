@@ -70,7 +70,7 @@ function HeroSection() {
           <div className="label">Caption</div>
           <div className="user-input">
             <CustomInput
-              maxChars={50}
+              maxChars={100}
               text={caption}
               setText={setCaption}
               className="py-5"

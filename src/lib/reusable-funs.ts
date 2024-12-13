@@ -28,3 +28,17 @@ export function isDigitsOnly(value: string) {
   const regex = /^\d+$/;
   return regex.test(value);
 }
+
+// Formate date
+export function formatDate(isoDate: string): string {
+  const date = new Date(isoDate);
+  const options: Intl.DateTimeFormatOptions = {
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  };
+  return new Intl.DateTimeFormat("en-US", options).format(date);
+}

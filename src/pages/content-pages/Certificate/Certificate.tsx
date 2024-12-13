@@ -57,7 +57,6 @@ function Certificate() {
       image,
     });
   };
-  console.log("image", image);
 
   // Initialize values while updating
   useEffect(() => {

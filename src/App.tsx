@@ -17,6 +17,8 @@ import EditStaticPage from "./pages/content-pages/Static/EditStaticPage";
 import Plan from "./pages/content-pages/Plan/Plan";
 import ModulesList from "./pages/Modules/ModulesList";
 import ModuleItem from "./pages/Modules/ModuleItem";
+import QueriesList from "./pages/Query/QueriesList";
+import QueryDetails from "./pages/Query/QueryDetails";
 
 function App() {
   return (
@@ -53,6 +55,11 @@ function App() {
             <Route index element={<ModulesList />} />
             <Route path="add" element={<ModuleItem />} />
             <Route path=":id" element={<ModuleItem />} />
+          </Route>
+
+          <Route path="/queries">
+            <Route index element={<QueriesList />} />
+            <Route path=":id" element={<QueryDetails />} />
           </Route>
         </Route>
 

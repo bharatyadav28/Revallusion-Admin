@@ -83,3 +83,14 @@ export interface moduleType {
   description: string;
   key_points: string[];
 }
+
+export interface queryType {
+  _id: string;
+  name: string;
+  email: string;
+  mobile: number;
+  address: string;
+  message: string;
+  file: string;
+  createdAt: string;
+}

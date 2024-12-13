@@ -10,6 +10,7 @@ import certificateApi from "./apis/content-mangement/certificate-apis";
 import pagesApi from "./apis/content-mangement/static-pages-apis";
 import plansApi from "./apis/content-mangement/plans-apis";
 import moduleApi from "./apis/modules-apis";
+import queriesApi from "./apis/queries.apis";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     [pagesApi.reducerPath]: pagesApi.reducer,
     [plansApi.reducerPath]: plansApi.reducer,
     [moduleApi.reducerPath]: moduleApi.reducer,
+    [queriesApi.reducerPath]: queriesApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -33,7 +35,8 @@ export const store = configureStore({
       .concat(certificateApi.middleware)
       .concat(pagesApi.middleware)
       .concat(plansApi.middleware)
-      .concat(moduleApi.middleware),
+      .concat(moduleApi.middleware)
+      .concat(queriesApi.middleware),
 
   // devTools: process.env.NODE_ENV !== "production",
 

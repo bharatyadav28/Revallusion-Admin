@@ -22,6 +22,12 @@
     @apply bg-[var(--green)] hover:bg-[var(--lightgreen)] text-[#fff]
 }
 
+.purple-button{
+    @apply bg-[var(--lightpurple)] hover:bg-[var(--softpurple)] text-[#fff]
+}
+
+
+
 .input-container{
     @apply flex w-full lg:flex-row flex-col lg:gap-0 gap-2
 }
