@@ -127,10 +127,10 @@ function HeroSection() {
           <div className="label">About</div>
           <div className="user-input">
             <CustomTextArea
-              maxChars={150}
+              maxChars={1000}
               text={about}
               setText={setAbout}
-              className="h-32"
+              className="h-40"
               placeholder="Type details here..."
             />
           </div>

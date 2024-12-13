@@ -120,7 +120,13 @@ function EditStaticPage() {
         <div className="input-container">
           <div className="label">Title</div>
           <div className="user-input">
-            <CustomInput text={title} setText={setTitle} className="py-5" />
+            <CustomInput
+              text={title}
+              setText={setTitle}
+              className="py-5 "
+              style={{ opacity: 1 }}
+              disabled
+            />
           </div>
         </div>
 
