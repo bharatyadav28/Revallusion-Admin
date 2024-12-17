@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useRef } from "react";
 import { CiEdit as EditIcon } from "react-icons/ci";
 import { MdDelete as DeleteIcon } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
+import ReactQuill from "react-quill";
 
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { modules, formats } from "@/lib/resuable-data";
 
 import {
   Select,
@@ -216,6 +218,67 @@ export const CustomSelect = ({
           })}
         </SelectContent>
       </Select>
+    </>
+  );
+};
+
+// Custom Quill Input
+interface QuillProps {
+  maxChars?: number;
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+  className?: string;
+}
+export const CustomReactQuill = ({ text, setText, maxChars }: QuillProps) => {
+  // Ref for accessing Quill editor
+  const quillRef = useRef<ReactQuill | null>(null);
+
+  const filteredText = text.replace(/<[^>]*>/g, "");
+
+  const handleTextChange = (value: string) => {
+    // Get the Quill editor instance
+    const quill = quillRef.current?.getEditor();
+
+    // Remove html tags
+    const textOnly = value.replace(/<[^>]*>/g, "");
+
+    if (quill) {
+      // Enforce the character limit
+      if (maxChars && textOnly.length <= maxChars) {
+        setText(value);
+      } else {
+        const range = quill.getSelection();
+        if (range) {
+          quill.deleteText(range?.index - 1, 1); // Remove extra characters
+        }
+      }
+    }
+  };
+
+  return (
+    <>
+      <div className="h-[10rem]">
+        <ReactQuill
+          theme="snow"
+          value={text}
+          onChange={handleTextChange}
+          modules={modules}
+          formats={formats}
+          ref={quillRef}
+          //   style={{ height: "300px" }} // Adjust the height value as needed
+          className="bg-[#fff] text-black h-full overflow-hidden border rounded-md "
+        />
+      </div>
+
+      {maxChars && (
+        <p
+          className={`text-sm ms-1 ${
+            filteredText.length === maxChars ? "text-red-500" : "text-gray-500"
+          }`}
+        >
+          {maxChars - filteredText.length + " characters remaining"}
+        </p>
+      )}
     </>
   );
 };

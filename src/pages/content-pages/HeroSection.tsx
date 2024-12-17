@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 import {
-  CustomInput,
   CustomTextArea,
   CustomButton,
+  CustomReactQuill,
 } from "@/components/common/Inputs";
 import {
   useGetHeroSectionQuery,
@@ -13,7 +14,6 @@ import {
   LoadingSpinner,
   PageLoadingSpinner,
 } from "@/components/common/LoadingSpinner";
-import { toast } from "react-hot-toast";
 import { showError } from "@/lib/reusable-funs";
 
 function HeroSection() {
@@ -68,12 +68,11 @@ function HeroSection() {
       <div className="main-container">
         <div className="input-container">
           <div className="label">Caption</div>
-          <div className="user-input">
-            <CustomInput
+          <div className="grow lg:max-w-[47rem]">
+            <CustomReactQuill
               maxChars={100}
               text={caption}
               setText={setCaption}
-              className="py-5"
             />
           </div>
         </div>

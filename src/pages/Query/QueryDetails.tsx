@@ -12,14 +12,14 @@ function QueryDetails() {
   const file = query?.file;
 
   return (
-    <div className="main-container">
+    <div className="main-container !gap-[0.5rem]">
       <h2 className="text-xl font-semibold border-b-[1px] pb-4 border-gray-700">
         Query - Details
       </h2>
       <hr />
 
-      <div className="flex flex-col gap-10">
-        <div className="grid lg:grid-cols-3 gap-y-10">
+      <div className="flex flex-col gap-5">
+        <div className="grid lg:grid-cols-3 gap-y-5">
           <div className={itemClasses}>
             <div className={itemheading}>Submitted By</div>
             <div>{query?.name}</div>
@@ -43,6 +43,11 @@ function QueryDetails() {
           <div className={itemClasses}>
             <div className={itemheading}>Submitted at</div>
             <div>{formatDate(query?.createdAt)}</div>
+          </div>
+
+          <div className={itemClasses}>
+            <div className={itemheading}>Profession</div>
+            <div>{query?.profession}</div>
           </div>
         </div>
 

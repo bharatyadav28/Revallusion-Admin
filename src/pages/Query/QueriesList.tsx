@@ -19,6 +19,7 @@ import { queryType } from "@/lib/interfaces-types";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 import { SearchIcon } from "lucide-react";
 import CustomPagination from "@/components/common/CustomPagination";
+import DeleteQuery from "./DeleteQuery";
 
 function QueriesList() {
   const [search, setSearch] = useState("");
@@ -103,6 +104,7 @@ function QueriesList() {
                         });
                       }}
                     />
+                    <DeleteQuery id={query._id} />
                   </div>
                 </TableCell>
               </TableRow>

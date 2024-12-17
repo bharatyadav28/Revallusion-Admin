@@ -37,14 +37,14 @@ function ViewCarousal() {
   return (
     <>
       <div className="main-container">
-        <CustomButton
+        {/* <CustomButton
           className="green-button px-2 py-4"
           handleClick={() => {
             navigate("/carousals/add");
           }}
         >
           <AddIcon size={30} className="p-0 m-0" /> Add Carousal
-        </CustomButton>
+        </CustomButton> */}
 
         <Table className="custom-table">
           <TableCaption>A list of Carosuals</TableCaption>
@@ -82,7 +82,7 @@ function ViewCarousal() {
                       }}
                     />
 
-                    <DeleteCarousal id={carousal._id || ""} />
+                    {/* <DeleteCarousal id={carousal._id || ""} /> */}
                   </div>
                 </TableCell>
               </TableRow>

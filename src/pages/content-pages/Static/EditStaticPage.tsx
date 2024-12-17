@@ -12,49 +12,7 @@ import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { showError } from "@/lib/reusable-funs";
-
-export const modules = {
-  toolbar: [
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike"],
-    ["link", "image", "video"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["blockquote", "code-block"],
-    [{ color: [] }, { background: [] }],
-    ["clean"],
-    ["paragraph"],
-    [{ align: [] }],
-    [{ font: [] }],
-    [{ script: "sub" }, { script: "super" }],
-    [{ indent: "-1" }, { indent: "+1" }],
-    [{ direction: "rtl" }],
-  ],
-};
-
-export const formats = [
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "code-block",
-  "list",
-  "bullet",
-  "link",
-  "image",
-  "video",
-  "font",
-  "align",
-  "color",
-  "background",
-  "header",
-  "indent",
-  "size",
-  "script",
-  "clean",
-  "code",
-  "direction",
-];
+import { modules, formats } from "@/lib/resuable-data";
 
 function EditStaticPage() {
   const [title, setTitle] = useState("");
@@ -139,8 +97,7 @@ function EditStaticPage() {
               onChange={(value) => setDescription(value)}
               modules={modules}
               formats={formats}
-              //   style={{ height: "300px" }} // Adjust the height value as needed
-              className="bg-[#fff] text-black h-full overflow-hidden border"
+              className="bg-[#fff] rounded-md text-black h-full overflow-hidden border  "
             />
           </div>
         </div>
