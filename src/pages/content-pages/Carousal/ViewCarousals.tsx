@@ -1,7 +1,6 @@
 // View all carousals data
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { IoMdAdd as AddIcon } from "react-icons/io";
 
 import {
   Table,
@@ -12,13 +11,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CustomButton } from "@/components/common/Inputs";
 import { UpdateButton } from "@/components/common/Inputs";
 import { useGetCarousalQuery } from "@/store/apis/content-mangement/carousal-apis";
 import { showError } from "@/lib/reusable-funs";
 import { carousalType } from "@/lib/interfaces-types";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
-import DeleteCarousal from "./DeleteCarousal";
 
 function ViewCarousal() {
   const navigate = useNavigate();
