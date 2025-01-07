@@ -10,10 +10,10 @@ const PageLoadingSpinner = () => {
 };
 
 // Small loading spinner
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ size }: { size?: number }) => {
   return (
     <ClipLoader
-      size={25}
+      size={size || 25}
       color="#ffffff"
       cssOverride={{ borderWidth: "0.2rem" }}
     />

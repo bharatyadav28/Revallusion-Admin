@@ -94,3 +94,8 @@ export interface queryType {
   file: string;
   createdAt: string;
 }
+
+export interface credentialType {
+  email: string;
+  password: string;
+}

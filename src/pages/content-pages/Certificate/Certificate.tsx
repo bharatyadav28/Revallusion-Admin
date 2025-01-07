@@ -162,7 +162,7 @@ function Certificate() {
             handleClick={() => {
               if (key_points.length >= allowedKeyPoints) {
                 toast.error(
-                  `You can't add more than ${allowedKeyPoints} networks`
+                  `You can't add more than ${allowedKeyPoints} key points`
                 );
                 return;
               }

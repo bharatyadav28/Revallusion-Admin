@@ -11,6 +11,7 @@ import pagesApi from "./apis/content-mangement/static-pages-apis";
 import plansApi from "./apis/content-mangement/plans-apis";
 import moduleApi from "./apis/modules-apis";
 import queriesApi from "./apis/queries.apis";
+import authApi from "./apis/auth.apis";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
     [plansApi.reducerPath]: plansApi.reducer,
     [moduleApi.reducerPath]: moduleApi.reducer,
     [queriesApi.reducerPath]: queriesApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -36,7 +38,8 @@ export const store = configureStore({
       .concat(pagesApi.middleware)
       .concat(plansApi.middleware)
       .concat(moduleApi.middleware)
-      .concat(queriesApi.middleware),
+      .concat(queriesApi.middleware)
+      .concat(authApi.middleware),
 
   // devTools: process.env.NODE_ENV !== "production",
 

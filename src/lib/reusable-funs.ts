@@ -4,7 +4,9 @@ import { SerializedError } from "@reduxjs/toolkit";
 
 // Show error toast
 export const showError = (error: SerializedError | FetchBaseQueryError) => {
+  console.log("Hi");
   if (error && "data" in error && typeof error.data !== "undefined") {
+    console.log("jhgg");
     toast.error((error.data as { message: string }).message);
   }
 };

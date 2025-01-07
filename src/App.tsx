@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import "./App.css";
 import { ThemeProvider } from "./lib/theme-provider";
@@ -19,11 +20,22 @@ import ModulesList from "./pages/Modules/ModulesList";
 import ModuleItem from "./pages/Modules/ModuleItem";
 import QueriesList from "./pages/Query/QueriesList";
 import QueryDetails from "./pages/Query/QueryDetails";
+import Signin from "./pages/auth/Signin";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Toaster
+      // position="bottom-right"
+      // toastOptions={{
+      //   style: {
+      //     background: "#363636",
+      //     color: "#fff",
+      //   },
+      // }}
+      />
       <Routes>
+        <Route path="/signin" element={<Signin />} />
         <Route path="/" element={<SidebarLayout />}>
           <Route index element={<Home />} />
           <Route path="hero-section" element={<HeroSection />} />
