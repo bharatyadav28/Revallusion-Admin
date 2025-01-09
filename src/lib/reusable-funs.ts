@@ -4,10 +4,11 @@ import { SerializedError } from "@reduxjs/toolkit";
 
 // Show error toast
 export const showError = (error: SerializedError | FetchBaseQueryError) => {
-  console.log("Hi");
   if (error && "data" in error && typeof error.data !== "undefined") {
-    console.log("jhgg");
-    toast.error((error.data as { message: string }).message);
+    toast.error(
+      (error.data as { message: string })?.message ||
+        "Something went wrong! Please try again later."
+    );
   }
 };
 
@@ -43,4 +44,9 @@ export function formatDate(isoDate: string): string {
     hour12: true,
   };
   return new Intl.DateTimeFormat("en-US", options).format(date);
+}
+
+// Remove html tags from a text
+export function filterHtmlTags(text: string) {
+  return text.replace(/<\/?[^>]+(>|$)/g, "");
 }

@@ -17,7 +17,6 @@ import { modules, formats } from "@/lib/resuable-data";
 function EditStaticPage() {
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("");
-  const [type, setType] = useState("");
   const [description, setDescription] = useState("");
 
   const location = useLocation();
@@ -34,7 +33,6 @@ function EditStaticPage() {
       title,
       description,
       status: status,
-      type,
     };
     await updatePages({
       page: updatedData,
@@ -45,11 +43,10 @@ function EditStaticPage() {
   // Initialise data
   useEffect(() => {
     if (pageData) {
-      const { title, status, type, description } = pageData;
+      const { title, status, description } = pageData;
       setTitle(title);
       setStatus(status);
       setDescription(description);
-      setType(type);
     }
   }, [pageData]);
 
@@ -98,17 +95,6 @@ function EditStaticPage() {
               modules={modules}
               formats={formats}
               className="bg-[#fff] rounded-md text-black h-full overflow-hidden border  "
-            />
-          </div>
-        </div>
-
-        <div className="input-container">
-          <div className="label">Type</div>
-          <div className="user-input">
-            <CustomSelect
-              menu={["T&C", "Help", "Company", "Social"]}
-              value={type}
-              onChange={setType}
             />
           </div>
         </div>

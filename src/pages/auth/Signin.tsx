@@ -2,29 +2,36 @@ import { useState, useEffect } from "react";
 import { Eye, EyeClosed } from "lucide-react";
 import toast from "react-hot-toast";
 
-import { CustomInput } from "@/components/common/Inputs";
+import { CustomCheckBox, CustomInput } from "@/components/common/Inputs";
 import { useSigninQueryMutation } from "@/store/apis/auth.apis";
 import { showError } from "@/lib/reusable-funs";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/hooks/use-redux";
+import { setUser } from "@/store/features/generalSlice";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [keepMeSignedIn, setKeepMeSignedIn] = useState(false);
 
   const [signinQuery, { isLoading, error, isSuccess, data }] =
     useSigninQueryMutation();
 
+  const user = useAppSelector((state) => state.general.user);
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
 
+  // Form submit handler
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isLoading) return;
-    signinQuery({ email, password });
+    signinQuery({ email, password, keepMeSignedIn });
   };
 
-  console.log("Eroror", error);
+  // Handle signin error
   useEffect(() => {
     if (error) {
       showError(error);
@@ -35,13 +42,21 @@ const Signin = () => {
   useEffect(() => {
     if (isSuccess && data) {
       toast.success(data?.message);
+      dispatch(setUser(data?.data?.user));
       navigate("/", { replace: true });
     }
   }, [isSuccess]);
 
+  // Redirect to home if user is already signed in
+  useEffect(() => {
+    if (user._id) {
+      navigate("/");
+    }
+  }, [user]);
+
   return (
-    <div className="flex h-max justify-center  mt-[10rem] lg:mx-0 mx-3">
-      <div className="w-full max-w-md p-8 space-y-6 bg-[hsl(var(--border))] rounded-lg shadow-lg">
+    <div className="flex h-max justify-center mt-[10rem] lg:mx-0 mx-3">
+      <div className="w-full max-w-md p-8  space-y-6 bg-[hsl(var(--border))] rounded-lg shadow-lg">
         <h2 className="text-2xl font-medium text-center text-white uppercase">
           Admin Signin
         </h2>
@@ -99,10 +114,18 @@ const Signin = () => {
             </div>
           </div>
 
-          <div></div>
+          <div className="flex items-center gap-2 !mb-1">
+            <CustomCheckBox
+              value={keepMeSignedIn}
+              onChange={(value) => {
+                setKeepMeSignedIn(value);
+              }}
+            />
+            <span className="text-sm text-gray-400">Keep me signed in</span>
+          </div>
           <button
             type="submit"
-            className={`w-full px-4 py-2 font-semibold text-white bg-[var(--lightpurple)] rounded-lg hover:bg-[var(--softpurple) focus:outline-none uppercase ${
+            className={` w-full px-4 py-2 font-semibold text-white bg-[var(--lightpurple)] rounded-lg hover:bg-[var(--softpurple) focus:outline-none uppercase ${
               isLoading ? "cursor-not-allowed" : "cursor-pointer"
             } 
             `}
@@ -112,12 +135,12 @@ const Signin = () => {
             </div>
           </button>
         </form>
-        <p className="text-sm text-center text-gray-400">
+        {/* <p className="text-sm text-center text-gray-400">
           Forgot your password?{" "}
           <a href="#" className="text-indigo-400 hover:underline">
             Reset it here
           </a>
-        </p>
+        </p> */}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { Checkbox } from "../ui/checkbox";
 
 // Textarea input
 interface Props extends React.InputHTMLAttributes<HTMLTextAreaElement> {
@@ -257,7 +258,7 @@ export const CustomReactQuill = ({ text, setText, maxChars }: QuillProps) => {
 
   return (
     <>
-      <div className="h-[10rem]">
+      <div className="lg:h-[10rem] h-[20rem]">
         <ReactQuill
           theme="snow"
           value={text}
@@ -280,5 +281,25 @@ export const CustomReactQuill = ({ text, setText, maxChars }: QuillProps) => {
         </p>
       )}
     </>
+  );
+};
+
+// Custom Checkbox
+interface CheckBoxProps {
+  className?: string;
+  onChange: (value: boolean) => void;
+  value: boolean;
+}
+export const CustomCheckBox = ({
+  className,
+  onChange,
+  value,
+}: CheckBoxProps) => {
+  return (
+    <Checkbox
+      onCheckedChange={onChange}
+      checked={value}
+      className={`w-4 h-4 disabled:cursor-not-allowed ${className}`}
+    />
   );
 };

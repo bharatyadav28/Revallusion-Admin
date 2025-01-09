@@ -124,11 +124,13 @@ function AppSidebar() {
                 pathname={item.path || "#"}
                 Icon={item.Icon}
                 name={item.name}
+                key={item.name}
               />
             ) : (
               <Collapsible
                 className=" group/collapsible "
                 defaultOpen={isOpenByDefault(item)}
+                key={item.name}
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
@@ -147,6 +149,7 @@ function AppSidebar() {
                           Icon={subItem.Icon}
                           name={subItem.name}
                           isSubItem={true}
+                          key={subItem.name}
                         />
                       ))}
                     </SidebarMenuSub>

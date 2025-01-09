@@ -94,7 +94,11 @@ function Certificate() {
         <div className="input-container">
           <div className="label">Image</div>
           <div className="user-input ">
-            <ImageUploader imageSrc={image} setImageSrc={setImage} />
+            <ImageUploader
+              imageSrc={image}
+              setImageSrc={setImage}
+              alt="certificate"
+            />
           </div>
         </div>
 

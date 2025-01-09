@@ -15,7 +15,7 @@ import {
 import { CustomButton } from "@/components/common/Inputs";
 import { UpdateButton } from "@/components/common/Inputs";
 import { useGetPagesQuery } from "@/store/apis/content-mangement/static-pages-apis";
-import { showError } from "@/lib/reusable-funs";
+import { filterHtmlTags, showError } from "@/lib/reusable-funs";
 import { staticPageType } from "@/lib/interfaces-types";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 
@@ -41,7 +41,7 @@ function StaticPages() {
           <TableHeader>
             <TableRow>
               <TableHead>Page Title</TableHead>
-              <TableHead className="">Page Type</TableHead>
+              <TableHead className="">Description</TableHead>
               <TableHead className="">Status</TableHead>
 
               <TableHead className="">Action</TableHead>
@@ -52,7 +52,9 @@ function StaticPages() {
             {data?.data?.pages.map((page: staticPageType) => (
               <TableRow key={page._id}>
                 <TableCell>{page.title}</TableCell>
-                <TableCell className="min-w-[10rem] ">{page.type}</TableCell>
+                <TableCell className="min-w-[10rem] ">
+                  {filterHtmlTags(page.description).substring(0, 70) + "...."}
+                </TableCell>
                 <TableCell className="text-center w-[6rem]">
                   <CustomButton
                     className="green-button w-[5rem]"

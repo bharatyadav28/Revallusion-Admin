@@ -65,7 +65,6 @@ export interface certificateType {
 export interface staticPageType {
   _id: string;
   title: string;
-  type: string;
   description: string;
   status: string;
 }
@@ -98,4 +97,16 @@ export interface queryType {
 export interface credentialType {
   email: string;
   password: string;
+  keepMeSignedIn?: boolean;
+}
+
+export interface userType {
+  _id: string | null;
+  avatar?: string | null;
+  email: string | null;
+  name: string | null;
+  mobile?: string | null;
+  isEmailVerified?: boolean;
+  isMobileVerified?: boolean;
+  password?: string | null;
 }

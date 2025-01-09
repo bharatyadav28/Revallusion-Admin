@@ -10,8 +10,9 @@ import { UploadSpinner } from "./LoadingSpinner";
 interface Props {
   imageSrc: string;
   setImageSrc: React.Dispatch<React.SetStateAction<string>>;
+  alt?: string;
 }
-const ImageUploader: React.FC<Props> = ({ imageSrc, setImageSrc }) => {
+const ImageUploader: React.FC<Props> = ({ imageSrc, setImageSrc, alt }) => {
   const [uploading, setUploading] = useState<boolean>(false);
 
   const handleImageUpload = async (
@@ -25,9 +26,10 @@ const ImageUploader: React.FC<Props> = ({ imageSrc, setImageSrc }) => {
         // Prepare FormData
         const formData = new FormData();
         formData.append("file", file);
+        if (alt) formData.append("type", alt);
 
         // Upload to backend
-        const response = await fetch("/api/v1/upload-image", {
+        const response = await fetch("/api/v1/admin/upload-image", {
           method: "POST",
           body: formData,
         });
@@ -43,8 +45,7 @@ const ImageUploader: React.FC<Props> = ({ imageSrc, setImageSrc }) => {
           alert("Image upload failed. No URL returned.");
         }
       } catch (error) {
-        console.error("Error uploading image:", error);
-        toast.error("Image upload failed.");
+        toast.error("Image upload failed");
       } finally {
         setUploading(false);
       }
@@ -56,8 +57,8 @@ const ImageUploader: React.FC<Props> = ({ imageSrc, setImageSrc }) => {
       {/* Image Display */}
       <img
         src={imageSrc}
-        alt="Certificate"
-        className="w-full h-full object-cover rounded-sm"
+        alt={alt || "Image"}
+        className="w-full h-full object-contain rounded-sm"
       />
 
       {/* Spinner while uploading video */}
