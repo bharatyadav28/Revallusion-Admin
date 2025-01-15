@@ -16,8 +16,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        // target: "https://revallusion.onrender.com",
-        target: "http://localhost:4000",
+        target: "https://revallusion.onrender.com",
+        // target: "http://localhost:4000",
         changeOrigin: true, // This is required to ensure the Host header matches the target domain
       },
     },

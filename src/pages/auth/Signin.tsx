@@ -6,7 +6,7 @@ import { CustomCheckBox, CustomInput } from "@/components/common/Inputs";
 import { useSigninQueryMutation } from "@/store/apis/auth.apis";
 import { showError } from "@/lib/reusable-funs";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/use-redux";
 import { setUser } from "@/store/features/generalSlice";
 
@@ -23,6 +23,11 @@ const Signin = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const redirectPath = searchParams.get("redirect")?.match(/^\/[^/]+/);
+
+  const subRedirectPath = redirectPath?.[0];
 
   // Form submit handler
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -43,14 +48,15 @@ const Signin = () => {
     if (isSuccess && data) {
       toast.success(data?.message);
       dispatch(setUser(data?.data?.user));
-      navigate("/", { replace: true });
+
+      navigate(subRedirectPath || "/", { replace: true });
     }
   }, [isSuccess]);
 
   // Redirect to home if user is already signed in
   useEffect(() => {
     if (user._id) {
-      navigate("/");
+      navigate(subRedirectPath || "/", { replace: true });
     }
   }, [user]);
 
