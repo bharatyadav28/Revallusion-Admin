@@ -162,7 +162,7 @@ export const DeleteButton = ({
     <Button
       variant="destructive"
       size="icon"
-      className="ml-3"
+      className={`ml-3 ${className}`}
       onClick={handleClick}
       disabled={isDeleting}
       {...props}
@@ -214,6 +214,42 @@ export const CustomSelect = ({
             return (
               <SelectItem key={item} value={item}>
                 {item}
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
+      </Select>
+    </>
+  );
+};
+
+// Select Input with different menu item and its corresponding value
+interface SelectProps2 {
+  menu: { value: string; key: string }[];
+  value: string;
+  onChange: React.Dispatch<React.SetStateAction<string>>;
+  className?: string;
+}
+export const CustomSelectSeperate = ({
+  menu,
+  value,
+  onChange,
+  className,
+  ...props
+}: SelectProps2) => {
+  const classes = `py-5 border-gray-400 ${className}`;
+
+  return (
+    <>
+      <Select onValueChange={onChange} value={value} {...props}>
+        <SelectTrigger className={classes}>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {menu?.map((item) => {
+            return (
+              <SelectItem key={item.key} value={item.value}>
+                {item.key}
               </SelectItem>
             );
           })}

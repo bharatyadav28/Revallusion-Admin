@@ -12,6 +12,8 @@ import plansApi from "./apis/content-mangement/plans-apis";
 import moduleApi from "./apis/modules-apis";
 import queriesApi from "./apis/queries.apis";
 import authApi from "./apis/auth.apis";
+import libraryApi from "./apis/library-apis";
+import courseApi from "./apis/course-apis";
 
 export const store = configureStore({
   reducer: {
@@ -26,6 +28,8 @@ export const store = configureStore({
     [moduleApi.reducerPath]: moduleApi.reducer,
     [queriesApi.reducerPath]: queriesApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [libraryApi.reducerPath]: libraryApi.reducer,
+    [courseApi.reducerPath]: courseApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -39,11 +43,13 @@ export const store = configureStore({
       .concat(plansApi.middleware)
       .concat(moduleApi.middleware)
       .concat(queriesApi.middleware)
-      .concat(authApi.middleware),
+      .concat(authApi.middleware)
+      .concat(libraryApi.middleware)
+      .concat(courseApi.middleware),
 
-  // devTools: process.env.NODE_ENV !== "production",
+  devTools: process.env.NODE_ENV !== "production",
 
-  devTools: true,
+  // devTools: true,
 });
 
 setupListeners(store.dispatch);

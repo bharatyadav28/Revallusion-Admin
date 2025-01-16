@@ -53,13 +53,20 @@ const ImageUploader: React.FC<Props> = ({ imageSrc, setImageSrc, alt }) => {
   };
 
   return (
-    <div className="relative border bottom-1 rounded-sm w-[15rem] h-[10rem] group">
+    <div className="relative border bottom-1 rounded-sm w-[15rem] h-[10rem] group bg-black bg-opacity-80">
+      {!imageSrc && (
+        <div className="flex items-center justify-center h-full">
+          No file choosen
+        </div>
+      )}
       {/* Image Display */}
-      <img
-        src={imageSrc}
-        alt={alt || "Image"}
-        className="w-full h-full object-contain rounded-sm"
-      />
+      {imageSrc && (
+        <img
+          src={imageSrc}
+          alt={alt || "Image"}
+          className="w-full h-full object-cover rounded-sm"
+        />
+      )}
 
       {/* Spinner while uploading video */}
       {uploading && (

@@ -22,6 +22,6 @@ const LoadingSpinner = ({ size }: { size?: number }) => {
 
 // UploadSpinner
 const UploadSpinner = () => {
-  return <BeatLoader />;
+  return <BeatLoader color="#f1f1f1" />;
 };
 export { PageLoadingSpinner, LoadingSpinner, UploadSpinner };

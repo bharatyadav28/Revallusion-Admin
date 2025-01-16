@@ -110,3 +110,38 @@ export interface userType {
   isMobileVerified?: boolean;
   password?: string | null;
 }
+
+// Library Managment types
+export interface videoType {
+  _id?: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  videoUrl?: string;
+  course: string;
+  module?: string;
+  subModule?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface subModuleType {
+  _id: string;
+  name: string;
+  videos: [videoType];
+}
+
+export interface coursemoduleType {
+  _id: string;
+  name: string;
+  subModules: [subModuleType];
+}
+export interface courseType {
+  _id: string;
+  title: string;
+  modules?: [coursemoduleType];
+  isFree: boolean;
+  freeVideos: [videoType];
+  createdAt?: string;
+  updatedAt?: string;
+}

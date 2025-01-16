@@ -9,6 +9,8 @@ import { RiEditBoxLine as ContentIcon } from "react-icons/ri";
 import { GiBookshelf as ModuleIcon } from "react-icons/gi";
 import { FaList as ListIcon } from "react-icons/fa";
 import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
+import { HiLibrary as LibraryIcon } from "react-icons/hi";
+// import { BiLibrary as LibraryIcon } from "react-icons/bi";
 
 import {
   Sidebar,
@@ -91,6 +93,11 @@ function AppSidebar() {
       name: "Modules",
       Icon: ModuleIcon,
       path: "/modules",
+    },
+    {
+      name: "Library Management",
+      Icon: LibraryIcon,
+      path: "/library-management",
     },
     {
       name: "Queries",

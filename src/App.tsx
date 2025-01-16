@@ -1,5 +1,11 @@
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+
+import { useSendMeQuery } from "./store/apis/auth.apis";
+import { PageLoadingSpinner } from "./components/common/LoadingSpinner";
+import { useAppDispatch } from "./hooks/use-redux";
+import { setUser } from "./store/features/generalSlice";
 
 import "./App.css";
 import { ThemeProvider } from "./lib/theme-provider";
@@ -22,11 +28,8 @@ import ModuleItem from "./pages/Modules/ModuleItem";
 import QueriesList from "./pages/Query/QueriesList";
 import QueryDetails from "./pages/Query/QueryDetails";
 import Signin from "./pages/auth/Signin";
-import { useSendMeQuery } from "./store/apis/auth.apis";
-import { PageLoadingSpinner } from "./components/common/LoadingSpinner";
-import { useEffect } from "react";
-import { useAppDispatch } from "./hooks/use-redux";
-import { setUser } from "./store/features/generalSlice";
+import VideoList from "./pages/library-management/VideoList";
+import AddEditVideo from "./pages/library-management/AddEditVideo";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -88,6 +91,12 @@ function App() {
           <Route path="/queries">
             <Route index element={<QueriesList />} />
             <Route path=":id" element={<QueryDetails />} />
+          </Route>
+
+          <Route path="/library-management">
+            <Route index element={<VideoList />} />
+            <Route path=":id" element={<AddEditVideo />} />
+            <Route path="add" element={<AddEditVideo />} />
           </Route>
 
           <Route path="/profile" element={<Profile />} />
