@@ -145,3 +145,7 @@ export interface courseType {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface dateSortVideos {
+  [date: string]: videoType[];
+}

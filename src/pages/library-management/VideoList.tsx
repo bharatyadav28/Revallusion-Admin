@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 import toast from "react-hot-toast";
 
-import { videoType } from "@/lib/interfaces-types";
+import { dateSortVideos, videoType } from "@/lib/interfaces-types";
 import {
   useDeleteVideoMutation,
   useGetVideosQuery,
 } from "@/store/apis/library-apis";
-import { showError } from "@/lib/reusable-funs";
+import { convertToDate, showError } from "@/lib/reusable-funs";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 import {
   CustomButton,
@@ -42,6 +42,7 @@ function VideoList() {
   ] = useDeleteVideoMutation();
 
   const videos = data?.data?.videos || [];
+
   const courses = data?.data?.courses || [];
 
   const handleEditVideo = (id: string, video: videoType) => {
@@ -125,7 +126,7 @@ function VideoList() {
       </CustomButton>
 
       <div className="grid xl:grid-cols-6 lg:grid-cols-4 grid-cols-3  gap-8 bg-opacity-10">
-        {videos.map((video: videoType) => {
+        {videos?.map((video: videoType) => {
           return (
             <div
               key={video._id}
