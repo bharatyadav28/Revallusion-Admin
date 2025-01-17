@@ -8,7 +8,12 @@ import {
   useDeleteVideoMutation,
   useGetVideosQuery,
 } from "@/store/apis/library-apis";
-import { convertToDate, showError } from "@/lib/reusable-funs";
+import {
+  convertToDate,
+  isToday,
+  isYesterday,
+  showError,
+} from "@/lib/reusable-funs";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 import {
   CustomButton,
@@ -41,8 +46,22 @@ function VideoList() {
     },
   ] = useDeleteVideoMutation();
 
-  const videos = data?.data?.videos || [];
+  // const videos = data?.data?.videos || [];
 
+  // Map videos according to their creation date
+  const videosData = data?.data?.videos.reduce((acc: dateSortVideos, video) => {
+    const createdAt = video.createdAt;
+    const dateString = convertToDate(createdAt, "long");
+
+    if (dateString) {
+      if (!acc[dateString]) {
+        acc[dateString] = [];
+      }
+      acc[dateString].push(video);
+    }
+
+    return acc;
+  }, {} as dateSortVideos);
   const courses = data?.data?.courses || [];
 
   const handleEditVideo = (id: string, video: videoType) => {
@@ -50,9 +69,9 @@ function VideoList() {
   };
 
   // Video details drawer
-  const handleDrawer = (videoId?: string) => {
+  const handleDrawer = (video?: videoType) => {
     setOpenDrawer((prev) => !prev);
-    const requiredVideo = videos?.find((video) => video._id === videoId);
+    const requiredVideo = video;
 
     // Convert (course, module, subModule) ids to corrsponding names
     const requiredCourse = courses?.find(
@@ -96,6 +115,19 @@ function VideoList() {
     handleDeleteDialog();
   };
 
+  // Date string to display on pahe
+  const getVideoDate = (value: string) => {
+    if (videosData) {
+      const dString = videosData[value][0].createdAt;
+      const today = dString ? isToday(dString) : false;
+      if (today) return "Today";
+
+      const yesterDay = dString ? isYesterday(dString) : false;
+      if (yesterDay) return "Yesterday";
+    }
+    return value;
+  };
+
   // Handle errors
   useEffect(() => {
     if (loadingError) {
@@ -125,40 +157,57 @@ function VideoList() {
         <AddIcon size={30} className="p-0 m-0 " /> Add Video
       </CustomButton>
 
-      <div className="grid xl:grid-cols-6 lg:grid-cols-4 grid-cols-3  gap-8 bg-opacity-10">
-        {videos?.map((video: videoType) => {
-          return (
-            <div
-              key={video._id}
-              className="relative md:h-[9rem] h-[6rem] hover:cursor-pointer group "
-            >
-              <img
-                src={video.thumbnailUrl}
-                alt={video.title}
-                className="w-full h-full object-cover rounded-md"
-              />
+      <div>
+        {/* Unique dates */}
+        {videosData &&
+          Object.keys(videosData)
+            .reverse()
+            .map((item) => {
+              return (
+                <div key={item}>
+                  <div className="text-sm mb-2">{getVideoDate(item)}</div>
+                  <div className="grid xl:grid-cols-6 lg:grid-cols-4 grid-cols-3  gap-8 bg-opacity-10">
+                    {/* Videos map to each date */}
+                    {videosData[item]?.map((video: videoType) => {
+                      return (
+                        <div
+                          key={video._id}
+                          className="relative md:h-[9rem] h-[6rem] hover:cursor-pointer group "
+                        >
+                          <img
+                            src={video.thumbnailUrl}
+                            alt={video.title}
+                            className="w-full h-full object-cover rounded-md"
+                          />
 
-              {/* Image hover content */}
-              <div className="absolute inset-0 bg-black bg-opacity-20 rounded-sm backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1 ">
-                <ViewButton
-                  className="border-none"
-                  handleClick={() => handleDrawer(video?._id)}
-                />
-                <UpdateButton
-                  className="border-none"
-                  handleClick={() => handleEditVideo(video?._id || "", video)}
-                />
-                <DeleteButton
-                  className="ml-0"
-                  handleClick={() => {
-                    setOpenDeleteDialog((prev) => !prev);
-                    setSelectedVideo(video);
-                  }}
-                />
-              </div>
-            </div>
-          );
-        })}
+                          {/* Image hover content */}
+                          <div className="absolute inset-0 bg-black bg-opacity-20 rounded-sm backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1 ">
+                            <ViewButton
+                              className="border-none"
+                              handleClick={() => handleDrawer(video)}
+                            />
+                            <UpdateButton
+                              className="border-none"
+                              handleClick={() =>
+                                handleEditVideo(video?._id || "", video)
+                              }
+                            />
+                            <DeleteButton
+                              className="ml-0"
+                              handleClick={() => {
+                                setOpenDeleteDialog((prev) => !prev);
+                                setSelectedVideo(video);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <br />
+                </div>
+              );
+            })}
       </div>
 
       <VideoDetails

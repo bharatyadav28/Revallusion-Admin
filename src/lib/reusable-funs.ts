@@ -32,7 +32,7 @@ export function isDigitsOnly(value: string) {
   return regex.test(value);
 }
 
-// Formate date,time
+// Format ISO to date,time
 export function formatDate(isoDate: string): string {
   const date = new Date(isoDate);
   const options: Intl.DateTimeFormatOptions = {
@@ -46,17 +46,38 @@ export function formatDate(isoDate: string): string {
   return new Intl.DateTimeFormat("en-US", options).format(date);
 }
 
-// Formate date to mm/dd/YYYY
-export const convertToDate = (date: string | undefined) => {
+// Formate String to Date short/long format
+export const convertToDate = (
+  date: string | undefined,
+  format: "short" | "long" = "short"
+): string | undefined => {
   if (date) {
     const d = new Date(date);
     const month = d.getMonth() + 1; // Month is zero-indexed
     const day = d.getDate();
     const year = d.getFullYear();
 
-    return `${month < 10 ? "0" + month : month}/${
-      day < 10 ? "0" + day : day
-    }/${year}`;
+    if (format === "long") {
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      return `${monthNames[d.getMonth()]} ${day}, ${year}`;
+    } else {
+      return `${month < 10 ? "0" + month : month}/${
+        day < 10 ? "0" + day : day
+      }/${year}`;
+    }
   }
   return undefined;
 };
@@ -64,4 +85,28 @@ export const convertToDate = (date: string | undefined) => {
 // Remove html tags from a text
 export function filterHtmlTags(text: string) {
   return text.replace(/<\/?[^>]+(>|$)/g, "");
+}
+
+// Whether is today
+export function isToday(dateString: string) {
+  const incomingDate = new Date(dateString);
+  const today = new Date();
+
+  return (
+    incomingDate.getFullYear() === today.getFullYear() &&
+    incomingDate.getMonth() === today.getMonth() &&
+    incomingDate.getDate() === today.getDate()
+  );
+}
+
+// Whether is yesterday
+export function isYesterday(dateString: string) {
+  const incomingDate = new Date(dateString);
+  const today = new Date();
+
+  return (
+    incomingDate.getFullYear() === today.getFullYear() &&
+    incomingDate.getMonth() === today.getMonth() &&
+    incomingDate.getDate() === today.getDate() - 1
+  );
 }
