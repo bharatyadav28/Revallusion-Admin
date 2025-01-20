@@ -163,9 +163,14 @@ function VideoList() {
         {videosData &&
           Object.keys(videosData)
             .reverse()
-            .map((item) => {
+            .map((item, index) => {
               return (
-                <div key={item}>
+                <div
+                  key={item}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 200}
+                  data-aos-duration="500"
+                >
                   <div className="text-sm mb-2">{getVideoDate(item)}</div>
                   <div className="grid xl:grid-cols-6 lg:grid-cols-4 grid-cols-3  md:gap-8 gap-4 bg-opacity-10">
                     {/* Videos map to each date */}

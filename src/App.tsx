@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 import { useSendMeQuery } from "./store/apis/auth.apis";
 import { PageLoadingSpinner } from "./components/common/LoadingSpinner";
@@ -35,6 +37,15 @@ function App() {
   const { data, isFetching } = useSendMeQuery();
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration in milliseconds
+      offset: 50, // Offset (in pixels) from the original trigger point
+      easing: "ease-in-out", // Easing function
+      // once: true, // Whether animation should happen only once
+    });
+  }, []);
 
   useEffect(() => {
     if (data) {
