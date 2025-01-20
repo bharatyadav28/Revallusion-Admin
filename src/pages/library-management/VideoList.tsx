@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 import toast from "react-hot-toast";
+import { motion } from "motion/react";
 
 import { dateSortVideos, videoType } from "@/lib/interfaces-types";
 import {
@@ -166,13 +167,15 @@ function VideoList() {
               return (
                 <div key={item}>
                   <div className="text-sm mb-2">{getVideoDate(item)}</div>
-                  <div className="grid xl:grid-cols-6 lg:grid-cols-4 grid-cols-3  gap-8 bg-opacity-10">
+                  <div className="grid xl:grid-cols-6 lg:grid-cols-4 grid-cols-3  md:gap-8 gap-4 bg-opacity-10">
                     {/* Videos map to each date */}
                     {videosData[item]?.map((video: videoType) => {
                       return (
-                        <div
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ type: "spring" }}
                           key={video._id}
-                          className="relative md:h-[9rem] h-[6rem] hover:cursor-pointer group "
+                          className="relative md:h-[9rem] h-[6rem] hover:cursor-pointer group  "
                         >
                           <img
                             src={video.thumbnailUrl}
@@ -183,9 +186,10 @@ function VideoList() {
                           {/* Image hover content */}
                           <div className="absolute inset-0 bg-black bg-opacity-20 rounded-sm backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1 ">
                             <ViewButton
-                              className="border-none"
+                              className="border-none "
                               handleClick={() => handleDrawer(video)}
                             />
+
                             <UpdateButton
                               className="border-none"
                               handleClick={() =>
@@ -200,7 +204,7 @@ function VideoList() {
                               }}
                             />
                           </div>
-                        </div>
+                        </motion.div>
                       );
                     })}
                   </div>

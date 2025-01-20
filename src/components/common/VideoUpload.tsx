@@ -83,7 +83,11 @@ const VideoUploader: React.FC<Props> = ({
   return (
     <div className="relative border bottom-1 rounded-sm w-full  group">
       <div className="flex gap-2 items-center border border-gray-400 rounded-md">
-        <Button onClick={handleClick} className="rounded-sm">
+        <Button
+          onClick={handleClick}
+          className="rounded-sm"
+          disabled={uploading}
+        >
           {videoSrc ? "View file" : "Choose file"}
         </Button>
         <p className="text-sm">
