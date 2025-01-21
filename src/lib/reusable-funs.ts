@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
+import { videoDurationType } from "./interfaces-types";
 
 // Show error toast
 export const showError = (error: SerializedError | FetchBaseQueryError) => {
@@ -110,3 +111,44 @@ export function isYesterday(dateString: string) {
     incomingDate.getDate() === today.getDate() - 1
   );
 }
+
+interface calculateDurationProps {
+  file: File;
+  setDuration: React.Dispatch<React.SetStateAction<videoDurationType>>;
+}
+export const calculateDuration = ({
+  file,
+  setDuration,
+}: calculateDurationProps) => {
+  // Create a temporary URL for the video file
+  console.log("File", file);
+  const videoUrl = URL.createObjectURL(file);
+
+  // Create a temporary video element
+  const video = document.createElement("video");
+  video.style.display = "none"; // Hide the video element
+
+  // Listen for metadata loaded event
+  video.addEventListener("loadedmetadata", () => {
+    // Get duration in seconds
+    const totalSeconds = video.duration;
+
+    // Calculate hours, minutes, seconds
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = Math.floor(totalSeconds % 60);
+
+    setDuration({ hours, minutes, seconds });
+
+    // Clean up
+    URL.revokeObjectURL(videoUrl);
+  });
+
+  // Handle errors
+  video.addEventListener("error", (e) => {
+    console.log("Error loading video meta data", e);
+    URL.revokeObjectURL(videoUrl);
+  });
+
+  video.src = videoUrl;
+};

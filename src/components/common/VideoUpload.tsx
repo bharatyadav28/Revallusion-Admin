@@ -5,16 +5,20 @@ import toast from "react-hot-toast";
 import { DotLoader as UploadSpinner } from "react-spinners";
 
 import { Button } from "../ui/button";
+import { calculateDuration } from "@/lib/reusable-funs";
+import { videoDurationType } from "@/lib/interfaces-types";
 
 interface Props {
   videoSrc: string;
   setVideoSrc: React.Dispatch<React.SetStateAction<string>>;
   uploading: boolean;
   setUploading: React.Dispatch<React.SetStateAction<boolean>>;
+  setVideoDuration: React.Dispatch<React.SetStateAction<videoDurationType>>;
 }
 const VideoUploader: React.FC<Props> = ({
   videoSrc,
   setVideoSrc,
+  setVideoDuration,
   uploading,
   setUploading,
 }) => {
@@ -24,6 +28,7 @@ const VideoUploader: React.FC<Props> = ({
     const file = e.target.files?.[0];
     if (file) {
       setUploading(true);
+      calculateDuration({ file, setDuration: setVideoDuration });
 
       try {
         const videoExtension = file.name.split(".").pop();

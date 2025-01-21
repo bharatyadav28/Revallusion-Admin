@@ -31,6 +31,11 @@ function AddEditVideo() {
   const [description, setDescription] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [videoDuration, setVideoDuration] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
   const [course, setCourse] = useState("");
   const [module, setModule] = useState("");
   const [subModule, setSubModule] = useState("");
@@ -76,6 +81,7 @@ function AddEditVideo() {
     const isEdit = location.state?.isEdit;
     if (!isEdit) {
       videodata.videoUrl = videoUrl;
+      videodata.duration = videoDuration;
       await addVideo(videodata);
     } else {
       await updateVideo({
@@ -231,6 +237,7 @@ function AddEditVideo() {
             setVideoSrc={setVideoUrl}
             uploading={uploading}
             setUploading={setUploading}
+            setVideoDuration={setVideoDuration}
           />
         </div>
       </div>

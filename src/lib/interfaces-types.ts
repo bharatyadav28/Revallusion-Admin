@@ -112,12 +112,19 @@ export interface userType {
 }
 
 // Library Managment types
+
+export interface videoDurationType {
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
 export interface videoType {
   _id?: string;
   title: string;
   description: string;
   thumbnailUrl: string;
   videoUrl?: string;
+  duration?: videoDurationType;
   course: string;
   module?: string;
   subModule?: string;

@@ -65,6 +65,11 @@ function AppSidebar() {
           path: "/mentor",
         },
         {
+          name: "Modules",
+          Icon: ListIcon,
+          path: "/modules",
+        },
+        {
           name: "Certificate",
           Icon: ListIcon,
           path: "/certificate",
@@ -89,11 +94,11 @@ function AppSidebar() {
         },
       ],
     },
-    {
-      name: "Modules",
-      Icon: ModuleIcon,
-      path: "/modules",
-    },
+    // {
+    //   name: "Modules",
+    //   Icon: ModuleIcon,
+    //   path: "/modules",
+    // },
     {
       name: "Library Management",
       Icon: LibraryIcon,

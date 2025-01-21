@@ -4,7 +4,11 @@ import { IoMdAdd as AddIcon } from "react-icons/io";
 import toast from "react-hot-toast";
 import { motion } from "motion/react";
 
-import { dateSortVideos, videoType } from "@/lib/interfaces-types";
+import {
+  dateSortVideos,
+  videoDurationType,
+  videoType,
+} from "@/lib/interfaces-types";
 import {
   useDeleteVideoMutation,
   useGetVideosQuery,
@@ -129,6 +133,13 @@ function VideoList() {
     return value;
   };
 
+  const convertDuration = (duration: videoDurationType) => {
+    const { hours, minutes, seconds } = duration;
+    return `${(hours | 0).toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
   // Handle errors
   useEffect(() => {
     if (loadingError) {
@@ -187,6 +198,12 @@ function VideoList() {
                             alt={video.title}
                             className="w-full h-full object-cover rounded-md"
                           />
+
+                          {video.duration && (
+                            <div className="absolute bottom-1.5 right-1.5 bg-black bg-opacity-70 text-white text-xs md:text-sm px-2 py-1 rounded-md shadow-lg flex items-center">
+                              <span>{convertDuration(video.duration)}</span>
+                            </div>
+                          )}
 
                           {/* Image hover content */}
                           <div className="absolute inset-0 bg-black bg-opacity-20 rounded-sm backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1 ">
