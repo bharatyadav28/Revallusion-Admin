@@ -121,7 +121,6 @@ export const calculateDuration = ({
   setDuration,
 }: calculateDurationProps) => {
   // Create a temporary URL for the video file
-  console.log("File", file);
   const videoUrl = URL.createObjectURL(file);
 
   // Create a temporary video element

@@ -126,6 +126,7 @@ export interface videoType {
   videoUrl?: string;
   duration?: videoDurationType;
   course: string;
+  isActive?: boolean;
   module?: string;
   subModule?: string;
   createdAt?: string;

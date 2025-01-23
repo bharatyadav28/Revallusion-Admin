@@ -6,7 +6,7 @@ import {
   MdDescription as PageIcon,
 } from "react-icons/md";
 import { RiEditBoxLine as ContentIcon } from "react-icons/ri";
-import { GiBookshelf as ModuleIcon } from "react-icons/gi";
+// import { GiBookshelf as ModuleIcon } from "react-icons/gi";
 import { FaList as ListIcon } from "react-icons/fa";
 import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
 import { HiLibrary as LibraryIcon } from "react-icons/hi";
