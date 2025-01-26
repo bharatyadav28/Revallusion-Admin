@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { CiEdit as EditIcon } from "react-icons/ci";
 import { MdDelete as DeleteIcon } from "react-icons/md";
+import { IoIosArrowUp as ExpandButtonIcon } from "react-icons/io";
 import { FaEye } from "react-icons/fa";
 import ReactQuill from "react-quill";
 
@@ -187,6 +188,21 @@ export const ViewButton = ({ handleClick, className, ...props }: BtnProps) => {
   );
 };
 
+export const ExpandButton = ({
+  handleClick,
+  className,
+  ...props
+}: BtnProps) => {
+  return (
+    <button
+      className="bg-[var(--lightpurple)] p-[0.5rem] rounded-sm "
+      onClick={handleClick}
+      {...props}
+    >
+      <ExpandButtonIcon size={17} />
+    </button>
+  );
+};
 // Select Input
 interface SelectProps {
   menu: string[];

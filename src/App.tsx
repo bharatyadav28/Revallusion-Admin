@@ -32,6 +32,8 @@ import QueryDetails from "./pages/Query/QueryDetails";
 import Signin from "./pages/auth/Signin";
 import VideoList from "./pages/library-management/VideoList";
 import AddEditVideo from "./pages/library-management/AddEditVideo";
+import CourseList from "./pages/course-management/CourseList";
+import EditCourse from "./pages/course-management/EditCourse";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -108,6 +110,11 @@ function App() {
             <Route index element={<VideoList />} />
             <Route path=":id" element={<AddEditVideo />} />
             <Route path="add" element={<AddEditVideo />} />
+          </Route>
+
+          <Route path="/course-management">
+            <Route index element={<CourseList />} />
+            <Route path=":id" element={<EditCourse />} />
           </Route>
 
           <Route path="/profile" element={<Profile />} />

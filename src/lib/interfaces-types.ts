@@ -112,7 +112,6 @@ export interface userType {
 }
 
 // Library Managment types
-
 export interface videoDurationType {
   hours: number;
   minutes: number;
@@ -136,7 +135,9 @@ export interface videoType {
 export interface subModuleType {
   _id: string;
   name: string;
-  videos: [videoType];
+  thumbnailUrl: string;
+  sequence: number;
+  videos: [courseVideoType];
 }
 
 export interface coursemoduleType {
@@ -149,11 +150,28 @@ export interface courseType {
   title: string;
   modules?: [coursemoduleType];
   isFree: boolean;
-  freeVideos: [videoType];
+  freeVideos: [courseVideoType];
   createdAt?: string;
   updatedAt?: string;
 }
 
 export interface dateSortVideos {
   [date: string]: videoType[];
+}
+
+// Course Management types
+export interface courseItemType {
+  _id?: string;
+  name?: string;
+  thumbnailUrl?: string;
+  sequence?: number;
+  courseId?: string;
+  moduleId?: string;
+  submoduleId?: string;
+  videoId?: videoType;
+}
+
+export interface courseVideoType {
+  videoId: videoType;
+  sequence: number;
 }

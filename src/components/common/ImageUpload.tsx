@@ -11,8 +11,14 @@ interface Props {
   imageSrc: string;
   setImageSrc: React.Dispatch<React.SetStateAction<string>>;
   alt?: string;
+  className?: string;
 }
-const ImageUploader: React.FC<Props> = ({ imageSrc, setImageSrc, alt }) => {
+const ImageUploader: React.FC<Props> = ({
+  imageSrc,
+  setImageSrc,
+  alt,
+  className,
+}) => {
   const [uploading, setUploading] = useState<boolean>(false);
 
   const handleImageUpload = async (
@@ -53,9 +59,11 @@ const ImageUploader: React.FC<Props> = ({ imageSrc, setImageSrc, alt }) => {
   };
 
   return (
-    <div className="relative border bottom-1 rounded-sm w-[15rem] h-[10rem] group bg-black bg-opacity-80">
+    <div
+      className={`relative border bottom-1 rounded-sm w-[15rem] h-[10rem] group bg-black bg-opacity-80 ${className}`}
+    >
       {!imageSrc && (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex items-center justify-center h-full text-sm">
           No file choosen
         </div>
       )}

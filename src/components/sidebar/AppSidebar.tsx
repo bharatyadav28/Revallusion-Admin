@@ -6,11 +6,10 @@ import {
   MdDescription as PageIcon,
 } from "react-icons/md";
 import { RiEditBoxLine as ContentIcon } from "react-icons/ri";
-// import { GiBookshelf as ModuleIcon } from "react-icons/gi";
 import { FaList as ListIcon } from "react-icons/fa";
 import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
 import { HiLibrary as LibraryIcon } from "react-icons/hi";
-// import { BiLibrary as LibraryIcon } from "react-icons/bi";
+import { GiBookshelf as CourseIcon } from "react-icons/gi";
 
 import {
   Sidebar,
@@ -94,15 +93,15 @@ function AppSidebar() {
         },
       ],
     },
-    // {
-    //   name: "Modules",
-    //   Icon: ModuleIcon,
-    //   path: "/modules",
-    // },
     {
       name: "Library Management",
       Icon: LibraryIcon,
       path: "/library-management",
+    },
+    {
+      name: "Course Management",
+      Icon: CourseIcon,
+      path: "/course-management",
     },
     {
       name: "Queries",
