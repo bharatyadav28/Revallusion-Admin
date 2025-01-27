@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 import {
   Table,
   TableCaption,
@@ -9,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { courseVideoType } from "@/lib/interfaces-types";
 import { UpdateButton } from "../common/Inputs";
+import VideoStatusButton from "./VideoStatusButton";
 
 interface Props {
   data: courseVideoType[];
@@ -32,13 +35,14 @@ function VideosList({
   const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
 
   const MainTable = (
-    <Table className="custom-table bg-[#1B1B1B] w-full">
+    <Table className="custom-table bg-[#34343a] w-full">
       <TableCaption>A list of videos</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="min-w-[6rem]">Video name</TableHead>
           <TableHead className="min-w-[6rem]">Video Description</TableHead>
           <TableHead>Sequence</TableHead>
+          <TableHead>Status</TableHead>
           <TableHead className="">Action</TableHead>
         </TableRow>
       </TableHeader>
@@ -55,7 +59,19 @@ function VideosList({
             <TableCell className="font-medium">
               {video?.videoId?.description}
             </TableCell>
-            <TableCell className="font-medium">{video?.sequence}</TableCell>
+            <TableCell className="font-medium">
+              {video?.sequence > 0 ? video?.sequence : "NA"}
+            </TableCell>
+
+            <TableCell>
+              {video?.videoId?._id && (
+                <VideoStatusButton
+                  videoId={video?.videoId?._id}
+                  sequence={video?.sequence}
+                  courseId={courseId}
+                />
+              )}
+            </TableCell>
 
             {/* Action buttons */}
             <TableCell className="font-medium">
@@ -88,9 +104,18 @@ function VideosList({
   const MainContent = !isSubTable ? (
     MainTable
   ) : (
-    <TableRow>
+    <motion.tr
+      initial={{ opacity: 0.5, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{
+        opacity: 0,
+        y: 0,
+        transition: { duration: 0.2 },
+      }}
+      transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+    >
       <TableCell colSpan={4}>{MainTable}</TableCell>
-    </TableRow>
+    </motion.tr>
   );
 
   return <>{MainContent}</>;

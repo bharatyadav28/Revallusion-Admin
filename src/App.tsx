@@ -123,7 +123,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      {isFetching && <PageLoadingSpinner />}
+      {isFetching && <PageLoadingSpinner isFullPage={true} />}
     </ThemeProvider>
   );
 }

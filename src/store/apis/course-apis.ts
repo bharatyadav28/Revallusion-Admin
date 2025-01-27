@@ -21,19 +21,19 @@ interface courseResponseType {
 export const courseApi = createApi({
   reducerPath: "courseApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/course",
+    baseUrl: "/api/v1",
   }),
   tagTypes: ["Courses", "Course"],
   endpoints: (builder) => ({
     // Fetch Courses data
     getCourses: builder.query<ResponseType, void>({
-      query: () => "/names",
+      query: () => "/course/names",
       providesTags: [{ type: "Courses", id: "LIST" }],
     }),
 
     // Fetch single course
     getCourse: builder.query<courseResponseType, string>({
-      query: (id) => `/${id}`,
+      query: (id) => `/course/${id}`,
       providesTags: (_, __, id) => [{ type: "Course", id }],
     }),
 
@@ -43,7 +43,7 @@ export const courseApi = createApi({
       { name: string; courseId: string }
     >({
       query: ({ name, courseId }) => ({
-        url: `/module`,
+        url: `/course/module`,
         method: "POST",
         body: { name, courseId },
       }),
@@ -58,7 +58,7 @@ export const courseApi = createApi({
       { id: string; name: string; courseId: string }
     >({
       query: ({ id, name, courseId }) => ({
-        url: `/module/${id}`,
+        url: `/course/module/${id}`,
         method: "PUT",
         body: { name, courseId },
       }),
@@ -73,7 +73,7 @@ export const courseApi = createApi({
       { name: string; thumbnailUrl: string; courseId: string; moduleId: string }
     >({
       query: ({ name, thumbnailUrl, courseId, moduleId }) => ({
-        url: `/submodule`,
+        url: `/course/submodule`,
         method: "POST",
         body: { name, thumbnailUrl, courseId, moduleId },
       }),
@@ -104,7 +104,7 @@ export const courseApi = createApi({
         newModuleId,
         sequence,
       }) => ({
-        url: `/submodule/${id}`,
+        url: `/course/submodule/${id}`,
         method: "PUT",
         body: { name, thumbnailUrl, courseId, moduleId, newModuleId, sequence },
       }),
@@ -125,10 +125,26 @@ export const courseApi = createApi({
       }
     >({
       query: ({ id, sequence, courseId, moduleId, subModuleId }) => ({
-        url: `/video-sequence/${id}`,
+        url: `/course/video-sequence/${id}`,
         method: "PUT",
         body: { sequence, courseId, moduleId, subModuleId },
       }),
+      invalidatesTags: (_, __, { courseId }) => [
+        { type: "Course", id: courseId },
+      ],
+    }),
+
+    // Update video status (active/inactive)
+    updateVideoStatus: builder.mutation<
+      ResponseType,
+      { id: string; isActive: boolean; courseId: string }
+    >({
+      query: ({ id, isActive }) => ({
+        url: `/video/active-status/${id}`,
+        method: "PUT",
+        body: { isActive },
+      }),
+
       invalidatesTags: (_, __, { courseId }) => [
         { type: "Course", id: courseId },
       ],
@@ -144,6 +160,7 @@ export const {
   useAddSubmoduleMutation,
   useUpdateSubmoduleMutation,
   useUpdateVideoSequenceMutation,
+  useUpdateVideoStatusMutation,
 } = courseApi;
 
 export default courseApi;

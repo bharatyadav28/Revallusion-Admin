@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 import {
   Table,
@@ -37,9 +38,18 @@ function SubmoduleList({
   const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
 
   return (
-    <TableRow>
+    <motion.tr
+      initial={{ opacity: 0.5, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{
+        opacity: 0,
+        y: 0,
+        transition: { duration: 0.2 },
+      }}
+      transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+    >
       <TableCell colSpan={2}>
-        <Table className="custom-table bg-[#36454F]">
+        <Table className="custom-table bg-[#1f1f23]">
           <TableCaption>A list of submodules</TableCaption>
           <TableHeader>
             <TableRow>
@@ -81,6 +91,7 @@ function SubmoduleList({
                           }
                           if (submodule._id) setShowSubmoduleId(submodule._id);
                         }}
+                        isExpanded={showSubmoduleId === submodule._id}
                       />
                       <UpdateButton
                         handleClick={() => {
@@ -113,7 +124,7 @@ function SubmoduleList({
           </TableBody>
         </Table>
       </TableCell>
-    </TableRow>
+    </motion.tr>
   );
 }
 

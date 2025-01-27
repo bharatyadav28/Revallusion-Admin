@@ -4,6 +4,8 @@ import { MdDelete as DeleteIcon } from "react-icons/md";
 import { IoIosArrowUp as ExpandButtonIcon } from "react-icons/io";
 import { FaEye } from "react-icons/fa";
 import ReactQuill from "react-quill";
+import { motion } from "framer-motion";
+import { HTMLMotionProps } from "framer-motion";
 
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
@@ -188,21 +190,37 @@ export const ViewButton = ({ handleClick, className, ...props }: BtnProps) => {
   );
 };
 
+interface ExpandBtnProps extends HTMLMotionProps<"button"> {
+  children?: React.ReactNode;
+  handleClick: () => void;
+  className?: string;
+  isExpanded?: boolean;
+}
+
 export const ExpandButton = ({
   handleClick,
   className,
+  isExpanded,
   ...props
-}: BtnProps) => {
+}: ExpandBtnProps) => {
+  // console.log("Is expnaded", isExpanded);
   return (
-    <button
+    <motion.button
       className="bg-[var(--lightpurple)] p-[0.5rem] rounded-sm "
       onClick={handleClick}
       {...props}
+      animate={{ rotate: isExpanded ? 180 : 0 }}
     >
-      <ExpandButtonIcon size={17} />
-    </button>
+      <motion.span
+        // animate={{ rotate: isExpanded ? 180 : 0 }}
+        className="!p-0 !m-0 flex items-center"
+      >
+        <ExpandButtonIcon size={17} />
+      </motion.span>
+    </motion.button>
   );
 };
+
 // Select Input
 interface SelectProps {
   menu: string[];

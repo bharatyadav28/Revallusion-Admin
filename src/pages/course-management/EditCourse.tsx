@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
+import { AnimatePresence } from "framer-motion";
 
 import {
   Table,
@@ -147,6 +148,7 @@ function EditCourse() {
                             }
                             setShowModuleId(module._id);
                           }}
+                          isExpanded={showModuleId === module._id}
                         />
                         <UpdateButton
                           handleClick={() => {
@@ -165,15 +167,17 @@ function EditCourse() {
                   </TableRow>
 
                   {/* Submodules table */}
-                  {showModuleId === module._id && course?._id && (
-                    <SubmoduleList
-                      data={module.subModules}
-                      handleOpenDialog={handleOpenDialog}
-                      setDialogData={setDialogData}
-                      courseId={course?._id}
-                      moduleId={module?._id}
-                    />
-                  )}
+                  <AnimatePresence>
+                    {showModuleId === module._id && course?._id && (
+                      <SubmoduleList
+                        data={module.subModules}
+                        handleOpenDialog={handleOpenDialog}
+                        setDialogData={setDialogData}
+                        courseId={course?._id}
+                        moduleId={module?._id}
+                      />
+                    )}
+                  </AnimatePresence>
                 </React.Fragment>
               ))}
             </TableBody>

@@ -20,7 +20,11 @@ td {
 }
 
 .green-button {
-  @apply bg-[var(--green)] hover:bg-[var(--lightgreen)] text-[#fff];
+  @apply bg-[var(--green)] hover:bg-[var(--lightgreen)] text-[#fff] transition-all;
+}
+
+.red-button {
+  @apply bg-[#990000] hover:bg-[#CC0000] text-[#fff] transition-all;
 }
 
 .purple-button {
