@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { carousalType } from "@/lib/interfaces-types";
+import { courseVideoType } from "@/lib/interfaces-types";
 
 interface ResponseType {
   data: {
-    carousals: [carousalType];
+    carousals: { videos: [courseVideoType] };
   };
   message: string;
   success: boolean;
@@ -24,11 +24,14 @@ export const carousalApi = createApi({
     }),
 
     // Add Carousal
-    addCarousal: builder.mutation<ResponseType, carousalType>({
-      query: (carousal) => ({
+    addCarousal: builder.mutation<
+      ResponseType,
+      { videos: { videoId: string; sequence: number }[] }
+    >({
+      query: ({ videos }) => ({
         url: `content/carousal`,
         method: "POST",
-        body: { ...carousal },
+        body: { videos },
       }),
 
       invalidatesTags: [{ type: "Carousal", id: "LIST" }],
@@ -37,21 +40,24 @@ export const carousalApi = createApi({
     // Update Carousal
     updateCarousal: builder.mutation<
       ResponseType,
-      { carousal: carousalType; id: string }
+      {
+        videoId: string;
+        sequence: number;
+      }
     >({
-      query: ({ carousal, id }) => ({
-        url: `content/carousal/${id}`,
+      query: ({ videoId, sequence }) => ({
+        url: `content/carousal/${videoId}`,
         method: "PUT",
-        body: { ...carousal },
+        body: { sequence },
       }),
 
       invalidatesTags: [{ type: "Carousal", id: "LIST" }],
     }),
 
     // Delete Carousal
-    deleteCarousal: builder.mutation<ResponseType, string>({
-      query: (id) => ({
-        url: `content/carousal/${id}`,
+    deleteCarousal: builder.mutation<ResponseType, { videoId: string }>({
+      query: ({ videoId }) => ({
+        url: `content/carousal/${videoId}`,
         method: "DELETE",
       }),
 

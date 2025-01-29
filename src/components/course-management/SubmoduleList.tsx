@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { subModuleType } from "@/lib/interfaces-types";
 import { UpdateButton } from "../common/Inputs";
-import VideosList from "./VideosList";
+import VideosList from "../common/VideosList";
 import { ExpandButton } from "../common/Inputs";
 import { dialogDataType } from "@/pages/course-management/EditCourse";
 

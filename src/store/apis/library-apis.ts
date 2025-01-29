@@ -16,7 +16,7 @@ export const libraryApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1/video",
   }),
-  tagTypes: ["Videos"],
+  tagTypes: ["Videos", "VideoList"],
   endpoints: (builder) => ({
     // Fetch Videos data
     getVideos: builder.query<ResponseType, void>({
@@ -58,6 +58,12 @@ export const libraryApi = createApi({
 
       invalidatesTags: [{ type: "Videos", id: "LIST" }],
     }),
+
+    // get video list
+    getVideoList: builder.query<ResponseType, string>({
+      query: (search) => `list?search=${search}`,
+      providesTags: [{ type: "VideoList", id: "LIST" }],
+    }),
   }),
 });
 
@@ -66,6 +72,7 @@ export const {
   useAddVideoMutation,
   useUpdateVideoMutation,
   useDeleteVideoMutation,
+  useGetVideoListQuery,
 } = libraryApi;
 
 export default libraryApi;

@@ -93,11 +93,12 @@ function AddEditVideo() {
 
   //   Create course menu
   const courses = location.state?.courses || [];
-  const courseMenu =
+  const initalCourseMenu =
     courses?.map((course: courseType) => ({
       key: course.title,
       value: course._id,
     })) || [];
+  const courseMenu = [{ key: "No course", value: null }, ...initalCourseMenu];
 
   //   Create module menu
   const targetCourse = courses?.find((c: courseType) => c._id === course);

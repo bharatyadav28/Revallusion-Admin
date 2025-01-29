@@ -6,6 +6,7 @@ import { FaEye } from "react-icons/fa";
 import ReactQuill from "react-quill";
 import { motion } from "framer-motion";
 import { HTMLMotionProps } from "framer-motion";
+import { IoMdAdd as AddIcon } from "react-icons/io";
 
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
@@ -150,6 +151,20 @@ export const UpdateButton = ({
       {...props}
     >
       <EditIcon size={20} />
+    </Button>
+  );
+};
+
+export const AddButton = ({ handleClick, className, ...props }: BtnProps) => {
+  return (
+    <Button
+      variant="outline"
+      size="icon"
+      className={`green-button ${className}`}
+      onClick={handleClick}
+      {...props}
+    >
+      <AddIcon size={20} />
     </Button>
   );
 };

@@ -175,3 +175,8 @@ export interface courseVideoType {
   videoId: videoType;
   sequence: number;
 }
+
+// export interface latestTutorialSectionType {
+//   _id: string;
+//   videos: [courseVideoType];
+// }

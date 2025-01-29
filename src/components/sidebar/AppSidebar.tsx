@@ -54,6 +54,11 @@ function AppSidebar() {
           path: "/carousals",
         },
         {
+          name: "Latest Tutorials",
+          Icon: ListIcon,
+          path: "/latest-tutorials",
+        },
+        {
           name: "Plans",
           Icon: ListIcon,
           path: "/plans",

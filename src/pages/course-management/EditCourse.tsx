@@ -19,7 +19,7 @@ import { replacePageName } from "@/store/features/generalSlice";
 import { ExpandButton, UpdateButton } from "@/components/common/Inputs";
 import SubmoduleList from "@/components/course-management/SubmoduleList";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
-import VideosList from "@/components/course-management/VideosList";
+import VideosList from "@/components/common/VideosList";
 import { CustomButton } from "@/components/common/Inputs";
 import AddEditItems from "@/components/course-management/AddEditItem";
 import { courseItemType } from "@/lib/interfaces-types";

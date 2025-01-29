@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { SearchIcon } from "lucide-react";
 
 import {
   Table,
@@ -17,7 +18,6 @@ import { useGetQueriesQuery } from "@/store/apis/queries.apis";
 import { showError } from "@/lib/reusable-funs";
 import { queryType } from "@/lib/interfaces-types";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
-import { SearchIcon } from "lucide-react";
 import CustomPagination from "@/components/common/CustomPagination";
 import DeleteQuery from "./DeleteQuery";
 

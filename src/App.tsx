@@ -17,8 +17,8 @@ import NotFound from "./pages/Notfound";
 import HeroSection from "./pages/content-pages/HeroSection";
 import Faq from "./pages/content-pages/FAQ/Faq";
 import ViewFaqs from "./pages/content-pages/FAQ/ViewFaqs";
-import ViewCarousal from "./pages/content-pages/Carousal/ViewCarousals";
-import Carousal from "./pages/content-pages/Carousal/Carousal";
+
+import Carousals from "./pages/content-pages/Carousal/Carousals";
 import Mentor from "./pages/content-pages/Mentor/Mentor";
 import Certificate from "./pages/content-pages/Certificate/Certificate";
 import StaticPages from "./pages/content-pages/Static/StaticPages";
@@ -34,6 +34,7 @@ import VideoList from "./pages/library-management/VideoList";
 import AddEditVideo from "./pages/library-management/AddEditVideo";
 import CourseList from "./pages/course-management/CourseList";
 import EditCourse from "./pages/course-management/EditCourse";
+import LatestTutorialsList from "./pages/content-pages/latest-tutorials/LatestTutorialsList";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -73,10 +74,10 @@ function App() {
           <Route path="hero-section" element={<HeroSection />} />
 
           <Route path="carousals">
-            <Route index element={<ViewCarousal />} />
-            <Route path=":id" element={<Carousal />} />
-            <Route path="add" element={<Carousal />} />
+            <Route index element={<Carousals />} />
           </Route>
+
+          <Route path="latest-tutorials" element={<LatestTutorialsList />} />
 
           <Route path="plans" element={<Plan />} />
 

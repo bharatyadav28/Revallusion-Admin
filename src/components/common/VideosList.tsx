@@ -1,3 +1,4 @@
+// Video table  with video sequnce updation
 import { motion } from "framer-motion";
 
 import {
@@ -10,17 +11,20 @@ import {
   TableBody,
 } from "@/components/ui/table";
 import { courseVideoType } from "@/lib/interfaces-types";
-import { UpdateButton } from "../common/Inputs";
-import VideoStatusButton from "./VideoStatusButton";
+import { DeleteButton, UpdateButton } from "./Inputs";
+import VideoStatusButton from "../course-management/VideoStatusButton";
 
 interface Props {
   data: courseVideoType[];
   isSubTable?: boolean;
   handleOpenDialog: () => void;
   setDialogData: (data: any) => void;
-  courseId: string;
+  courseId?: string;
   moduleId?: string;
   submoduleId?: string;
+  handleDelete?: (videoId: string) => void;
+  deletingItem?: string | null;
+  caption?: string;
 }
 function VideosList({
   data,
@@ -30,19 +34,22 @@ function VideosList({
   courseId,
   moduleId,
   submoduleId,
+  handleDelete,
+  deletingItem,
+  caption,
 }: Props) {
   // Sort data by sequence
   const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
 
   const MainTable = (
     <Table className="custom-table bg-[#34343a] w-full">
-      <TableCaption>A list of videos</TableCaption>
+      <TableCaption>{caption || `A list of videos`}</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="min-w-[6rem]">Video name</TableHead>
           <TableHead className="min-w-[6rem]">Video Description</TableHead>
           <TableHead>Sequence</TableHead>
-          <TableHead>Status</TableHead>
+          {courseId && <TableHead>Status</TableHead>}
           <TableHead className="">Action</TableHead>
         </TableRow>
       </TableHeader>
@@ -63,35 +70,56 @@ function VideosList({
               {video?.sequence > 0 ? video?.sequence : "NA"}
             </TableCell>
 
-            <TableCell>
-              {video?.videoId?._id && (
-                <VideoStatusButton
-                  videoId={video?.videoId?._id}
-                  sequence={video?.sequence}
-                  courseId={courseId}
-                />
-              )}
-            </TableCell>
+            {courseId && (
+              <TableCell>
+                {video?.videoId?._id && courseId && (
+                  <VideoStatusButton
+                    videoId={video?.videoId?._id}
+                    sequence={video?.sequence}
+                    courseId={courseId}
+                  />
+                )}
+              </TableCell>
+            )}
 
             {/* Action buttons */}
             <TableCell className="font-medium">
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-0 items-center">
                 <UpdateButton
                   handleClick={() => {
                     handleOpenDialog();
-                    setDialogData({
-                      type: "video",
-                      isEdit: true,
-                      item: {
-                        _id: video?.videoId?._id,
-                        courseId,
-                        moduleId,
-                        submoduleId,
-                        sequence: video?.sequence,
-                      },
-                    });
+                    if (courseId)
+                      setDialogData({
+                        type: "video",
+                        isEdit: true,
+                        item: {
+                          _id: video?.videoId?._id,
+                          courseId,
+                          moduleId,
+                          submoduleId,
+                          sequence: video?.sequence,
+                        },
+                      });
+
+                    if (!courseId)
+                      setDialogData({
+                        item: {
+                          videoId: video?.videoId?._id,
+                          sequence: video?.sequence,
+                        },
+                      });
                   }}
                 />
+
+                {handleDelete && (
+                  <DeleteButton
+                    handleClick={() => {
+                      const videoId = video?.videoId?._id;
+                      if (videoId) handleDelete(videoId);
+                    }}
+                    isDeleting={deletingItem === video?.videoId?._id}
+                  />
+                )}
               </div>
             </TableCell>
           </TableRow>

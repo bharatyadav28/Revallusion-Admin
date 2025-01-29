@@ -36,7 +36,7 @@ function VideoDetails({ open, handleOpen, videoData }: Props) {
 
               <div className={itemClasses}>
                 <div className={itemheading}>Course</div>
-                <div>{videoData.course}</div>
+                <div>{videoData.course || emptyValue}</div>
               </div>
 
               <div className={itemClasses}>
