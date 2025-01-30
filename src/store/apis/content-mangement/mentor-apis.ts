@@ -1,10 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { mentorType } from "@/lib/interfaces-types";
+import { Form } from "react-router-dom";
 
 interface ResponseType {
   data: {
     mentor: mentorType;
+  };
+  message: string;
+  success: boolean;
+}
+
+interface CurriculumType {
+  data: {
+    curriculum: string;
   };
   message: string;
   success: boolean;
@@ -15,7 +24,7 @@ export const mentorApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1/",
   }),
-  tagTypes: ["Mentor"],
+  tagTypes: ["Mentor", "Curriculum"],
   endpoints: (builder) => ({
     // Fetch Mentor data
     getMentor: builder.query<ResponseType, void>({
@@ -33,8 +42,30 @@ export const mentorApi = createApi({
 
       invalidatesTags: [{ type: "Mentor", id: "LIST" }],
     }),
+
+    // Fetch Curriculum data
+    getCurriculum: builder.query<CurriculumType, void>({
+      query: () => "content/mentor/curriculum",
+      providesTags: [{ type: "Curriculum", id: "LIST" }],
+    }),
+
+    // Edit Curriculum
+    editCurriculum: builder.mutation<CurriculumType, FormData>({
+      query: (formData) => ({
+        url: `content/mentor/curriculum`,
+        method: "PUT",
+        body: formData,
+      }),
+
+      invalidatesTags: [{ type: "Curriculum", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useUpdateMentorMutation, useGetMentorQuery } = mentorApi;
+export const {
+  useUpdateMentorMutation,
+  useGetMentorQuery,
+  useGetCurriculumQuery,
+  useEditCurriculumMutation,
+} = mentorApi;
 export default mentorApi;

@@ -27,6 +27,7 @@ interface MenuTableProps {
   videos: videoType[];
   newelySelected: videoType[];
   setNewelySelected: React.Dispatch<React.SetStateAction<videoType[]>>;
+  isLoading?: boolean;
 }
 
 // Sub table component
@@ -34,6 +35,7 @@ function MenuTable({
   videos,
   newelySelected,
   setNewelySelected,
+  isLoading,
 }: MenuTableProps) {
   return (
     <Table className="custom-table ">
@@ -47,35 +49,46 @@ function MenuTable({
       </TableHeader>
 
       <TableBody>
-        {videos?.map((video) => (
-          <TableRow key={video._id}>
-            <TableCell className="">
-              <div className="h-5 w-5 mx-auto my-auto">
-                <CustomCheckBox
-                  value={
-                    newelySelected?.find((v) => v._id === (video?._id || ""))
-                      ? true
-                      : false
-                  }
-                  onChange={() => {
-                    setNewelySelected((prev) => {
-                      if (prev?.find((v) => v._id === (video?._id || ""))) {
-                        return prev?.filter(
-                          (v) => v._id !== (video?._id || "")
-                        );
-                      } else {
-                        return [...prev, video];
-                      }
-                    });
-                  }}
-                  className="h-5 w-5"
-                />
+        {isLoading ? (
+          <TableRow>
+            <TableCell colSpan={3}>
+              <div className="flex justify-center items-center">
+                {" "}
+                <LoadingSpinner size={50} />{" "}
               </div>
             </TableCell>
-            <TableCell className="font-medium">{video.title}</TableCell>
-            <TableCell className="">{video.description}</TableCell>
           </TableRow>
-        ))}
+        ) : (
+          videos?.map((video) => (
+            <TableRow key={video._id}>
+              <TableCell className="">
+                <div className="h-5 w-5 mx-auto my-auto">
+                  <CustomCheckBox
+                    value={
+                      newelySelected?.find((v) => v._id === (video?._id || ""))
+                        ? true
+                        : false
+                    }
+                    onChange={() => {
+                      setNewelySelected((prev) => {
+                        if (prev?.find((v) => v._id === (video?._id || ""))) {
+                          return prev?.filter(
+                            (v) => v._id !== (video?._id || "")
+                          );
+                        } else {
+                          return [...prev, video];
+                        }
+                      });
+                    }}
+                    className="h-5 w-5"
+                  />
+                </div>
+              </TableCell>
+              <TableCell className="font-medium">{video.title}</TableCell>
+              <TableCell className="">{video.description}</TableCell>
+            </TableRow>
+          ))
+        )}
       </TableBody>
     </Table>
   );
@@ -188,6 +201,7 @@ function VideoMenu({
                 videos={notSelectedVideos}
                 newelySelected={newelySelected}
                 setNewelySelected={setNewelySelected}
+                isLoading={isLoading}
               />
             )}
           </div>
@@ -213,11 +227,11 @@ function VideoMenu({
         </div>
       </div>
 
-      {isLoading && (
+      {/* {isLoading && (
         <div>
           <PageLoadingSpinner />
         </div>
-      )}
+      )} */}
     </CustomSheet>
   );
 }

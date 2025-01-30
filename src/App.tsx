@@ -35,6 +35,7 @@ import AddEditVideo from "./pages/library-management/AddEditVideo";
 import CourseList from "./pages/course-management/CourseList";
 import EditCourse from "./pages/course-management/EditCourse";
 import LatestTutorialsList from "./pages/content-pages/latest-tutorials/LatestTutorialsList";
+import Curriculum from "./pages/content-pages/Curriculum";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -95,6 +96,8 @@ function App() {
             <Route index element={<StaticPages />} />
             <Route path=":id" element={<EditStaticPage />} />
           </Route>
+
+          <Route path="curriculum" element={<Curriculum />} />
 
           <Route path="/modules">
             <Route index element={<ModulesList />} />

@@ -69,6 +69,11 @@ function AppSidebar() {
           path: "/mentor",
         },
         {
+          name: "Curriculum",
+          Icon: ListIcon,
+          path: "/curriculum",
+        },
+        {
           name: "Modules",
           Icon: ListIcon,
           path: "/modules",
