@@ -11,9 +11,9 @@ import { showError } from "@/lib/reusable-funs";
 import VideosList from "@/components/common/VideosList";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 import VideoMenu from "@/components/common/VideoMenu";
-import { videoType } from "@/lib/interfaces-types";
+import { courseVideoType, videoType } from "@/lib/interfaces-types";
 import { CustomButton } from "@/components/common/Inputs";
-import EditCarousal from "@/components/carousal/EditCarousal";
+import EditVideo from "@/components/latest-tutorials/EditVideo";
 
 function LatestTutorialsList() {
   // Fetch latest tutorials data
@@ -131,7 +131,20 @@ function LatestTutorialsList() {
     }
   }, [isDeleting]);
 
-  const videos = data?.data?.tutorials?.videos || [];
+  const tutorials = data?.data?.tutorials;
+
+  const videos: courseVideoType[] = [];
+
+  if (tutorials) {
+    for (let tutorial of tutorials) {
+      if (tutorial.sequence)
+        videos.push({
+          ...tutorial.video,
+          sequence: tutorial.sequence,
+          _id: tutorial._id,
+        });
+    }
+  }
 
   return (
     <div className="main-container">
@@ -160,7 +173,7 @@ function LatestTutorialsList() {
 
       {/* Dialog box */}
       {openDialog && dialogData && (
-        <EditCarousal
+        <EditVideo
           open={openDialog}
           handleOpen={handleOpenDialog}
           video={dialogData?.item}

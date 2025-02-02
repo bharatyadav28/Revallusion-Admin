@@ -10,14 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { subModuleType } from "@/lib/interfaces-types";
+import { submoduleType } from "@/lib/interfaces-types";
 import { UpdateButton } from "../common/Inputs";
 import VideosList from "../common/VideosList";
 import { ExpandButton } from "../common/Inputs";
 import { dialogDataType } from "@/pages/course-management/EditCourse";
 
 interface Props {
-  data: subModuleType[];
+  data: submoduleType[];
   handleOpenDialog: () => void;
   setDialogData: (data: dialogDataType) => void;
   moduleId: string;

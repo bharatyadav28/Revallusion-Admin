@@ -147,7 +147,7 @@ function VideoMenu({
 
   // Filter list
   let notSelectedVideos = videos?.filter(
-    (video) => !alreadySelected?.find((v) => v.videoId._id === video._id)
+    (video) => !alreadySelected?.find((v) => v._id === video._id)
   );
   notSelectedVideos = notSelectedVideos?.filter(
     (video) => !newelySelected?.find((v) => v._id === video._id)

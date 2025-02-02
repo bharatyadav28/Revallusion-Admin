@@ -47,7 +47,7 @@ function VideoDetails({ open, handleOpen, videoData }: Props) {
               <div className={itemClasses}>
                 <div className={itemheading}>Sub Module</div>
                 <div>
-                  {videoData.subModule || emptyValue}
+                  {videoData.submodule || emptyValue}
                   <div></div>
                 </div>
               </div>

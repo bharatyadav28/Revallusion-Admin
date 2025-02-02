@@ -170,7 +170,7 @@ function EditCourse() {
                   <AnimatePresence>
                     {showModuleId === module._id && course?._id && (
                       <SubmoduleList
-                        data={module.subModules}
+                        data={module.submodules}
                         handleOpenDialog={handleOpenDialog}
                         setDialogData={setDialogData}
                         courseId={course?._id}

@@ -56,25 +56,18 @@ function VideosList({
 
       <TableBody>
         {sortedData?.map((video) => (
-          <TableRow
-            className="!hover:bg-blue-500 dfdf  s"
-            key={video?.videoId?._id}
-          >
-            <TableCell className="font-medium">
-              {video?.videoId?.title}
-            </TableCell>
-            <TableCell className="font-medium">
-              {video?.videoId?.description}
-            </TableCell>
+          <TableRow className="!hover:bg-blue-500 dfdf  s" key={video?._id}>
+            <TableCell className="font-medium">{video?.title}</TableCell>
+            <TableCell className="font-medium">{video?.description}</TableCell>
             <TableCell className="font-medium">
               {video?.sequence > 0 ? video?.sequence : "NA"}
             </TableCell>
 
             {courseId && (
               <TableCell>
-                {video?.videoId?._id && courseId && (
+                {video?._id && courseId && (
                   <VideoStatusButton
-                    videoId={video?.videoId?._id}
+                    videoId={video?._id}
                     sequence={video?.sequence}
                     courseId={courseId}
                   />
@@ -93,7 +86,7 @@ function VideosList({
                         type: "video",
                         isEdit: true,
                         item: {
-                          _id: video?.videoId?._id,
+                          _id: video?._id,
                           courseId,
                           moduleId,
                           submoduleId,
@@ -104,7 +97,7 @@ function VideosList({
                     if (!courseId)
                       setDialogData({
                         item: {
-                          videoId: video?.videoId?._id,
+                          videoId: video?._id,
                           sequence: video?.sequence,
                         },
                       });
@@ -114,10 +107,10 @@ function VideosList({
                 {handleDelete && (
                   <DeleteButton
                     handleClick={() => {
-                      const videoId = video?.videoId?._id;
+                      const videoId = video?._id;
                       if (videoId) handleDelete(videoId);
                     }}
-                    isDeleting={deletingItem === video?.videoId?._id}
+                    isDeleting={deletingItem === video?._id}
                   />
                 )}
               </div>

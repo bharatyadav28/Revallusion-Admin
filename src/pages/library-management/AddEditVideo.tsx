@@ -15,7 +15,7 @@ import ImageUploader from "@/components/common/ImageUpload";
 import {
   coursemoduleType,
   courseType,
-  subModuleType,
+  submoduleType,
   videoType,
 } from "@/lib/interfaces-types";
 import VideoUploader from "@/components/common/VideoUpload";
@@ -38,7 +38,7 @@ function AddEditVideo() {
   });
   const [course, setCourse] = useState("");
   const [module, setModule] = useState("");
-  const [subModule, setSubModule] = useState("");
+  const [submodule, setSubModule] = useState("");
   const [uploading, setUploading] = useState<boolean>(false);
 
   const [
@@ -75,7 +75,7 @@ function AddEditVideo() {
       thumbnailUrl,
       course,
       module,
-      subModule,
+      submodule,
     };
 
     const isEdit = location.state?.isEdit;
@@ -112,8 +112,8 @@ function AddEditVideo() {
   const targetModule = targetCourse?.modules?.find(
     (m: coursemoduleType) => m._id === module
   );
-  const subModuleMenu =
-    targetModule?.subModules?.map((module: subModuleType) => ({
+  const submoduleMenu =
+    targetModule?.submodules?.map((module: submoduleType) => ({
       key: module.name,
       value: module._id,
     })) || [];
@@ -158,7 +158,7 @@ function AddEditVideo() {
       setVideoUrl(video.videoUrl);
       setCourse(video.course);
       if (video.module) setModule(video.module);
-      if (video.subModule) setSubModule(video.subModule);
+      if (video.submodule) setSubModule(video.submodule);
     }
   }, [dispatch, isEdit, video]);
 
@@ -217,13 +217,13 @@ function AddEditVideo() {
         </div>
       )}
 
-      {subModuleMenu?.length > 0 && (
+      {submoduleMenu?.length > 0 && (
         <div className="input-container">
           <div className="label">Sub Module</div>
           <div className="user-input">
             <CustomSelectSeperate
-              menu={subModuleMenu}
-              value={subModule}
+              menu={submoduleMenu}
+              value={submodule}
               onChange={setSubModule}
             />
           </div>

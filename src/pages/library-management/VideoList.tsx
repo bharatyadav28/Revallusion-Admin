@@ -78,20 +78,20 @@ function VideoList() {
     setOpenDrawer((prev) => !prev);
     const requiredVideo = video;
 
-    // Convert (course, module, subModule) ids to corrsponding names
+    // Convert (course, module, submodule) ids to corrsponding names
     const requiredCourse = courses?.find(
       (course) => course._id === requiredVideo?.course
     );
     const requiredModule = requiredCourse?.modules?.find(
       (module) => module._id === requiredVideo?.module
     );
-    const requestedSubModule = requiredModule?.subModules?.find(
-      (subModule) => subModule._id === requiredVideo?.subModule
+    const requestedSubModule = requiredModule?.submodules?.find(
+      (submodule) => submodule._id === requiredVideo?.submodule
     );
 
     const courseName = requiredCourse?.title || "";
     const moduleName = requiredModule?.name;
-    const subModuleName = requestedSubModule?.name;
+    const submoduleName = requestedSubModule?.name;
 
     if (requiredVideo) {
       const selectedVideoData: videoType = {
@@ -99,7 +99,7 @@ function VideoList() {
         title: requiredVideo?.title || "",
         course: courseName,
         module: moduleName,
-        subModule: subModuleName,
+        submodule: submoduleName,
       };
 
       setSelectedVideo(selectedVideoData);

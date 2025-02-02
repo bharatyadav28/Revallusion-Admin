@@ -121,13 +121,13 @@ export const courseApi = createApi({
         sequence: number;
         courseId: string;
         moduleId?: string;
-        subModuleId?: string;
+        submoduleId?: string;
       }
     >({
-      query: ({ id, sequence, courseId, moduleId, subModuleId }) => ({
+      query: ({ id, sequence, courseId, moduleId, submoduleId }) => ({
         url: `/course/video-sequence/${id}`,
         method: "PUT",
-        body: { sequence, courseId, moduleId, subModuleId },
+        body: { sequence, courseId, moduleId, submoduleId },
       }),
       invalidatesTags: (_, __, { courseId }) => [
         { type: "Course", id: courseId },

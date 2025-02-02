@@ -23,24 +23,6 @@ export interface faqType {
   status: string;
 }
 
-export interface carousalType {
-  _id?: string;
-  caption: string;
-  sequence: number;
-  description: string;
-  key_points: {
-    title: string;
-    explanation: string;
-    _id?: string;
-  }[];
-}
-
-export interface carousalPointType {
-  _id?: string;
-  title: string;
-  explanation: string;
-}
-
 export interface networkType {
   _id?: string;
   platform: string;
@@ -127,12 +109,12 @@ export interface videoType {
   course: string;
   isActive?: boolean;
   module?: string;
-  subModule?: string;
+  submodule?: string;
   createdAt?: string;
   updatedAt?: string;
 }
 
-export interface subModuleType {
+export interface submoduleType {
   _id: string;
   name: string;
   thumbnailUrl: string;
@@ -143,7 +125,7 @@ export interface subModuleType {
 export interface coursemoduleType {
   _id: string;
   name: string;
-  subModules: [subModuleType];
+  submodules: [submoduleType];
 }
 export interface courseType {
   _id: string;
@@ -171,9 +153,15 @@ export interface courseItemType {
   videoId?: videoType;
 }
 
-export interface courseVideoType {
-  videoId: videoType;
+export interface courseVideoType extends videoType {
+  _id?: string;
   sequence: number;
+}
+
+export interface carousalType {
+  _id?: string;
+  video: courseVideoType;
+  sequence?: number;
 }
 
 // export interface latestTutorialSectionType {

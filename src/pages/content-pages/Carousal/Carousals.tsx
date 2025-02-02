@@ -11,7 +11,7 @@ import { showError } from "@/lib/reusable-funs";
 import VideosList from "@/components/common/VideosList";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 import VideoMenu from "@/components/common/VideoMenu";
-import { videoType } from "@/lib/interfaces-types";
+import { courseVideoType, videoType } from "@/lib/interfaces-types";
 import { CustomButton } from "@/components/common/Inputs";
 import EditCarousal from "@/components/carousal/EditCarousal";
 
@@ -130,14 +130,27 @@ function LatestTutorialsList() {
     }
   }, [isDeleting]);
 
-  const videos = data?.data?.carousals?.videos || [];
+  const carousals = data?.data?.carousals;
+
+  const videos: courseVideoType[] = [];
+
+  if (carousals) {
+    for (let carousal of carousals) {
+      if (carousal.sequence)
+        videos.push({
+          ...carousal.video,
+          sequence: carousal.sequence,
+          _id: carousal._id,
+        });
+    }
+  }
 
   return (
     <div className="main-container">
       <CustomButton
         className="green-button px-2 py-4"
         handleClick={() => {
-          if (videos?.length >= allowedCarousals) {
+          if (videos && videos?.length >= allowedCarousals) {
             toast.error(`You can't add more than ${allowedCarousals} videos`);
             return;
           }
@@ -149,12 +162,12 @@ function LatestTutorialsList() {
 
       {/* Main table */}
       <VideosList
-        data={videos || []}
+        data={videos}
         handleOpenDialog={handleOpenDialog}
         setDialogData={(data) => setDialogData(data)}
         handleDelete={handleVideoDelete}
         deletingItem={deleteVideoId}
-        caption={` A list of carousal videos (${videos?.length}/${allowedCarousals})`}
+        caption={` A list of carousal videos (${carousals?.length}/${allowedCarousals})`}
       />
 
       {/* Dialog box */}
@@ -166,7 +179,7 @@ function LatestTutorialsList() {
         />
       )}
 
-      {videos && (
+      {carousals && (
         <VideoMenu
           open={openSheet}
           handleOpen={handleOpenSheet}

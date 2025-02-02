@@ -1,13 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import {
-  courseVideoType,
-  // latestTutorialSectionType,
-} from "@/lib/interfaces-types";
+import { carousalType } from "@/lib/interfaces-types";
 
 interface ResponseType {
   data: {
-    tutorials: { videos: [courseVideoType] };
+    tutorials: [carousalType];
   };
   message: string;
   success: boolean;

@@ -69,9 +69,9 @@ function AddEditItems({
     addSubmodule,
     {
       isLoading: isAddingSubmodule,
-      isSuccess: subModuleAdditionSuccess,
-      error: subModuleAdditionError,
-      data: subModuleAdditionData,
+      isSuccess: submoduleAdditionSuccess,
+      error: submoduleAdditionError,
+      data: submoduleAdditionData,
     },
   ] = useAddSubmoduleMutation();
 
@@ -99,7 +99,7 @@ function AddEditItems({
     const error =
       moduleAdditionError ||
       moduleUpdationError ||
-      subModuleAdditionError ||
+      submoduleAdditionError ||
       submoduleUpdationError ||
       videoSequenceUpdationError;
     if (error) {
@@ -108,7 +108,7 @@ function AddEditItems({
   }, [
     moduleAdditionError,
     moduleUpdationError,
-    subModuleAdditionError,
+    submoduleAdditionError,
     submoduleUpdationError,
     videoSequenceUpdationError,
   ]);
@@ -118,14 +118,14 @@ function AddEditItems({
     if (
       moduleAdditionSuccess ||
       moduleUpdationSuccess ||
-      subModuleAdditionSuccess ||
+      submoduleAdditionSuccess ||
       submoduleUpdationSuccess ||
       videoSequenceUpdationSuccess
     ) {
       const message =
         moduleAdditionData?.message ||
         moduleUpdationData?.message ||
-        subModuleAdditionData?.message ||
+        submoduleAdditionData?.message ||
         submoduleUpdationData?.message ||
         videoSequenceUpdationData?.message ||
         "Success";
@@ -135,7 +135,7 @@ function AddEditItems({
   }, [
     moduleAdditionSuccess,
     moduleUpdationSuccess,
-    subModuleAdditionSuccess,
+    submoduleAdditionSuccess,
     submoduleUpdationSuccess,
     videoSequenceUpdationSuccess,
   ]);
@@ -151,7 +151,7 @@ function AddEditItems({
   }, [isEdit, item]);
 
   const moduleType = type === "module";
-  const subModuleType = type === "submodule";
+  const submoduleType = type === "submodule";
   const videoType = type === "video";
   const isFormSubmitting =
     isAddingModule ||
@@ -177,7 +177,7 @@ function AddEditItems({
       }
     }
 
-    if (subModuleType && item?.courseId) {
+    if (submoduleType && item?.courseId) {
       if (!isEdit) {
         addSubmodule({
           name,
@@ -206,7 +206,7 @@ function AddEditItems({
           sequence: Number(sequence),
           courseId: item?.courseId,
           moduleId: item?.moduleId,
-          subModuleId: item?.submoduleId,
+          submoduleId: item?.submoduleId,
         });
       }
     }
@@ -220,7 +220,7 @@ function AddEditItems({
       </div>
 
       <div className="main-container !bg-[#000111] !py-8">
-        {(moduleType || subModuleType) && (
+        {(moduleType || submoduleType) && (
           <div className="flex flex-col gap-2">
             <div className="label">Name</div>
             <div className="user-input">
@@ -234,7 +234,7 @@ function AddEditItems({
           </div>
         )}
 
-        {subModuleType && (
+        {submoduleType && (
           <div className="flex flex-col gap-2">
             <div className="label mb-1">Thumbnail</div>
             <div className="user-input ">
@@ -248,7 +248,7 @@ function AddEditItems({
           </div>
         )}
 
-        {subModuleType && (
+        {submoduleType && (
           <div className="flex flex-col gap-2">
             <div className="label">Module</div>
             <div className="user-input">
@@ -261,7 +261,7 @@ function AddEditItems({
           </div>
         )}
 
-        {(subModuleType || videoType) && isEdit && (
+        {(submoduleType || videoType) && isEdit && (
           <div className="flex flex-col gap-2">
             <div className="label">Sequence</div>
             <div className="user-input">
