@@ -133,6 +133,7 @@ function LatestTutorialsList() {
   const carousals = data?.data?.carousals;
 
   const videos: courseVideoType[] = [];
+  const alreadySelected: courseVideoType[] = [];
 
   if (carousals) {
     for (let carousal of carousals) {
@@ -142,6 +143,9 @@ function LatestTutorialsList() {
           sequence: carousal.sequence,
           _id: carousal._id,
         });
+      alreadySelected.push({
+        ...carousal.video,
+      });
     }
   }
 
@@ -185,7 +189,7 @@ function LatestTutorialsList() {
           handleOpen={handleOpenSheet}
           newelySelected={newelySelected}
           setNewelySelected={setNewelySelected}
-          alreadySelected={videos}
+          alreadySelected={alreadySelected}
           handleSubmit={handleVideoSelect}
           isSubmitting={isUpdating}
           remainingCapacity={allowedCarousals - videos.length}

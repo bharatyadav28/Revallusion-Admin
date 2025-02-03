@@ -53,7 +53,7 @@ function SubmoduleList({
           <TableCaption>A list of submodules</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="min-w-[6rem]">Submodule name</TableHead>
+              <TableHead className="min-w-[6rem]">Topic name</TableHead>
               <TableHead className="min-w-[6rem]">Thumbnail Image</TableHead>
               <TableHead>Sequence</TableHead>
               <TableHead className="">Action</TableHead>

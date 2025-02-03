@@ -212,11 +212,20 @@ function AddEditItems({
     }
   };
 
+  const modalType =
+    type === "module"
+      ? "Tool"
+      : type === "submodule"
+      ? "Topic"
+      : type === "video"
+      ? "Video"
+      : "";
+
   return (
     <CustomDialog open={open} handleOpen={handleOpen} className="w-[35rem]">
       <div className="text-[1.5rem] font-medium h-max text-center">
         {" "}
-        {isEdit ? "Edit" : "Add"} {type}
+        {isEdit ? "Edit" : "Add"} {modalType}
       </div>
 
       <div className="main-container !bg-[#000111] !py-8">
@@ -250,7 +259,7 @@ function AddEditItems({
 
         {submoduleType && (
           <div className="flex flex-col gap-2">
-            <div className="label">Module</div>
+            <div className="label">Tool</div>
             <div className="user-input">
               <CustomSelectSeperate
                 menu={moduleList}

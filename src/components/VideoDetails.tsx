@@ -40,12 +40,12 @@ function VideoDetails({ open, handleOpen, videoData }: Props) {
               </div>
 
               <div className={itemClasses}>
-                <div className={itemheading}>Module</div>
+                <div className={itemheading}>Tool</div>
                 <div>{videoData.module || emptyValue} </div>
               </div>
 
               <div className={itemClasses}>
-                <div className={itemheading}>Sub Module</div>
+                <div className={itemheading}>Topic</div>
                 <div>
                   {videoData.submodule || emptyValue}
                   <div></div>

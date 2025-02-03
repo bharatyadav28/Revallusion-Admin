@@ -206,7 +206,7 @@ function AddEditVideo() {
 
       {moduleMenu?.length > 0 && (
         <div className="input-container">
-          <div className="label">Module</div>
+          <div className="label">Tool</div>
           <div className="user-input">
             <CustomSelectSeperate
               menu={moduleMenu}
@@ -219,7 +219,7 @@ function AddEditVideo() {
 
       {submoduleMenu?.length > 0 && (
         <div className="input-container">
-          <div className="label">Sub Module</div>
+          <div className="label">Topic</div>
           <div className="user-input">
             <CustomSelectSeperate
               menu={submoduleMenu}

@@ -134,6 +134,7 @@ function LatestTutorialsList() {
   const tutorials = data?.data?.tutorials;
 
   const videos: courseVideoType[] = [];
+  const alreadySelected: courseVideoType[] = [];
 
   if (tutorials) {
     for (let tutorial of tutorials) {
@@ -143,6 +144,9 @@ function LatestTutorialsList() {
           sequence: tutorial.sequence,
           _id: tutorial._id,
         });
+      alreadySelected.push({
+        ...tutorial.video,
+      });
     }
   }
 
@@ -186,7 +190,7 @@ function LatestTutorialsList() {
           handleOpen={handleOpenSheet}
           newelySelected={newelySelected}
           setNewelySelected={setNewelySelected}
-          alreadySelected={videos}
+          alreadySelected={alreadySelected}
           handleSubmit={handleVideoSelect}
           isSubmitting={isUpdating}
           remainingCapacity={allowedTutorials - videos?.length}

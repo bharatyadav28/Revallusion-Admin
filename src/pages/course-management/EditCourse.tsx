@@ -99,7 +99,7 @@ function EditCourse() {
                 }
               }}
             >
-              <AddIcon size={30} className="p-0 m-0" /> Add Module
+              <AddIcon size={30} className="p-0 m-0" /> Add Tool
             </CustomButton>
 
             <CustomButton
@@ -115,7 +115,7 @@ function EditCourse() {
                 }
               }}
             >
-              <AddIcon size={30} className="p-0 m-0" /> Add Submodule
+              <AddIcon size={30} className="p-0 m-0" /> Add Topic
             </CustomButton>
           </div>
 
@@ -124,7 +124,7 @@ function EditCourse() {
             <TableCaption>A list of {course?.title} modules</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead className="min-w-[6rem]">Module name</TableHead>
+                <TableHead className="min-w-[6rem]">Tool name</TableHead>
                 <TableHead className="">Action</TableHead>
               </TableRow>
             </TableHeader>
