@@ -15,11 +15,7 @@ import { useAppDispatch } from "@/hooks/use-redux";
 import { useGetSubmittedAssignmentsQuery } from "@/store/apis/assignment-apis";
 import { formatDate, showError } from "@/lib/reusable-funs";
 import { replacePageName } from "@/store/features/generalSlice";
-import {
-  LoadingSpinner,
-  PageLoadingSpinner,
-  TableLoader,
-} from "@/components/common/LoadingSpinner";
+import { TableLoader } from "@/components/common/LoadingSpinner";
 import {
   ViewButton,
   UpdateButton,
@@ -27,7 +23,6 @@ import {
   CustomSelectSeperate,
 } from "@/components/common/Inputs";
 import EditScore from "@/components/course-management/submitted-assignments/EditScore";
-import { View } from "lucide-react";
 import ViewDetails from "@/components/course-management/submitted-assignments/ViewDetails";
 import { SubmittedAssignmentType } from "@/lib/interfaces-types";
 
