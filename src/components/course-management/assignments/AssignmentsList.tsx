@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 
-import CustomSheet from "../../common/CustomSheet";
 import {
   Table,
   TableBody,
@@ -27,20 +26,12 @@ import DeleteDialog from "../../common/DeleteDialog";
 import toast from "react-hot-toast";
 
 interface Props {
-  open: boolean;
-  handleOpen: () => void;
   submodule: string;
   courseId: string;
   moduleId: string;
 }
 
-function AssignmentList({
-  open,
-  handleOpen,
-  submodule,
-  courseId,
-  moduleId,
-}: Props) {
+function AssignmentList({ submodule, courseId, moduleId }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [openEditDialog, SetOpenEditDialog] = useState(false);
   const [openDeleteDialog, SetOpenDeleteDialog] = useState(false);
@@ -95,7 +86,7 @@ function AssignmentList({
   const assignments = data?.data?.assignments || [];
 
   return (
-    <CustomSheet open={open} handleOpen={handleOpen}>
+    <div>
       <div className="text-[1.2rem] uppercase mb-4">Assignments</div>
       <div className="main-container">
         <CustomButton
@@ -191,7 +182,7 @@ function AssignmentList({
           </div>
         )}
       </div>
-    </CustomSheet>
+    </div>
   );
 }
 

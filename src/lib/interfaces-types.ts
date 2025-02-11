@@ -200,3 +200,8 @@ export interface SubmittedAssignmentType {
     email: string;
   };
 }
+
+export interface ResourceType {
+  _id?: string;
+  url: string;
+}

@@ -16,6 +16,7 @@ import authApi from "./apis/auth.apis";
 import libraryApi from "./apis/library-apis";
 import courseApi from "./apis/course-apis";
 import assignmentApi from "./apis/assignment-apis";
+import resourceApi from "./apis/resources-apis";
 
 export const store = configureStore({
   reducer: {
@@ -34,6 +35,7 @@ export const store = configureStore({
     [libraryApi.reducerPath]: libraryApi.reducer,
     [courseApi.reducerPath]: courseApi.reducer,
     [assignmentApi.reducerPath]: assignmentApi.reducer,
+    [resourceApi.reducerPath]: resourceApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -51,7 +53,8 @@ export const store = configureStore({
       .concat(authApi.middleware)
       .concat(libraryApi.middleware)
       .concat(courseApi.middleware)
-      .concat(assignmentApi.middleware),
+      .concat(assignmentApi.middleware)
+      .concat(resourceApi.middleware),
 
   devTools: process.env.NODE_ENV !== "production",
 

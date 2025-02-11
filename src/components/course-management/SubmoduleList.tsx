@@ -15,7 +15,8 @@ import { AddButton, UpdateButton } from "../common/Inputs";
 import VideosList from "../common/VideosList";
 import { ExpandButton } from "../common/Inputs";
 import { dialogDataType } from "@/pages/course-management/EditCourse";
-import AssignmentsList from "@/components/course-management/assignments/AssignmentsList";
+
+import SubmoduleExtraContent from "./SubmoduleExtraContent";
 
 interface Props {
   data: submoduleType[];
@@ -158,7 +159,7 @@ function SubmoduleList({
       </motion.tr>
 
       {assignmentsubmoduleId && (
-        <AssignmentsList
+        <SubmoduleExtraContent
           open={openAssignments}
           handleOpen={handleOpenAssignment}
           submodule={assignmentsubmoduleId || ""}
