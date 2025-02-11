@@ -278,12 +278,14 @@ interface SelectProps2 {
   value: string;
   onChange: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
+  placeholder?: string;
 }
 export const CustomSelectSeperate = ({
   menu,
   value,
   onChange,
   className,
+  placeholder,
   ...props
 }: SelectProps2) => {
   const classes = `py-5 border-gray-400 ${className}`;
@@ -292,7 +294,7 @@ export const CustomSelectSeperate = ({
     <>
       <Select onValueChange={onChange} value={value} {...props}>
         <SelectTrigger className={classes}>
-          <SelectValue />
+          <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           {menu?.map((item) => {

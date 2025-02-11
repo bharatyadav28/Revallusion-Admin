@@ -55,7 +55,7 @@ const Signin = () => {
 
   // Redirect to home if user is already signed in
   useEffect(() => {
-    if (user._id) {
+    if (user?._id) {
       navigate(subRedirectPath || "/", { replace: true });
     }
   }, [user]);

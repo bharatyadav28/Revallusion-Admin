@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 import { AnimatePresence } from "framer-motion";
 
@@ -33,6 +33,7 @@ function EditCourse() {
   // Expand module id
   const [showModuleId, setShowModuleId] = useState<string | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
+
   const [dialogData, setDialogData] = useState<dialogDataType>({
     type: "module",
     isEdit: false,
@@ -41,6 +42,7 @@ function EditCourse() {
 
   const { id: courseId } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // Fetch course data
   const {
@@ -117,11 +119,20 @@ function EditCourse() {
             >
               <AddIcon size={30} className="p-0 m-0" /> Add Topic
             </CustomButton>
+
+            <CustomButton
+              className="purple-button  px-3 py-4"
+              handleClick={() => {
+                navigate("submitted-assignments");
+              }}
+            >
+              View Assignments
+            </CustomButton>
           </div>
 
           {/* Main table */}
           <Table className="custom-table">
-            <TableCaption>A list of {course?.title} modules</TableCaption>
+            <TableCaption>A list of {course?.title} Tools</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead className="min-w-[6rem]">Tool name</TableHead>

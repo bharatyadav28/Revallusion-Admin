@@ -222,7 +222,11 @@ function AddEditItems({
       : "";
 
   return (
-    <CustomDialog open={open} handleOpen={handleOpen} className="w-[35rem]">
+    <CustomDialog
+      open={open}
+      handleOpen={handleOpen}
+      className="w-[35rem] !bg-[#000111]"
+    >
       <div className="text-[1.5rem] font-medium h-max text-center">
         {" "}
         {isEdit ? "Edit" : "Add"} {modalType}

@@ -1,5 +1,7 @@
 import { HashLoader, ClipLoader, BeatLoader } from "react-spinners";
 
+import { TableRow, TableCell } from "../ui/table";
+
 // Whole page loading spinner
 const PageLoadingSpinner = ({ isFullPage }: { isFullPage?: boolean }) => {
   return (
@@ -14,13 +16,26 @@ const PageLoadingSpinner = ({ isFullPage }: { isFullPage?: boolean }) => {
 };
 
 // Small loading spinner
-const LoadingSpinner = ({ size }: { size?: number }) => {
+const LoadingSpinner = ({ size, color }: { size?: number; color?: string }) => {
   return (
     <ClipLoader
       size={size || 25}
-      color="#ffffff"
+      color={color || "#ffffff"}
       cssOverride={{ borderWidth: "0.2rem" }}
     />
+  );
+};
+
+const TableLoader = ({ colSpan }: { colSpan?: number }) => {
+  return (
+    <TableRow>
+      <TableCell colSpan={colSpan || 1}>
+        <div className="flex justify-center items-center ">
+          {" "}
+          <LoadingSpinner color="var(--softpurple)" size={50} />{" "}
+        </div>
+      </TableCell>
+    </TableRow>
   );
 };
 
@@ -28,4 +43,4 @@ const LoadingSpinner = ({ size }: { size?: number }) => {
 const UploadSpinner = () => {
   return <BeatLoader color="#f1f1f1" />;
 };
-export { PageLoadingSpinner, LoadingSpinner, UploadSpinner };
+export { PageLoadingSpinner, LoadingSpinner, UploadSpinner, TableLoader };

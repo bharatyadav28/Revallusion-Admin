@@ -135,7 +135,7 @@ function VideosList({
       }}
       transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
     >
-      <TableCell colSpan={4}>{MainTable}</TableCell>
+      <TableCell colSpan={5}>{MainTable}</TableCell>
     </motion.tr>
   );
 

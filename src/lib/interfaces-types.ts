@@ -120,6 +120,7 @@ export interface submoduleType {
   thumbnailUrl: string;
   sequence: number;
   videos: [courseVideoType];
+  assignmentCount?: number;
 }
 
 export interface coursemoduleType {
@@ -164,7 +165,38 @@ export interface carousalType {
   sequence?: number;
 }
 
-// export interface latestTutorialSectionType {
-//   _id: string;
-//   videos: [courseVideoType];
-// }
+// Assignment types
+export interface assignmentType {
+  _id?: string;
+  course: string;
+  module: string;
+  submodule: string;
+  name: string;
+  fileUrl: string;
+  createdAt?: string;
+}
+
+export interface SubmittedAssignmentType {
+  _id: string;
+  assignment: {
+    _id: string;
+    name: string;
+    module: {
+      _id: string;
+      name: string;
+    };
+    submodule: {
+      _id: string;
+      name: string;
+    };
+  };
+  score: number | null;
+  gradedAt: string | null;
+  submittedAt: string;
+  submittedFileUrls: string[];
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+}

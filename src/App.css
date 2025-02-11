@@ -42,3 +42,17 @@ td {
 .input-container .user-input {
   @apply grow max-w-[47rem];
 }
+
+.user-input .ql-toolbar {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-input .ql-container {
+  height: calc(100% - 42px); /* Adjust height to leave space for toolbar */
+  overflow-y: auto; /* Enables scrolling for the content */
+  padding-top: 15px; /* Push content below toolbar */
+}
