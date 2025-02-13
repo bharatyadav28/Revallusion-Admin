@@ -7,6 +7,7 @@ import CustomSheet from "./CustomSheet";
 import { CustomCheckBox, CustomInput } from "./Inputs";
 import { showError } from "@/lib/reusable-funs";
 import { LoadingSpinner } from "./LoadingSpinner";
+import CustomPagination from "@/components/common/CustomPagination";
 
 import {
   Table,
@@ -117,13 +118,16 @@ function VideoMenu({
 }: Props) {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Fetch all videos
   const {
     data,
     error: loadingError,
     isFetching: isLoading,
-  } = useGetVideoListQuery(debouncedSearch);
+  } = useGetVideoListQuery(
+    `search=${debouncedSearch}&currentPage=${currentPage}`
+  );
 
   // Handle error
   useEffect(() => {
@@ -136,6 +140,7 @@ function VideoMenu({
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
+      setCurrentPage(1);
     }, 500);
 
     return () => {
@@ -144,6 +149,7 @@ function VideoMenu({
   }, [search]);
 
   const videos = data?.data?.videos;
+  const totalPages = data?.data?.pagesCount;
 
   // Filter list
   let notSelectedVideos = videos?.filter(
@@ -192,7 +198,7 @@ function VideoMenu({
 
         {/* Not selected videos table */}
         <div className="input-container mt-4 gap-2">
-          <div className="label">Videos</div>
+          <div className="label ">Videos</div>
 
           <div className=" grow lg:max-w-[47rem] ">
             {notSelectedVideos && (
@@ -207,9 +213,18 @@ function VideoMenu({
         </div>
 
         {/* Save button */}
-        <div className="lg:ml-[17.3rem] flex gap-2">
+        <div className="lg:ml-[17.3rem] flex flex-col gap-2">
+          {totalPages && totalPages > 1 && (
+            <CustomPagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalPages={totalPages}
+              className="!pl-0"
+            />
+          )}
+
           <CustomButton
-            className="purple-button mt-2 "
+            className="green-button mt-2 "
             handleClick={() => {
               if (newelySelected.length > remainingCapacity) {
                 toast.error(
@@ -224,6 +239,8 @@ function VideoMenu({
             {isSubmitting ? <LoadingSpinner /> : "Save"}
           </CustomButton>
         </div>
+
+        {}
       </div>
 
       {/* {isLoading && (

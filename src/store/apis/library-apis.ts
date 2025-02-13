@@ -6,6 +6,7 @@ interface ResponseType {
   data: {
     videos: [videoType];
     courses?: [courseType];
+    pagesCount?: number;
   };
   message: string;
   success: boolean;
@@ -61,7 +62,7 @@ export const libraryApi = createApi({
 
     // get video list
     getVideoList: builder.query<ResponseType, string>({
-      query: (search) => `list?search=${search}`,
+      query: (searchQuery) => `list?${searchQuery}`,
       providesTags: [{ type: "VideoList", id: "LIST" }],
     }),
   }),

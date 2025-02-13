@@ -4,7 +4,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { hover } from "motion/react";
 
 interface Props {
   children: React.ReactNode;

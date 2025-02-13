@@ -21,6 +21,7 @@ interface SubmittedResponseType {
       key: string;
       value: string;
     }[];
+    pagesCount?: number;
   };
 }
 

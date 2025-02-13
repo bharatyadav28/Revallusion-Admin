@@ -12,12 +12,14 @@ interface Props {
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   totalPages: number;
+  className?: string;
 }
 
 export default function CustomPagination({
   currentPage,
   setCurrentPage,
   totalPages,
+  className,
 }: Props) {
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -65,7 +67,9 @@ export default function CustomPagination({
   const paginationRange = getPaginationRange();
 
   return (
-    <Pagination className="overflow-x-auto mt-4 w-full px-4">
+    <Pagination
+      className={`overflow-x-auto mt-4 w-full px-4 ${className} w-max`}
+    >
       <PaginationContent className=" flex items-center  ">
         <PaginationItem className="cursor-pointer">
           <PaginationPrevious to="#" onClick={handlePrevious}>

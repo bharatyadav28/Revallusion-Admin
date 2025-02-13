@@ -40,7 +40,7 @@ td {
 }
 
 .input-container .label {
-  @apply lg:w-[17.3rem] w-auto  font-medium;
+  @apply lg:w-[17.3rem] w-auto  font-medium shrink-0;
 }
 
 .input-container .user-input {

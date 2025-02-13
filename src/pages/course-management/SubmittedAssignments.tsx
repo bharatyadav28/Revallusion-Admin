@@ -34,6 +34,7 @@ import CustomBreadcumb from "@/components/common/CustomBreadcumb";
 import { useGetCourseTitleQuery } from "@/store/apis/course-apis";
 import CustomTooltip from "@/components/common/CustomTooltip";
 import DeleteDialog from "@/components/common/DeleteDialog";
+import CustomPagination from "@/components/common/CustomPagination";
 
 function SubmittedAssignments() {
   const dispatch = useAppDispatch();
@@ -46,6 +47,7 @@ function SubmittedAssignments() {
 
   const [graded, setGraded] = useState<string>("");
   const [submoduleFilter, setSubmoduleFilter] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [assignmentDetails, setAssignmentsDetails] =
     useState<SubmittedAssignmentType | null>(null);
@@ -66,6 +68,7 @@ function SubmittedAssignments() {
   let query = courseId + "?" || " ";
   if (graded !== "clear") query += `isGraded=${graded}&`;
   if (submoduleFilter !== "clear") query += `submoduleId=${submoduleFilter}&`;
+  if (currentPage) query += `currentPage=${currentPage}`;
 
   // Fetching
   const {
@@ -140,6 +143,7 @@ function SubmittedAssignments() {
     if (graded === "clear") {
       setGraded("");
     }
+    setCurrentPage(1);
   }, [submoduleFilter, graded]);
 
   const breadcrumbList = {
@@ -155,6 +159,9 @@ function SubmittedAssignments() {
       },
     ],
   };
+
+  const totalPages = data?.data?.pagesCount;
+
   return (
     <>
       <CustomBreadcumb list={breadcrumbList} />
@@ -255,6 +262,15 @@ function SubmittedAssignments() {
               ))}
           </TableBody>
         </Table>
+
+        {totalPages && totalPages > 1 && (
+          <CustomPagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
+            className="!pl-0"
+          />
+        )}
       </div>
 
       {openScore && (

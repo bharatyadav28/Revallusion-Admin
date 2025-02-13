@@ -67,7 +67,7 @@ function HeroSection() {
     <>
       <div className="main-container">
         <div className="input-container">
-          <div className="label">Caption</div>
+          <div className="label shrink-0">Caption</div>
           <div className="grow lg:max-w-[47rem]">
             <CustomReactQuill
               maxChars={100}
