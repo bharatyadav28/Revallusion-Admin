@@ -39,6 +39,9 @@ function SubmoduleList({
   const [assignmentsubmoduleId, setAssignmentsubmoduleId] = useState<
     string | null
   >(null);
+  const [assignmentsubmoduleName, setAssignmentsubmoduleName] = useState<
+    string | null
+  >(null);
 
   // Sort data by sequence
   const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
@@ -133,6 +136,7 @@ function SubmoduleList({
                           handleClick={() => {
                             handleOpenAssignment();
                             setAssignmentsubmoduleId(submodule._id);
+                            setAssignmentsubmoduleName(submodule.name);
                           }}
                         />
                       </div>
@@ -163,6 +167,7 @@ function SubmoduleList({
           open={openAssignments}
           handleOpen={handleOpenAssignment}
           submodule={assignmentsubmoduleId || ""}
+          submoduleName={assignmentsubmoduleName || ""}
           courseId={courseId}
           moduleId={moduleId}
         />

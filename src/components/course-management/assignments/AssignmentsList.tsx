@@ -87,7 +87,7 @@ function AssignmentList({ submodule, courseId, moduleId }: Props) {
 
   return (
     <div>
-      <div className="text-[1.2rem] uppercase mb-4">Assignments</div>
+      <div className="text-[1.1rem] uppercase mb-4">Assignments</div>
       <div className="main-container">
         <CustomButton
           className="green-button px-2 py-4"

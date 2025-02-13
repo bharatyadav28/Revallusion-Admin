@@ -149,6 +149,11 @@ export const courseApi = createApi({
         { type: "Course", id: courseId },
       ],
     }),
+
+    // Get course title
+    getCourseTitle: builder.query<courseResponseType, string>({
+      query: (id) => `/course/${id}/title`,
+    }),
   }),
 });
 
@@ -161,6 +166,7 @@ export const {
   useUpdateSubmoduleMutation,
   useUpdateVideoSequenceMutation,
   useUpdateVideoStatusMutation,
+  useGetCourseTitleQuery,
 } = courseApi;
 
 export default courseApi;

@@ -68,19 +68,12 @@ function ResoursesList({ submodule }: Props) {
   const handleFileUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
-    console.log("sddsd");
     const files = e.target.files;
     if (files && files.length > 0) {
       const formData = new FormData();
-      console.log("Files: ", files);
       Array.from(files as FileList).forEach((file) => {
         formData.append("file", file); // Adjust the field name based on your backend
       });
-
-      // To properly debug FormData contents:
-      for (const pair of formData.entries()) {
-        console.log("FormData content:", pair[0], pair[1]);
-      }
 
       await addResource({
         id: submodule,

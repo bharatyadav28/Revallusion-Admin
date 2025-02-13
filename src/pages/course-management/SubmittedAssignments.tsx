@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaDownload as DownloadIcon } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 import {
   Table,
@@ -12,7 +13,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useAppDispatch } from "@/hooks/use-redux";
-import { useGetSubmittedAssignmentsQuery } from "@/store/apis/assignment-apis";
+import {
+  useGetSubmittedAssignmentsQuery,
+  useRevokeAssignmentMutation,
+} from "@/store/apis/assignment-apis";
 import { formatDate, showError } from "@/lib/reusable-funs";
 import { replacePageName } from "@/store/features/generalSlice";
 import { TableLoader } from "@/components/common/LoadingSpinner";
@@ -21,10 +25,15 @@ import {
   UpdateButton,
   CustomButton,
   CustomSelectSeperate,
+  DeleteButton,
 } from "@/components/common/Inputs";
 import EditScore from "@/components/course-management/submitted-assignments/EditScore";
 import ViewDetails from "@/components/course-management/submitted-assignments/ViewDetails";
 import { SubmittedAssignmentType } from "@/lib/interfaces-types";
+import CustomBreadcumb from "@/components/common/CustomBreadcumb";
+import { useGetCourseTitleQuery } from "@/store/apis/course-apis";
+import CustomTooltip from "@/components/common/CustomTooltip";
+import DeleteDialog from "@/components/common/DeleteDialog";
 
 function SubmittedAssignments() {
   const dispatch = useAppDispatch();
@@ -33,6 +42,7 @@ function SubmittedAssignments() {
   const [openScore, setOpenScore] = useState(false);
   const [score, setScore] = useState<number | null>(0);
   const [subAssignmentId, setSubAssignmentId] = useState("");
+  const [openDeleteDialog, SetOpenDeleteDialog] = useState(false);
 
   const [graded, setGraded] = useState<string>("");
   const [submoduleFilter, setSubmoduleFilter] = useState<string>("");
@@ -49,6 +59,10 @@ function SubmittedAssignments() {
     setViewDetails((prev) => !prev);
   };
 
+  const handleDeleteDialog = () => {
+    SetOpenDeleteDialog((prev) => !prev);
+  };
+
   let query = courseId + "?" || " ";
   if (graded !== "clear") query += `isGraded=${graded}&`;
   if (submoduleFilter !== "clear") query += `submoduleId=${submoduleFilter}&`;
@@ -62,15 +76,42 @@ function SubmittedAssignments() {
     skip: !courseId,
   });
 
+  const [
+    revokeAssignment,
+    {
+      isLoading: isRevoking,
+      isSuccess: revokingSuccess,
+      error: revokingError,
+      data: revokingData,
+    },
+  ] = useRevokeAssignmentMutation();
+
+  const { data: courseTitleData } = useGetCourseTitleQuery(query, {
+    skip: !courseId,
+  });
+
+  // Handle success
+  useEffect(() => {
+    if (revokingSuccess) {
+      toast.success(revokingData?.message);
+      handleDeleteDialog();
+    }
+  }, [revokingSuccess]);
+
+  // Handle errors
   useEffect(() => {
     if (loadingError) showError(loadingError);
   }, [loadingError]);
 
-  console.log("data:", data);
-
   useEffect(() => {
-    dispatch(replacePageName("Submitted Assignments"));
-  }, []);
+    if (revokingError) showError(revokingError);
+  }, [revokingError]);
+
+  // Replace page name
+  useEffect(() => {
+    const courseTitle = courseTitleData?.data?.course?.title || "";
+    dispatch(replacePageName("Submitted Assignments" + " - " + courseTitle));
+  }, [courseTitleData]);
 
   const submittedAssignments = data?.data?.submittedAssignments || [];
 
@@ -101,9 +142,22 @@ function SubmittedAssignments() {
     }
   }, [submoduleFilter, graded]);
 
-  console.log("Graded menu", graded);
+  const breadcrumbList = {
+    currentPage: "Submitted assignments",
+    pageTraces: [
+      {
+        name: "Courses management",
+        href: "/course-management",
+      },
+      {
+        name: "Edit course",
+        href: "..",
+      },
+    ],
+  };
   return (
     <>
+      <CustomBreadcumb list={breadcrumbList} />
       <div className="main-container">
         <div className="flex gap-2">
           <CustomSelectSeperate
@@ -185,6 +239,16 @@ function SubmittedAssignments() {
                           setScore(subAssignment.score);
                         }}
                       />
+
+                      <CustomTooltip hoverContent="Revoke">
+                        <DeleteButton
+                          className=" ml-0 "
+                          handleClick={() => {
+                            handleDeleteDialog();
+                            setSubAssignmentId(subAssignment._id);
+                          }}
+                        />
+                      </CustomTooltip>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -201,6 +265,7 @@ function SubmittedAssignments() {
           subAssignmentId={subAssignmentId}
         />
       )}
+      {/* View Details drawer */}
 
       {viewDetails && assignmentDetails && (
         <ViewDetails
@@ -210,11 +275,22 @@ function SubmittedAssignments() {
         />
       )}
 
-      {/* {isLoading && (
-        <div>
-          <PageLoadingSpinner />
-        </div>
-      )} */}
+      {/* Revoke assignment dialog */}
+      <DeleteDialog
+        openDialog={openDeleteDialog}
+        handleOpenDialog={handleDeleteDialog}
+        title="Revoke Assignment"
+        description="Are you sure you want to revoke this assignment?"
+        onCancel={() => {
+          handleDeleteDialog();
+          setSubAssignmentId("");
+        }}
+        onConfirm={() => {
+          if (!subAssignmentId || isRevoking) return;
+          revokeAssignment(subAssignmentId);
+        }}
+        isDeleting={isRevoking}
+      />
     </>
   );
 }

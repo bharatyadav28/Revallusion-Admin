@@ -9,6 +9,7 @@ interface Props {
   submodule: string;
   courseId: string;
   moduleId: string;
+  submoduleName?: string;
 }
 
 function ExtraContent({
@@ -17,10 +18,14 @@ function ExtraContent({
   submodule,
   courseId,
   moduleId,
+  submoduleName,
 }: Props) {
   return (
     <CustomSheet open={open} handleOpen={handleOpen}>
-      <div className="flex flex-col gap-10">
+      <div className="text-[1.2rem] uppercase mb-4">
+        Topic - {submoduleName}
+      </div>
+      <div className="flex flex-col mt-8 gap-10">
         <AssignmentList
           submodule={submodule}
           courseId={courseId}

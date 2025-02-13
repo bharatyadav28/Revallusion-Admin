@@ -58,7 +58,9 @@ function CourseList() {
                   <div className="flex">
                     <UpdateButton
                       handleClick={() => {
-                        navigate(`${course._id}`, {});
+                        navigate(`${course._id}`, {
+                          state: { name: course.title },
+                        });
                       }}
                     />
                   </div>

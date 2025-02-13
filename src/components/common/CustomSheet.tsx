@@ -21,7 +21,7 @@ function CustomSheet({ open, handleOpen, children, className }: Props) {
         <SheetDescription className="hidden"></SheetDescription>
       </SheetHeader>
       <SheetContent
-        className={`md:w-[calc(100%-17rem)] w-full !max-w-full  ${className}`}
+        className={`md:w-[calc(100%-17rem)] w-full !max-w-full  ${className} overflow-y-auto`}
       >
         {children}
       </SheetContent>

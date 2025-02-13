@@ -199,6 +199,7 @@ export interface SubmittedAssignmentType {
     name: string;
     email: string;
   };
+  revokedSubmissions: string[];
 }
 
 export interface ResourceType {

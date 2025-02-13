@@ -100,6 +100,15 @@ export const assignmentApi = createApi({
 
       invalidatesTags: [{ type: "SubmittedAssignments", id: "LIST" }],
     }),
+
+    // Revoke assignment
+    revokeAssignment: builder.mutation<ResponseType, string>({
+      query: (id) => ({
+        url: `submitted-assignment/${id}/revoke`,
+        method: "PUT",
+      }),
+      invalidatesTags: [{ type: "SubmittedAssignments", id: "LIST" }],
+    }),
   }),
 });
 
@@ -111,6 +120,7 @@ export const {
 
   useGetSubmittedAssignmentsQuery,
   useUpdateAssignmentScoreMutation,
+  useRevokeAssignmentMutation,
 } = assignmentApi;
 
 export default assignmentApi;

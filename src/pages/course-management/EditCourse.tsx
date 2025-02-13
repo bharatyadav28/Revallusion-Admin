@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 import { AnimatePresence } from "framer-motion";
 
@@ -23,6 +23,7 @@ import VideosList from "@/components/common/VideosList";
 import { CustomButton } from "@/components/common/Inputs";
 import AddEditItems from "@/components/course-management/AddEditItem";
 import { courseItemType } from "@/lib/interfaces-types";
+import CustomBreadcumb from "@/components/common/CustomBreadcumb";
 
 export interface dialogDataType {
   type: string;
@@ -43,6 +44,7 @@ function EditCourse() {
   const { id: courseId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Fetch course data
   const {
@@ -66,8 +68,14 @@ function EditCourse() {
 
   // Page title
   useEffect(() => {
-    dispatch(replacePageName("Edit Course"));
-  }, []);
+    dispatch(
+      replacePageName(
+        "Edit Course" +
+          " - " +
+          (location.state?.name || data?.data?.course?.title)
+      )
+    );
+  }, [location]);
 
   const course = data?.data?.course;
   const modules = course?.modules;
@@ -80,8 +88,20 @@ function EditCourse() {
     };
   });
 
+  // Breadcumb list
+  const breadcrumbList = {
+    currentPage: "Edit course",
+    pageTraces: [
+      {
+        name: "Courses management",
+        href: "/course-management",
+      },
+    ],
+  };
+
   return (
     <>
+      {!course?.isFree && <CustomBreadcumb list={breadcrumbList} />}
       {/* Paid course */}
       {!course?.isFree && (
         <div className="main-container">
