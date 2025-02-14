@@ -128,7 +128,7 @@ function App() {
           </Route>
 
           <Route path="/profile" element={<Profile />} />
-          {/* <Route path="/comment" element={<Comment />} /> */}
+          <Route path="/comment" element={<Comment />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-import { ChevronDown, Icon } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import {
   MdDashboard as DashboardIcon,
   MdDescription as PageIcon,
@@ -10,7 +10,7 @@ import { FaList as ListIcon } from "react-icons/fa";
 import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
 import { HiLibrary as LibraryIcon } from "react-icons/hi";
 import { GiBookshelf as CourseIcon } from "react-icons/gi";
-import { FaCommentDots as CommentIcon } from "react-icons/fa6";
+// import { FaCommentDots as CommentIcon } from "react-icons/fa6";
 
 import {
   Sidebar,
@@ -114,11 +114,11 @@ function AppSidebar() {
       Icon: CourseIcon,
       path: "/course-management",
     },
-    {
-      name: "User Comments",
-      Icon: CommentIcon,
-      path: "/comment",
-    },
+    // {
+    //   name: "User Comments",
+    //   Icon: CommentIcon,
+    //   path: "/comment",
+    // },
     {
       name: "Queries",
       Icon: QueryIcon,
