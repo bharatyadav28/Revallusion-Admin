@@ -1,40 +1,42 @@
 import { useEffect, useState } from "react";
 
-import { CustomDialog } from "../../common/CustomDialog";
-import { CustomInput, CustomButton } from "@/components/common/Inputs";
-import { useUpdateAssignmentScoreMutation } from "@/store/apis/assignment-apis";
+import { CustomDialog } from "../common/CustomDialog";
+import { CustomButton, CustomTextArea } from "@/components/common/Inputs";
+
 import toast from "react-hot-toast";
 import { showError } from "@/lib/reusable-funs";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { useReplyToCommentMutation } from "@/store/apis/comment-apis";
 
 interface Props {
   open: boolean;
   handleOpen: () => void;
-  subAssignmentId: string;
-  score: number | null;
+  commentId: string;
+  reply: string | "";
 }
-function EditScore({ open, handleOpen, score, subAssignmentId }: Props) {
-  const [assignmentScore, setAssignmentScore] = useState("");
+function EditReply({ open, handleOpen, commentId, reply }: Props) {
+  const [commentReply, setCommentReply] = useState("");
 
   // Assignment score updation
   const [
-    updateScore,
+    replyToComment,
     {
       isLoading: isUpdating,
       isSuccess: isUpdationSuccess,
       error: updationError,
       data: updationData,
     },
-  ] = useUpdateAssignmentScoreMutation();
+  ] = useReplyToCommentMutation();
 
   const handleSubmit = () => {
     if (isUpdating) return;
-    updateScore({
-      score: Number(assignmentScore),
-      id: subAssignmentId,
+    replyToComment({
+      id: commentId,
+      reply: commentReply,
     });
   };
 
+  // Handle updation success
   useEffect(() => {
     if (isUpdationSuccess && updationData) {
       toast.success(updationData.message);
@@ -42,6 +44,7 @@ function EditScore({ open, handleOpen, score, subAssignmentId }: Props) {
     }
   }, [isUpdationSuccess]);
 
+  // Handle updation error
   useEffect(() => {
     if (updationError) {
       showError(updationError);
@@ -49,27 +52,24 @@ function EditScore({ open, handleOpen, score, subAssignmentId }: Props) {
   }, [updationError]);
 
   useEffect(() => {
-    if (score) {
-      setAssignmentScore(String(score));
-    }
-  }, [score]);
+    setCommentReply(reply);
+  }, [reply]);
 
   return (
     <CustomDialog open={open} handleOpen={handleOpen} className="w-[33rem]">
       <div className="text-[1.5rem] font-medium h-max text-center">
-        {score ? "Edit" : "Add"} Score
+        {reply ? "Edit" : "Add"} Reply
       </div>
 
       <div className="main-container !bg-[var(--dark-black)] !py-8">
         <div className="flex flex-col gap-2">
-          <div className="label">Score</div>
+          <div className="label">Message</div>
           <div className="user-input">
-            <CustomInput
-              text={assignmentScore}
-              setText={setAssignmentScore}
-              className="py-5"
-              placeholder="Type score here..."
-              type="number"
+            <CustomTextArea
+              text={commentReply}
+              setText={setCommentReply}
+              placeholder="Type message here..."
+              className="min-h-[8rem]"
             />
           </div>
         </div>
@@ -82,4 +82,4 @@ function EditScore({ open, handleOpen, score, subAssignmentId }: Props) {
   );
 }
 
-export default EditScore;
+export default EditReply;

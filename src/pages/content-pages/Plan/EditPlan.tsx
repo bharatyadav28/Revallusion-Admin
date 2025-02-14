@@ -72,7 +72,7 @@ function EditPlan({ open, handleOpen, plans, updateId, setUpdateId }: Props) {
     <CustomDialog open={open} handleOpen={handleOpen} className="w-[30rem]">
       <div className="text-[1.5rem] font-medium h-max text-center"> Plan</div>
 
-      <div className="main-container !bg-[#000111] !py-8">
+      <div className="main-container !bg-[var(--dark-black)] !py-8">
         <div className="flex flex-col gap-2">
           <div className="label">Price</div>
           <div className="user-input">

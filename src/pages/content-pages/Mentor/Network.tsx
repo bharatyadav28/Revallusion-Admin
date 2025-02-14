@@ -70,7 +70,7 @@ function Network({
         Network
       </div>
 
-      <div className="main-container !bg-[#000111] !py-8">
+      <div className="main-container !bg-[var(--dark-black)] !py-8">
         <div className="flex flex-col gap-2">
           <div className="label">Platform</div>
           <div className="user-input">

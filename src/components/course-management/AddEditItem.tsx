@@ -225,14 +225,14 @@ function AddEditItems({
     <CustomDialog
       open={open}
       handleOpen={handleOpen}
-      className="w-[35rem] !bg-[#000111]"
+      className="w-[35rem] !bg-[var(--dark-black)]"
     >
       <div className="text-[1.5rem] font-medium h-max text-center">
         {" "}
         {isEdit ? "Edit" : "Add"} {modalType}
       </div>
 
-      <div className="main-container !bg-[#000111] !py-8">
+      <div className="main-container !bg-[var(--dark-black)] !py-8">
         {(moduleType || submoduleType) && (
           <div className="flex flex-col gap-2">
             <div className="label">Name</div>

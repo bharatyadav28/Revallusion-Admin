@@ -37,6 +37,7 @@ import EditCourse from "./pages/course-management/EditCourse";
 import LatestTutorialsList from "./pages/content-pages/latest-tutorials/LatestTutorialsList";
 import Curriculum from "./pages/content-pages/Curriculum";
 import SubmittedAssignments from "./pages/course-management/SubmittedAssignments";
+import Comment from "./pages/Comment";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -127,6 +128,7 @@ function App() {
           </Route>
 
           <Route path="/profile" element={<Profile />} />
+          {/* <Route path="/comment" element={<Comment />} /> */}
         </Route>
 
         <Route path="*" element={<NotFound />} />

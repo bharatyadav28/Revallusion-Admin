@@ -13,7 +13,7 @@ interface Props {
 }
 export function CustomDialog({ open, handleOpen, children, className }: Props) {
   let classes =
-    "max-w-full w-[10rem] min-h-[10rem] !bg-[var(--light-gray)] !rounded-3xl overflow-y-auto pt-4 pb-0 ";
+    "max-w-full w-[10rem] min-h-[10rem] !bg-[var(--dark-black)] !rounded-3xl overflow-y-auto pt-4 pb-0 ";
   if (className) {
     classes += " " + className;
   }

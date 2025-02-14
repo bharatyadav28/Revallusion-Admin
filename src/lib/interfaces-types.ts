@@ -206,3 +206,13 @@ export interface ResourceType {
   _id?: string;
   url: string;
 }
+
+export interface CommentType {
+  _id: string;
+  user: userType;
+  video: videoType;
+  comment: string;
+  reply?: string;
+  createdAt: string;
+  repliedAt?: string;
+}
