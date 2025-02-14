@@ -60,3 +60,7 @@ td {
   overflow-y: auto; /* Enables scrolling for the content */
   padding-top: 15px; /* Push content below toolbar */
 }
+
+.highlight-digit {
+  @apply bg-[#3C3C3C] px-2 py-1 rounded-sm;
+}

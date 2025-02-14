@@ -50,7 +50,7 @@ function Header() {
 
   return (
     <div className="flex justify-between items-center h-[3rem] my-2 w-full">
-      <div className="text-[1.2rem] uppercase flex gap-4">
+      <div className="text-[1.25rem] uppercase flex gap-4">
         {isMobile && (
           <div>
             {" "}

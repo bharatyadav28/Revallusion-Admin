@@ -25,6 +25,7 @@ interface Props {
   handleDelete?: (videoId: string) => void;
   deletingItem?: string | null;
   caption?: string;
+  className?: string;
 }
 function VideosList({
   data,
@@ -37,12 +38,13 @@ function VideosList({
   handleDelete,
   deletingItem,
   caption,
+  className,
 }: Props) {
   // Sort data by sequence
   const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
 
   const MainTable = (
-    <Table className="custom-table bg-[#34343a] w-full">
+    <Table className={`custom-table  w-full ${className}`}>
       <TableCaption>{caption || `A list of videos`}</TableCaption>
       <TableHeader>
         <TableRow>
@@ -59,8 +61,10 @@ function VideosList({
           <TableRow className="!hover:bg-blue-500 dfdf  s" key={video?._id}>
             <TableCell className="font-medium">{video?.title}</TableCell>
             <TableCell className="font-medium">{video?.description}</TableCell>
-            <TableCell className="font-medium">
-              {video?.sequence > 0 ? video?.sequence : "NA"}
+            <TableCell className="font-medium ">
+              <span className="highlight-digit">
+                {video?.sequence > 0 ? video?.sequence : "NA"}
+              </span>
             </TableCell>
 
             {courseId && (

@@ -97,14 +97,16 @@ function SubmoduleList({
                     </TableCell>
 
                     <TableCell className="font-medium  ">
-                      <div className="w-min">
+                      <div className="w-min bg-[#3C3C3C] px-2 py-1 rounded-sm">
                         {" "}
                         {submodule?.assignmentCount || 0}{" "}
                       </div>
                     </TableCell>
 
                     <TableCell className="font-medium">
-                      <div className="w-min">{submodule?.sequence}</div>
+                      <div className="w-min highlight-digit ">
+                        {submodule?.sequence}
+                      </div>
                     </TableCell>
 
                     {/* Action buttons */}
@@ -153,6 +155,7 @@ function SubmoduleList({
                       courseId={courseId}
                       moduleId={moduleId}
                       submoduleId={submodule._id}
+                      className="bg-[#34343a]"
                     />
                   )}
                 </React.Fragment>

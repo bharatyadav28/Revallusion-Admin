@@ -180,7 +180,7 @@ export const DeleteButton = ({
     <Button
       variant="destructive"
       size="icon"
-      className={`ml-3 ${className}`}
+      className={`ml-2 ${className}`}
       onClick={handleClick}
       disabled={isDeleting}
       {...props}
