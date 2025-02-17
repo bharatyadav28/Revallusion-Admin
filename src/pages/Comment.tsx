@@ -35,6 +35,7 @@ const Comment = () => {
   const [openDeleteDialog, SetOpenDeleteDialog] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [replied, setReplied] = useState<string>("");
+  const [filterByDate, setFilterByDate] = useState<string>("");
 
   const [commentDetails, setCommentDetails] = useState<CommentType | null>(
     null
@@ -44,6 +45,7 @@ const Comment = () => {
   // Fetch comments
   let query = `?currentPage=${currentPage}&`;
   if (replied) query += `replied=${replied}&`;
+  if (filterByDate) query += `filterByDate=${filterByDate}&`;
 
   const {
     data,
@@ -123,13 +125,22 @@ const Comment = () => {
   return (
     <>
       <div className="main-container">
-        <CustomSelectSeperate
-          menu={RepliedMenu}
-          value={replied}
-          onChange={setReplied}
-          placeholder="Graded"
-          className="max-w-[15rem]"
-        />
+        <div className="flex gap-2">
+          <CustomSelectSeperate
+            menu={RepliedMenu}
+            value={replied}
+            onChange={setReplied}
+            placeholder="Replied"
+            className="max-w-[15rem]"
+          />
+          <input
+            className="max-w-[15rem] w-full bg-inherit border border-gray-400 rounded-md px-4 py-1 text-sm"
+            type="date"
+            placeholder="filter by date"
+            value={filterByDate}
+            onChange={(e) => setFilterByDate(e.target.value)}
+          />
+        </div>
 
         <Table className="custom-table">
           <TableCaption>A list of user comments</TableCaption>

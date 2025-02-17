@@ -44,7 +44,7 @@ export function formatDate(isoDate: string): string {
     minute: "numeric",
     hour12: true,
   };
-  return new Intl.DateTimeFormat("en-US", options).format(date);
+  return new Intl.DateTimeFormat("en-GB", options).format(date);
 }
 
 // Formate String to Date short/long format
@@ -75,8 +75,8 @@ export const convertToDate = (
       ];
       return `${monthNames[d.getMonth()]} ${day}, ${year}`;
     } else {
-      return `${month < 10 ? "0" + month : month}/${
-        day < 10 ? "0" + day : day
+      return `${day < 10 ? "0" + day : day}/${
+        month < 10 ? "0" + month : month
       }/${year}`;
     }
   }
