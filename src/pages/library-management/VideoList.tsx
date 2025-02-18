@@ -176,11 +176,14 @@ function VideoList() {
             .reverse()
             .map((item, index) => {
               return (
-                <div
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.2,
+                  }}
                   key={item}
-                  data-aos="fade-up"
-                  data-aos-delay={index * 200}
-                  data-aos-duration="500"
                 >
                   <div className="text-sm mb-2">{getVideoDate(item)}</div>
                   <div className="grid xl:grid-cols-6 lg:grid-cols-4 grid-cols-3  md:gap-8 gap-4 bg-opacity-10">
@@ -231,7 +234,7 @@ function VideoList() {
                     })}
                   </div>
                   <br />
-                </div>
+                </motion.div>
               );
             })}
       </div>

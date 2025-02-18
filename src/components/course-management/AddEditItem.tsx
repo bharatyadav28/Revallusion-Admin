@@ -167,12 +167,14 @@ function AddEditItems({
         addModule({
           name,
           courseId: item.courseId,
+          thumbnailUrl,
         });
       } else {
         updateModule({
           id: item?._id || "",
           name,
           courseId: item.courseId,
+          thumbnailUrl,
         });
       }
     }
@@ -247,7 +249,7 @@ function AddEditItems({
           </div>
         )}
 
-        {submoduleType && (
+        {(modalType || submoduleType) && (
           <div className="flex flex-col gap-2">
             <div className="label mb-1">Thumbnail</div>
             <div className="user-input ">
@@ -290,7 +292,7 @@ function AddEditItems({
         )}
 
         <CustomButton
-          className="green-button mt-2"
+          className="green-button mt-2 min-w-[5rem]"
           handleClick={handleFormSubmit}
         >
           {isFormSubmitting ? <LoadingSpinner /> : isEdit ? "Update" : "Add"}

@@ -126,6 +126,7 @@ export interface submoduleType {
 export interface coursemoduleType {
   _id: string;
   name: string;
+  thumbnailUrl?: string;
   submodules: [submoduleType];
 }
 export interface courseType {

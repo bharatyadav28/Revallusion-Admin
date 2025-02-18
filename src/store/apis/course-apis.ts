@@ -40,12 +40,12 @@ export const courseApi = createApi({
     // Add module
     addCourseModule: builder.mutation<
       ResponseType,
-      { name: string; courseId: string }
+      { name: string; courseId: string; thumbnailUrl: string }
     >({
-      query: ({ name, courseId }) => ({
+      query: ({ name, courseId, thumbnailUrl }) => ({
         url: `/course/module`,
         method: "POST",
-        body: { name, courseId },
+        body: { name, courseId, thumbnailUrl },
       }),
       invalidatesTags: (_, __, { courseId }) => [
         { type: "Course", id: courseId },
@@ -55,12 +55,12 @@ export const courseApi = createApi({
     // Update module name
     updateCourseModuleName: builder.mutation<
       ResponseType,
-      { id: string; name: string; courseId: string }
+      { id: string; name: string; courseId: string; thumbnailUrl: string }
     >({
-      query: ({ id, name, courseId }) => ({
+      query: ({ id, name, courseId, thumbnailUrl }) => ({
         url: `/course/module/${id}`,
         method: "PUT",
-        body: { name, courseId },
+        body: { name, courseId, thumbnailUrl },
       }),
       invalidatesTags: (_, __, { courseId }) => [
         { type: "Course", id: courseId },
