@@ -62,7 +62,8 @@ function LatestTutorialsList() {
     };
   } | null>(null);
 
-  const allowedCarousals = 4;
+  // Allowed:
+  const allowedCarousals = 10;
 
   // Handle edit video sequence dialog
   const handleOpenDialog = () => {
