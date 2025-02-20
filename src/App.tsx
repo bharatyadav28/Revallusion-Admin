@@ -38,6 +38,7 @@ import LatestTutorialsList from "./pages/content-pages/latest-tutorials/LatestTu
 import Curriculum from "./pages/content-pages/Curriculum";
 import SubmittedAssignments from "./pages/course-management/SubmittedAssignments";
 import Comment from "./pages/Comment";
+import PrimaryDashboard from "./pages/PrimaryDashboard";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -111,6 +112,8 @@ function App() {
             <Route index element={<QueriesList />} />
             <Route path=":id" element={<QueryDetails />} />
           </Route>
+
+          <Route path="/primary-dashboard" element={<PrimaryDashboard />} />
 
           <Route path="/library-management">
             <Route index element={<VideoList />} />

@@ -99,7 +99,7 @@ interface Props {
   handleOpen: () => void;
   newelySelected: videoType[];
   setNewelySelected: React.Dispatch<React.SetStateAction<videoType[]>>;
-  alreadySelected: courseVideoType[];
+  alreadySelected: courseVideoType[] | videoType[];
   handleSubmit: () => void;
   isSubmitting: boolean;
   remainingCapacity: number;

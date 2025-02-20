@@ -242,6 +242,46 @@ function AddEditVideo() {
           />
         </div>
       </div>
+      {/* <div className="input-container">
+        <div className="label">Resource</div>
+        <div className="user-input">
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring" }}
+            className="cursor-pointer"
+          >
+            <div className="flex items-center gap-2 border border-gray-400  rounded-xl p-4 w-max">
+              <ZipIcon size={20} />
+              <div className="flex items-center gap-5 border  ">
+                <span> File -</span>
+                <span className="monospace">
+                  {" "}
+                  ...
+                  
+                  fdjhfjddfdfdsf.pdf
+                </span>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring" }}
+                  className="!p-0 m-0 sm:ml-[3rem] "
+                  onClick={() => {
+                    // if (resource._id) {
+                    //   handleDeleteDialog();
+                    //   setResourceId(resource._id);
+                    // }
+                  }}
+                >
+                  <RemoveIcon
+                    className="hover:text-[var(--softpurple)] transition-all"
+                    size={20}
+                  />
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div> */}
 
       <CustomButton
         className="purple-button mt-2 lg:ml-[17.3rem]"

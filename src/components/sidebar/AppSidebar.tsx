@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import { FaChartPie as PrimaryDashboardIcon } from "react-icons/fa";
 
 import { ChevronDown } from "lucide-react";
 import {
@@ -10,6 +11,7 @@ import { FaList as ListIcon } from "react-icons/fa";
 import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
 import { HiLibrary as LibraryIcon } from "react-icons/hi";
 import { GiBookshelf as CourseIcon } from "react-icons/gi";
+
 // import { FaCommentDots as CommentIcon } from "react-icons/fa6";
 
 import {
@@ -103,6 +105,11 @@ function AppSidebar() {
           path: "/static-pages",
         },
       ],
+    },
+    {
+      name: "Primary Dashboard",
+      Icon: PrimaryDashboardIcon,
+      path: "/primary-dashboard",
     },
     {
       name: "Library Management",

@@ -18,6 +18,7 @@ import courseApi from "./apis/course-apis";
 import assignmentApi from "./apis/assignment-apis";
 import resourceApi from "./apis/resources-apis";
 import commentApi from "./apis/comment-apis";
+import primaryDashboardApi from "./apis/primary-dashboard-apis";
 
 export const store = configureStore({
   reducer: {
@@ -38,6 +39,7 @@ export const store = configureStore({
     [assignmentApi.reducerPath]: assignmentApi.reducer,
     [resourceApi.reducerPath]: resourceApi.reducer,
     [commentApi.reducerPath]: commentApi.reducer,
+    [primaryDashboardApi.reducerPath]: primaryDashboardApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -57,7 +59,8 @@ export const store = configureStore({
       .concat(courseApi.middleware)
       .concat(assignmentApi.middleware)
       .concat(resourceApi.middleware)
-      .concat(commentApi.middleware),
+      .concat(commentApi.middleware)
+      .concat(primaryDashboardApi.middleware),
 
   devTools: process.env.NODE_ENV !== "production",
 

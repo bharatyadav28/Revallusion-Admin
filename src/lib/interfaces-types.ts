@@ -217,3 +217,17 @@ export interface CommentType {
   createdAt: string;
   repliedAt?: string;
 }
+
+// Primary dashboard
+export interface dashboardCarousalType {
+  _id?: string;
+  image: string;
+  sequence?: number;
+  createdAt?: string;
+}
+
+export interface dashboardSectionType {
+  _id?: string;
+  name: string;
+  videos: [videoType];
+}
