@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { useUpdatePagesMutation } from "@/store/apis/content-mangement/static-pages-apis";
@@ -22,6 +22,7 @@ function EditStaticPage() {
   const location = useLocation();
   const pageData = location?.state?.page;
   const navigate = useNavigate();
+  const { id: pageId } = useParams();
 
   const [updatePages, { isLoading: isUpdating, error, isSuccess, data }] =
     useUpdatePagesMutation();
@@ -47,6 +48,8 @@ function EditStaticPage() {
       setTitle(title);
       setStatus(status);
       setDescription(description);
+    } else if (pageId) {
+      navigate("..");
     }
   }, [pageData]);
 

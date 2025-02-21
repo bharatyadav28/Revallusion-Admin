@@ -1,6 +1,6 @@
 // Add or Edit video
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { replacePageName } from "@/store/features/generalSlice";
@@ -64,6 +64,7 @@ function AddEditVideo() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
+  const { id: videoId } = useParams();
 
   const isEdit = location.state?.isEdit;
   const video = location.state?.video;
@@ -159,6 +160,8 @@ function AddEditVideo() {
       setCourse(video.course);
       if (video.module) setModule(video.module);
       if (video.submodule) setSubModule(video.submodule);
+    } else if (videoId) {
+      navigate("..");
     }
   }, [dispatch, isEdit, video]);
 

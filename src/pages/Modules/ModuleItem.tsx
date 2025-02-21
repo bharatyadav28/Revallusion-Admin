@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useAppDispatch } from "@/hooks/use-redux";
 
 import {
@@ -32,6 +32,8 @@ function ModuleItem() {
   const [description, setDescription] = useState("");
   const [key_points, setKeyPoints] = useState<string[]>([]);
   const [updateId, setUpdateId] = useState("");
+
+  const { id: moduleId } = useParams();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -97,7 +99,11 @@ function ModuleItem() {
       setKeyPoints(key_points);
       dispatch(replacePageName("Edit Module"));
     } else {
-      dispatch(replacePageName("Add Module"));
+      if (moduleId) {
+        navigate(`..`);
+      } else {
+        dispatch(replacePageName("Add Module"));
+      }
     }
   }, [data, isEdit]);
 

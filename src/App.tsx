@@ -62,15 +62,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Toaster
-      // position="bottom-right"
-      // toastOptions={{
-      //   style: {
-      //     background: "#363636",
-      //     color: "#fff",
-      //   },
-      // }}
-      />
+      <Toaster />
       <Routes>
         <Route path="/signin" element={<Signin />} />
         <Route path="/" element={<SidebarLayout />}>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/hooks/use-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { replacePageName } from "@/store/features/generalSlice";
@@ -25,6 +25,7 @@ function Faq() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const { id: faqId } = useParams();
 
   const [
     addFaq,
@@ -67,6 +68,8 @@ function Faq() {
       setTitle(faq.title);
       setDescription(faq.description);
       setStatus(faq.status);
+    } else if (faqId) {
+      navigate("..");
     }
   }, [dispatch, location.state]);
 

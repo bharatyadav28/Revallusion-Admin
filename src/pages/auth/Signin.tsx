@@ -25,9 +25,8 @@ const Signin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const redirectPath = searchParams.get("redirect")?.match(/^\/[^/]+/);
 
-  const subRedirectPath = redirectPath?.[0];
+  const redirectPath = searchParams.get("redirect");
 
   // Form submit handler
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -49,14 +48,14 @@ const Signin = () => {
       toast.success(data?.message);
       dispatch(setUser(data?.data?.user));
 
-      navigate(subRedirectPath || "/", { replace: true });
+      navigate(redirectPath || "/", { replace: true });
     }
   }, [isSuccess]);
 
   // Redirect to home if user is already signed in
   useEffect(() => {
     if (user?._id) {
-      navigate(subRedirectPath || "/", { replace: true });
+      navigate(redirectPath || "/", { replace: true });
     }
   }, [user]);
 
