@@ -35,6 +35,15 @@ function Header() {
   // Handle logout error
   useEffect(() => {
     if (error) {
+      if ("status" in error) {
+        if (error.status === 401) {
+          // Handle unauthorized error
+          dispatch(setUser(userInitalState));
+          navigate("/signin", { replace: true });
+          return;
+        }
+      }
+
       showError(error);
     }
   }, [error]);
