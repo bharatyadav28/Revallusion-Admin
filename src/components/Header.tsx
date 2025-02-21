@@ -39,7 +39,7 @@ function Header() {
         if (error.status === 401) {
           // Handle unauthorized error
           dispatch(setUser(userInitalState));
-          navigate("/signin", { replace: true });
+          window.location.href = "/signin";
           return;
         }
       }

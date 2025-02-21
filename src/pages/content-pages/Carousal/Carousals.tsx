@@ -150,6 +150,9 @@ function LatestTutorialsList() {
     }
   }
 
+  const excludeVideos =
+    carousals?.map((carousal) => carousal.video._id || "") || [];
+
   return (
     <div className="main-container">
       <CustomButton
@@ -194,6 +197,7 @@ function LatestTutorialsList() {
           handleSubmit={handleVideoSelect}
           isSubmitting={isUpdating}
           remainingCapacity={allowedCarousals - videos.length}
+          excludeVideos={excludeVideos}
         />
       )}
 

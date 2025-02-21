@@ -218,7 +218,6 @@ export const ExpandButton = ({
   isExpanded,
   ...props
 }: ExpandBtnProps) => {
-  // console.log("Is expnaded", isExpanded);
   return (
     <motion.button
       className="bg-[var(--lightpurple)] p-[0.5rem] rounded-sm "
@@ -386,7 +385,7 @@ export const CustomCheckBox = ({
     <Checkbox
       onCheckedChange={onChange}
       checked={value}
-      className={`w-4 h-4 disabled:cursor-not-allowed ${className}`}
+      className={`w-4 h-4 disabled:cursor-not-allowed data-[state=checked]:bg-[var(--softpurple)]  ${className}`}
     />
   );
 };

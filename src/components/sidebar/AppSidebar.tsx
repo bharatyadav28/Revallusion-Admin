@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
-import { FaChartPie as PrimaryDashboardIcon } from "react-icons/fa";
+// import { FaChartPie as PrimaryDashboardIcon } from "react-icons/fa";
+import { FaEdit as PrimaryDashboardIcon } from "react-icons/fa";
 
 import { ChevronDown } from "lucide-react";
 import {

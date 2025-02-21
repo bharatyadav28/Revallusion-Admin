@@ -1,12 +1,12 @@
 // Menu consisting of all videos
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { SearchIcon } from "lucide-react";
 
 import CustomSheet from "./CustomSheet";
 import { CustomCheckBox, CustomInput } from "./Inputs";
 import { showError } from "@/lib/reusable-funs";
-import { LoadingSpinner } from "./LoadingSpinner";
+import { LoadingSpinner, TableLoader } from "./LoadingSpinner";
 import CustomPagination from "@/components/common/CustomPagination";
 
 import {
@@ -18,7 +18,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetVideoListQuery } from "@/store/apis/library-apis";
+import {
+  useGetVideoListMutation,
+  // useGetVideoListQuery,
+} from "@/store/apis/library-apis";
 import { videoType, courseVideoType } from "@/lib/interfaces-types";
 import { CustomButton } from "./Inputs";
 import toast from "react-hot-toast";
@@ -28,6 +31,8 @@ interface MenuTableProps {
   newelySelected: videoType[];
   setNewelySelected: React.Dispatch<React.SetStateAction<videoType[]>>;
   isLoading?: boolean;
+  isSelected?: boolean;
+  remainingCapacity?: number;
 }
 
 // Sub table component
@@ -36,13 +41,20 @@ function MenuTable({
   newelySelected,
   setNewelySelected,
   isLoading,
+  isSelected,
+  remainingCapacity,
 }: MenuTableProps) {
   return (
     <Table className="custom-table ">
-      <TableCaption>{`A list of videos`}</TableCaption>
+      <TableCaption>
+        {`A list of  ${isSelected ? "selected" : "all"} videos`}
+        {isSelected && ` (${newelySelected?.length}/${remainingCapacity})`}
+      </TableCaption>
+
       <TableHeader>
         <TableRow>
           <TableHead className="!w-[0.5rem]">Select</TableHead>
+
           <TableHead className="">Video Name</TableHead>
           <TableHead>Description</TableHead>
         </TableRow>
@@ -50,14 +62,7 @@ function MenuTable({
 
       <TableBody>
         {isLoading ? (
-          <TableRow>
-            <TableCell colSpan={3}>
-              <div className="flex justify-center items-center">
-                {" "}
-                <LoadingSpinner size={50} />{" "}
-              </div>
-            </TableCell>
-          </TableRow>
+          <TableLoader colSpan={3} />
         ) : (
           videos?.map((video) => (
             <TableRow key={video._id}>
@@ -70,6 +75,16 @@ function MenuTable({
                         : false
                     }
                     onChange={() => {
+                      if (
+                        !isSelected &&
+                        remainingCapacity &&
+                        newelySelected.length >= remainingCapacity
+                      ) {
+                        toast.error(
+                          `You can't add more than ${remainingCapacity} videos`
+                        );
+                        return;
+                      }
                       setNewelySelected((prev) => {
                         if (prev?.find((v) => v._id === (video?._id || ""))) {
                           return prev?.filter(
@@ -84,7 +99,10 @@ function MenuTable({
                   />
                 </div>
               </TableCell>
-              <TableCell className="font-medium">{video.title}</TableCell>
+
+              <TableCell className="font-medium md:w-[40%]">
+                {video.title}
+              </TableCell>
               <TableCell className="">{video.description}</TableCell>
             </TableRow>
           ))
@@ -103,6 +121,7 @@ interface Props {
   handleSubmit: () => void;
   isSubmitting: boolean;
   remainingCapacity: number;
+  excludeVideos?: string[] | [];
 }
 
 // Main component
@@ -115,19 +134,35 @@ function VideoMenu({
   handleSubmit,
   isSubmitting,
   remainingCapacity,
+  excludeVideos,
 }: Props) {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [currentPage, setCurrentPage] = useState(1);
 
   // Fetch all videos
-  const {
-    data,
-    error: loadingError,
-    isFetching: isLoading,
-  } = useGetVideoListQuery(
-    `search=${debouncedSearch}&currentPage=${currentPage}`
+  // const {
+  //   data,
+  //   error: loadingError,
+  //   isFetching: isLoading,
+  // } = useGetVideoListQuery(
+  //   `search=${debouncedSearch}&currentPage=${currentPage}`
+  // );
+
+  const [fetchVideos, { data, error: loadingError, isLoading }] =
+    useGetVideoListMutation();
+
+  const memoizedExcludeVideos = useMemo(
+    () => excludeVideos,
+    [excludeVideos?.join(",")]
   );
+
+  useEffect(() => {
+    fetchVideos({
+      searchQuery: `search=${debouncedSearch}&currentPage=${currentPage}`,
+      excludeVideos: memoizedExcludeVideos,
+    });
+  }, [memoizedExcludeVideos, debouncedSearch, currentPage]);
 
   // Handle error
   useEffect(() => {
@@ -155,12 +190,20 @@ function VideoMenu({
   let notSelectedVideos = videos?.filter(
     (video) => !alreadySelected?.find((v) => v._id === video._id)
   );
-  notSelectedVideos = notSelectedVideos?.filter(
-    (video) => !newelySelected?.find((v) => v._id === video._id)
-  );
+  notSelectedVideos =
+    notSelectedVideos?.filter(
+      (video) => !newelySelected?.find((v) => v._id === video._id)
+    ) || [];
 
   return (
-    <CustomSheet open={open} handleOpen={handleOpen}>
+    <CustomSheet
+      open={open}
+      handleOpen={() => {
+        setCurrentPage(1);
+        setSearch("");
+        handleOpen();
+      }}
+    >
       <div className="uppercase text-lg">Video list</div>
 
       <div className="main-container mt-4">
@@ -185,13 +228,13 @@ function VideoMenu({
             <div className="label">Selected</div>
 
             <div className=" grow lg:max-w-[47rem] ">
-              {videos && (
-                <MenuTable
-                  videos={newelySelected}
-                  newelySelected={newelySelected}
-                  setNewelySelected={setNewelySelected}
-                />
-              )}
+              <MenuTable
+                videos={newelySelected}
+                newelySelected={newelySelected}
+                setNewelySelected={setNewelySelected}
+                isSelected={true}
+                remainingCapacity={remainingCapacity}
+              />
             </div>
           </div>
         )}
@@ -207,6 +250,8 @@ function VideoMenu({
                 newelySelected={newelySelected}
                 setNewelySelected={setNewelySelected}
                 isLoading={isLoading}
+                isSelected={false}
+                remainingCapacity={remainingCapacity}
               />
             )}
           </div>

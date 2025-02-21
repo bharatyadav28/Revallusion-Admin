@@ -137,6 +137,11 @@ const Sections = () => {
     alreadySelected.push(...selectedSection.videos);
   }
 
+  const excludeVideos =
+    sections
+      ?.find((section) => section._id === selectedSection?._id)
+      ?.videos?.map((video) => video._id || "") || [];
+
   return (
     <>
       <div className="main-container">
@@ -259,6 +264,7 @@ const Sections = () => {
         remainingCapacity={
           allowedSectionVideos - (selectedSection?.videos?.length || 0)
         }
+        excludeVideos={excludeVideos}
       />
 
       <EditSection

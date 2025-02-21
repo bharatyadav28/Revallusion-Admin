@@ -61,9 +61,23 @@ export const libraryApi = createApi({
     }),
 
     // get video list
-    getVideoList: builder.query<ResponseType, string>({
-      query: (searchQuery) => `list?${searchQuery}`,
-      providesTags: [{ type: "VideoList", id: "LIST" }],
+    // getVideoList: builder.query<ResponseType, string>({
+    //   query: (searchQuery) => `list?${searchQuery}`,
+    //   providesTags: [{ type: "VideoList", id: "LIST" }],
+    // })
+
+    // Get video list
+    getVideoList: builder.mutation<
+      ResponseType,
+      { searchQuery: string; excludeVideos?: string[] }
+    >({
+      query: ({ searchQuery, excludeVideos }) => ({
+        url: `list?${searchQuery}`,
+        method: "POST",
+        body: { excludeVideos },
+      }),
+
+      invalidatesTags: [{ type: "Videos", id: "LIST" }],
     }),
   }),
 });
@@ -73,7 +87,8 @@ export const {
   useAddVideoMutation,
   useUpdateVideoMutation,
   useDeleteVideoMutation,
-  useGetVideoListQuery,
+  // useGetVideoListQuery,
+  useGetVideoListMutation,
 } = libraryApi;
 
 export default libraryApi;
