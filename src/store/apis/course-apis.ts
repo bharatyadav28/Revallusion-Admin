@@ -70,12 +70,18 @@ export const courseApi = createApi({
     // Add module
     addSubmodule: builder.mutation<
       ResponseType,
-      { name: string; thumbnailUrl: string; courseId: string; moduleId: string }
+      {
+        name: string;
+        thumbnailUrl: string;
+        courseId: string;
+        moduleId: string;
+        resource?: string;
+      }
     >({
-      query: ({ name, thumbnailUrl, courseId, moduleId }) => ({
+      query: ({ name, thumbnailUrl, courseId, moduleId, resource }) => ({
         url: `/course/submodule`,
         method: "POST",
-        body: { name, thumbnailUrl, courseId, moduleId },
+        body: { name, thumbnailUrl, courseId, moduleId, resource },
       }),
       invalidatesTags: (_, __, { courseId }) => [
         { type: "Course", id: courseId },
@@ -93,6 +99,7 @@ export const courseApi = createApi({
         moduleId: string;
         newModuleId?: string;
         sequence?: number;
+        resource?: string;
       }
     >({
       query: ({
@@ -103,10 +110,19 @@ export const courseApi = createApi({
         moduleId,
         newModuleId,
         sequence,
+        resource,
       }) => ({
         url: `/course/submodule/${id}`,
         method: "PUT",
-        body: { name, thumbnailUrl, courseId, moduleId, newModuleId, sequence },
+        body: {
+          name,
+          thumbnailUrl,
+          courseId,
+          moduleId,
+          newModuleId,
+          sequence,
+          resource,
+        },
       }),
       invalidatesTags: (_, __, { courseId }) => [
         { type: "Course", id: courseId },

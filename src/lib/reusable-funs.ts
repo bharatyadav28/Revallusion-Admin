@@ -151,3 +151,11 @@ export const calculateDuration = ({
 
   video.src = videoUrl;
 };
+
+// Return fixed length substring
+export const truncateString = (str: string, num: number) => {
+  if (str.length > num) {
+    return "..." + str.slice(str.length - (num - 3)); // Keep the last part
+  }
+  return str; // Return as is if within limit
+};

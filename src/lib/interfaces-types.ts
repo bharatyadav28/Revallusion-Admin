@@ -109,6 +109,7 @@ export interface videoType {
   course: string;
   isActive?: boolean;
   module?: string;
+  assignment?: string;
   submodule?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -121,6 +122,7 @@ export interface submoduleType {
   sequence: number;
   videos: [courseVideoType];
   assignmentCount?: number;
+  resource?: string;
 }
 
 export interface coursemoduleType {
@@ -153,6 +155,7 @@ export interface courseItemType {
   moduleId?: string;
   submoduleId?: string;
   videoId?: videoType;
+  resource?: string;
 }
 
 export interface courseVideoType extends videoType {

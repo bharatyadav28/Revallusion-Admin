@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import { FaFileZipper as ZipIcon } from "react-icons/fa6";
+import { RxCrossCircled as RemoveIcon } from "react-icons/rx";
+import { motion } from "motion/react";
+import { Upload } from "lucide-react";
 
 import { CustomDialog } from "../common/CustomDialog";
 import {
@@ -15,9 +19,10 @@ import {
   useUpdateSubmoduleMutation,
   useUpdateVideoSequenceMutation,
 } from "@/store/apis/course-apis";
-import { showError } from "@/lib/reusable-funs";
+import { showError, truncateString } from "@/lib/reusable-funs";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 import { courseItemType } from "@/lib/interfaces-types";
+import useUploadFile from "@/hooks/use-uploadFile";
 
 interface Props {
   type?: string;
@@ -44,6 +49,15 @@ function AddEditItems({
   // const [course, setCourse] = useState("");
   const [module, setModule] = useState("");
   // const [video, setVideo] = useState("");
+
+  const {
+    inputRef,
+    uploading: uploadingAssignment,
+    fileSrc,
+    handleFileUpload,
+    triggerFileUpload,
+    setFileSrc,
+  } = useUploadFile();
 
   const [
     addModule,
@@ -142,11 +156,12 @@ function AddEditItems({
 
   useEffect(() => {
     if (isEdit && item) {
-      const { name, thumbnailUrl, sequence, moduleId } = item;
+      const { name, thumbnailUrl, sequence, moduleId, resource } = item;
       if (name) setName(name);
       if (thumbnailUrl) setThumbnailUrl(thumbnailUrl);
       if (sequence) setSequence(`${sequence}`);
       if (moduleId) setModule(moduleId);
+      if (resource) setFileSrc(resource);
     }
   }, [isEdit, item]);
 
@@ -186,6 +201,7 @@ function AddEditItems({
           thumbnailUrl,
           courseId: item?.courseId,
           moduleId: module,
+          resource: fileSrc,
         });
       } else if (isEdit && item?._id && item.moduleId) {
         const moduleUpdated = item?.moduleId !== module;
@@ -197,6 +213,7 @@ function AddEditItems({
           moduleId: moduleUpdated ? item.moduleId : module,
           newModuleId: moduleUpdated ? module : "",
           sequence: Number(sequence),
+          resource: fileSrc,
         });
       }
     }
@@ -249,7 +266,7 @@ function AddEditItems({
           </div>
         )}
 
-        {(modalType || submoduleType) && (
+        {(moduleType || submoduleType) && (
           <div className="flex flex-col gap-2">
             <div className="label mb-1">Thumbnail</div>
             <div className="user-input ">
@@ -287,6 +304,76 @@ function AddEditItems({
                 placeholder="Type name here..."
                 type="number"
               />
+            </div>
+          </div>
+        )}
+
+        {submoduleType && (
+          <div className="flex flex-col gap-2">
+            <div className="label">Resource</div>
+            <div className="user-input">
+              <input
+                id="resourceInput"
+                type="file"
+                className="hidden"
+                onChange={handleFileUpload}
+                ref={inputRef}
+                multiple
+              />
+              {fileSrc && (
+                <motion.div className=" w-full">
+                  <div className="flex items-center gap-2 border border-gray-400  rounded-md px-4 py-2 w-full">
+                    <ZipIcon size={16} />
+                    <div className="flex items-center justify-between gap-5 w-full ">
+                      <div>
+                        <span> File -</span>
+                        <span className="monospace">
+                          {" "}
+                          {truncateString(
+                            fileSrc?.split("/").pop()?.split("-").pop() || "",
+                            20
+                          )}
+                        </span>
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ type: "spring" }}
+                        className="!p-0 m-0 sm:ml-[2rem] "
+                        onClick={() => {
+                          setFileSrc("");
+                        }}
+                      >
+                        <RemoveIcon
+                          className="hover:text-[var(--softpurple)] transition-all"
+                          size={20}
+                        />
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+              {!fileSrc && (
+                <label
+                  onClick={triggerFileUpload}
+                  className="flex items-center gap-2  py-2 bg-black backdrop-blur-md  text-white text-sm font-medium rounded-md cursor-pointer hover:bg-[#0f0f0f] transition  px-2 border border-gray-400"
+                >
+                  {!uploadingAssignment ? (
+                    <>
+                      <Upload size={16} />
+                      <div className=" w-full flex ml-2 items-center">
+                        No file choosen
+                      </div>
+                    </>
+                  ) : (
+                    <div className=" w-full flex justify-center items-center">
+                      <LoadingSpinner size={16} />
+                    </div>
+                  )}
+                </label>
+              )}
+
+              <input type="file" className="hidden" />
             </div>
           </div>
         )}
