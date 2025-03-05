@@ -99,7 +99,7 @@ function EditCourse() {
       {!course?.isFree && (
         <div className="main-container">
           {/* Add Buttons */}
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <CustomButton
               className="green-button px-2 py-4"
               handleClick={() => {

@@ -220,7 +220,7 @@ export const ExpandButton = ({
 }: ExpandBtnProps) => {
   return (
     <motion.button
-      className="bg-[var(--lightpurple)] p-[0.5rem] rounded-sm "
+      className="bg-[var(--lightpurple)] hover:opacity-95 transition-opacity p-[0.5rem] rounded-sm "
       onClick={handleClick}
       {...props}
       animate={{ rotate: isExpanded ? 180 : 0 }}

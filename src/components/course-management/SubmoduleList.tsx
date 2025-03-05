@@ -11,10 +11,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { submoduleType } from "@/lib/interfaces-types";
-import { UpdateButton } from "../common/Inputs";
+import { DeleteButton, UpdateButton } from "../common/Inputs";
 import VideosList from "../common/VideosList";
 import { ExpandButton } from "../common/Inputs";
 import { dialogDataType } from "@/pages/course-management/EditCourse";
+import DeleteDialog from "../common/DeleteDialog";
+import { useDeleteSubmoduleMutation } from "@/store/apis/course-apis";
+import toast from "react-hot-toast";
 
 interface Props {
   data: submoduleType[];
@@ -33,6 +36,38 @@ function SubmoduleList({
 }: Props) {
   // Expand submodule id
   const [showSubmoduleId, setShowSubmoduleId] = useState<string | null>(null);
+  const [selectedSubmodule, setSelectedSubmodule] = useState<string | null>(
+    null
+  );
+  const [openDeleteDialgo, setOpenDeleteDialog] = useState(false);
+
+  const [deleteSubmodule, { isLoading: isDeleting }] =
+    useDeleteSubmoduleMutation();
+
+  const handleDeleteDialog = () => {
+    setOpenDeleteDialog((prev) => !prev);
+  };
+
+  const handleSubmoduleDelete = async () => {
+    if (isDeleting) return;
+    try {
+      if (selectedSubmodule) {
+        const response = await deleteSubmodule({
+          courseId,
+          submoduleId: selectedSubmodule,
+        }).unwrap();
+
+        handleDeleteDialog();
+        setSelectedSubmodule(null);
+        console.log("Response", response);
+        toast.success(response.message);
+      }
+    } catch (error) {
+      const err = error as { data?: { message?: string } };
+      const message = err.data?.message || "Something went wrong";
+      toast.error(message);
+    }
+  };
 
   // Sort data by sequence
   const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
@@ -114,6 +149,14 @@ function SubmoduleList({
                             });
                           }}
                         />
+
+                        <DeleteButton
+                          className="ml-0"
+                          handleClick={() => {
+                            handleDeleteDialog();
+                            setSelectedSubmodule(submodule._id);
+                          }}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
@@ -137,6 +180,20 @@ function SubmoduleList({
           </Table>
         </TableCell>
       </motion.tr>
+
+      {/* Delete dialog */}
+      <DeleteDialog
+        openDialog={openDeleteDialgo}
+        handleOpenDialog={handleDeleteDialog}
+        title="Delete Topic"
+        description="Are you sure you want to delete this topic?"
+        onCancel={() => {
+          handleDeleteDialog();
+          setSelectedSubmodule(null);
+        }}
+        onConfirm={handleSubmoduleDelete}
+        isDeleting={isDeleting}
+      />
     </>
   );
 }

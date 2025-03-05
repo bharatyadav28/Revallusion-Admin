@@ -129,6 +129,19 @@ export const courseApi = createApi({
       ],
     }),
 
+    deleteSubmodule: builder.mutation<
+      ResponseType,
+      { courseId: string; submoduleId: string }
+    >({
+      query: ({ submoduleId }) => ({
+        url: `/course/submodule/${submoduleId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_, __, { courseId }) => [
+        { type: "Course", id: courseId },
+      ],
+    }),
+
     // update video sequence
     updateVideoSequence: builder.mutation<
       ResponseType,
@@ -180,6 +193,7 @@ export const {
   useUpdateCourseModuleNameMutation,
   useAddSubmoduleMutation,
   useUpdateSubmoduleMutation,
+  useDeleteSubmoduleMutation,
   useUpdateVideoSequenceMutation,
   useUpdateVideoStatusMutation,
   useGetCourseTitleQuery,
