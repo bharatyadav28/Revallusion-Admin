@@ -14,6 +14,13 @@ function useUploadFile() {
       setUploading(true);
 
       try {
+        // TODO: Remove in production
+        const fileSizeInMB = file.size / (1024 * 1024);
+        if (fileSizeInMB > 20) {
+          toast.error("For free aws tier, video size should be less than 20MB");
+          return;
+        }
+
         const formData = new FormData();
         formData.append("file", file);
 

@@ -26,7 +26,15 @@ const VideoUploader: React.FC<Props> = ({
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
     const file = e.target.files?.[0];
+
     if (file) {
+      // TODO: Remove in production
+      const fileSizeInMB = file.size / (1024 * 1024);
+      if (fileSizeInMB > 20) {
+        toast.error("For free aws tier, video size should be less than 20MB");
+        return;
+      }
+
       setUploading(true);
       calculateDuration({ file, setDuration: setVideoDuration });
 
