@@ -3,10 +3,8 @@ import { useLocation } from "react-router-dom";
 import { FaEdit as PrimaryDashboardIcon } from "react-icons/fa";
 
 import { ChevronDown } from "lucide-react";
-import {
-  MdDashboard as DashboardIcon,
-  MdDescription as PageIcon,
-} from "react-icons/md";
+import { MdDashboard as DashboardIcon } from "react-icons/md";
+import { FaLink as PageIcon } from "react-icons/fa";
 import { RiEditBoxLine as ContentIcon } from "react-icons/ri";
 import { FaList as ListIcon } from "react-icons/fa";
 import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
@@ -96,18 +94,6 @@ function AppSidebar() {
     },
 
     {
-      name: "Pages",
-      Icon: PageIcon,
-      hasSubMenu: true,
-      subMenuItems: [
-        {
-          name: "Pages",
-          Icon: ListIcon,
-          path: "/static-pages",
-        },
-      ],
-    },
-    {
       name: "Primary Dashboard",
       Icon: PrimaryDashboardIcon,
       path: "/primary-dashboard",
@@ -127,6 +113,11 @@ function AppSidebar() {
     //   Icon: CommentIcon,
     //   path: "/comment",
     // },
+    {
+      name: "Quick Links",
+      Icon: PageIcon,
+      path: "/static-pages",
+    },
     {
       name: "Queries",
       Icon: QueryIcon,

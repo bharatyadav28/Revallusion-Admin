@@ -11,12 +11,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { submoduleType } from "@/lib/interfaces-types";
-import { AddButton, UpdateButton } from "../common/Inputs";
+import { UpdateButton } from "../common/Inputs";
 import VideosList from "../common/VideosList";
 import { ExpandButton } from "../common/Inputs";
 import { dialogDataType } from "@/pages/course-management/EditCourse";
-
-import SubmoduleExtraContent from "./SubmoduleExtraContent";
 
 interface Props {
   data: submoduleType[];
@@ -35,18 +33,9 @@ function SubmoduleList({
 }: Props) {
   // Expand submodule id
   const [showSubmoduleId, setShowSubmoduleId] = useState<string | null>(null);
-  const [openAssignments, setOpenAssignments] = useState(false);
-  const [assignmentsubmoduleId, setAssignmentsubmoduleId] = useState<
-    string | null
-  >(null);
-  const [assignmentsubmoduleName, setAssignmentsubmoduleName] = useState<
-    string | null
-  >(null);
 
   // Sort data by sequence
   const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
-
-  const handleOpenAssignment = () => [setOpenAssignments((prev) => !prev)];
 
   return (
     <>
@@ -125,14 +114,6 @@ function SubmoduleList({
                             });
                           }}
                         />
-                        <AddButton
-                          className="!bg-[var(--golden)] !hover:bg-[var(--dark-golden)]"
-                          handleClick={() => {
-                            handleOpenAssignment();
-                            setAssignmentsubmoduleId(submodule._id);
-                            setAssignmentsubmoduleName(submodule.name);
-                          }}
-                        />
                       </div>
                     </TableCell>
                   </TableRow>
@@ -156,17 +137,6 @@ function SubmoduleList({
           </Table>
         </TableCell>
       </motion.tr>
-
-      {assignmentsubmoduleId && (
-        <SubmoduleExtraContent
-          open={openAssignments}
-          handleOpen={handleOpenAssignment}
-          submodule={assignmentsubmoduleId || ""}
-          submoduleName={assignmentsubmoduleName || ""}
-          courseId={courseId}
-          moduleId={moduleId}
-        />
-      )}
     </>
   );
 }

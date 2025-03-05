@@ -32,56 +32,6 @@ export const assignmentApi = createApi({
   }),
   tagTypes: ["Assignments", "SubmittedAssignments"],
   endpoints: (builder) => ({
-    // Fetch submodule assignments
-    getSubmoduleAssignments: builder.query<ResponseType, string>({
-      query: (submoduleId) => `assignment/submodule/${submoduleId}`,
-      providesTags: [{ type: "Assignments", id: "LIST" }],
-    }),
-
-    // Submit assignment
-    addAssignment: builder.mutation<
-      ResponseType,
-      {
-        name: string;
-        courseId: string;
-        submoduleId: string;
-        moduleId: string;
-        fileUrl: string;
-      }
-    >({
-      query: (assignment) => ({
-        url: `assignment`,
-        method: "POST",
-        body: { ...assignment },
-      }),
-
-      invalidatesTags: [{ type: "Assignments", id: "LIST" }],
-    }),
-
-    // Update assignment name
-    updateAssignmentName: builder.mutation<
-      ResponseType,
-      { name: string; id: string }
-    >({
-      query: ({ name, id }) => ({
-        url: `assignment/${id}`,
-        method: "PUT",
-        body: { name },
-      }),
-
-      invalidatesTags: [{ type: "Assignments", id: "LIST" }],
-    }),
-
-    // Delete assignment
-    deleteAssignment: builder.mutation<ResponseType, string>({
-      query: (id) => ({
-        url: `assignment/${id}`,
-        method: "DELETE",
-      }),
-
-      invalidatesTags: [{ type: "Assignments", id: "LIST" }],
-    }),
-
     // Get submitted assignments by course
     getSubmittedAssignments: builder.query<SubmittedResponseType, string>({
       query: (courseId) => `submitted-assignment/course/${courseId}`,
@@ -114,11 +64,6 @@ export const assignmentApi = createApi({
 });
 
 export const {
-  useGetSubmoduleAssignmentsQuery,
-  useAddAssignmentMutation,
-  useUpdateAssignmentNameMutation,
-  useDeleteAssignmentMutation,
-
   useGetSubmittedAssignmentsQuery,
   useUpdateAssignmentScoreMutation,
   useRevokeAssignmentMutation,
