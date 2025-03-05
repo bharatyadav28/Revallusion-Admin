@@ -63,21 +63,16 @@ function ViewDetails({ open, handleOpen, assigmentData }: Props) {
             <div className={itemClasses}>
               <div className={itemheading}>Recent submission</div>
               <div className="flex flex-col">
-                {assigmentData?.submittedFileUrls?.map((submission, index) => {
-                  return (
-                    <CustomButton
-                      className="bg-[#2C2C2C)] text-[#f1f1f1] hover:bg-[#3C3C3C] transition !px-2 "
-                      key={index}
-                      handleClick={() => {
-                        window.open(submission, "_blank");
-                      }}
-                    >
-                      <DownloadIcon size={5} className="mr-1" />{" "}
-                      {/* Download icon */}
-                      File {index + 1}
-                    </CustomButton>
-                  );
-                })}{" "}
+                <CustomButton
+                  className="bg-[#2C2C2C)] text-[#f1f1f1] hover:bg-[#3C3C3C] transition !px-2 "
+                  handleClick={() => {
+                    window.open(assigmentData?.submittedFileUrl, "_blank");
+                  }}
+                >
+                  <DownloadIcon size={5} className="mr-1" />{" "}
+                  {/* Download icon */}
+                  File
+                </CustomButton>
               </div>
             </div>
 

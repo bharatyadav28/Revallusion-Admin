@@ -182,9 +182,9 @@ export interface assignmentType {
 
 export interface SubmittedAssignmentType {
   _id: string;
-  assignment: {
+  video: {
     _id: string;
-    name: string;
+    title: string;
     module: {
       _id: string;
       name: string;
@@ -197,7 +197,7 @@ export interface SubmittedAssignmentType {
   score: number | null;
   gradedAt: string | null;
   submittedAt: string;
-  submittedFileUrls: string[];
+  submittedFileUrl: string;
   user: {
     _id: string;
     name: string;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 import { AnimatePresence } from "framer-motion";
 
@@ -44,7 +44,6 @@ function EditCourse() {
   const { id: courseId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   // Fetch course data
   const {
@@ -68,14 +67,8 @@ function EditCourse() {
 
   // Page title
   useEffect(() => {
-    dispatch(
-      replacePageName(
-        "Edit Course" +
-          " - " +
-          (location.state?.name || data?.data?.course?.title)
-      )
-    );
-  }, [location]);
+    dispatch(replacePageName("Edit Course"));
+  }, []);
 
   const course = data?.data?.course;
   const modules = course?.modules;
@@ -90,7 +83,7 @@ function EditCourse() {
 
   // Breadcumb list
   const breadcrumbList = {
-    currentPage: "Edit course",
+    currentPage: "Edit course - " + data?.data?.course?.title,
     pageTraces: [
       {
         name: "Courses management",

@@ -17,7 +17,7 @@ import {
   useGetSubmittedAssignmentsQuery,
   useRevokeAssignmentMutation,
 } from "@/store/apis/assignment-apis";
-import { formatDate, showError } from "@/lib/reusable-funs";
+import { showError } from "@/lib/reusable-funs";
 import { replacePageName } from "@/store/features/generalSlice";
 import { TableLoader } from "@/components/common/LoadingSpinner";
 import {
@@ -112,9 +112,8 @@ function SubmittedAssignments() {
 
   // Replace page name
   useEffect(() => {
-    const courseTitle = courseTitleData?.data?.course?.title || "";
-    dispatch(replacePageName("Submitted Assignments" + " - " + courseTitle));
-  }, [courseTitleData]);
+    dispatch(replacePageName("Submitted Assignments"));
+  }, []);
 
   const submittedAssignments = data?.data?.submittedAssignments || [];
 
@@ -154,7 +153,8 @@ function SubmittedAssignments() {
         href: "/course-management",
       },
       {
-        name: "Edit course",
+        name:
+          "Edit course" + " - " + (courseTitleData?.data?.course?.title || ""),
         href: "..",
       },
     ],
@@ -187,11 +187,11 @@ function SubmittedAssignments() {
           <TableCaption>A list of submitted assignments</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead>Assignment name</TableHead>
+              <TableHead>User Email</TableHead>
+              <TableHead>Video</TableHead>
               <TableHead>Tool</TableHead>
               <TableHead>Topic</TableHead>
               <TableHead>Files</TableHead>
-              <TableHead>Submitted on</TableHead>
               <TableHead>Score</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -202,31 +202,30 @@ function SubmittedAssignments() {
             {!isLoading &&
               submittedAssignments.map((subAssignment) => (
                 <TableRow key={subAssignment._id}>
-                  <TableCell>{subAssignment.assignment.name}</TableCell>
-                  <TableCell>{subAssignment.assignment.module.name}</TableCell>
-                  <TableCell>
-                    {subAssignment.assignment.submodule.name}
-                  </TableCell>
+                  <TableCell>{subAssignment.user.email}</TableCell>
+                  <TableCell>{subAssignment.video.title}</TableCell>
+                  <TableCell>{subAssignment.video.module.name}</TableCell>
+                  <TableCell>{subAssignment.video.submodule.name}</TableCell>
                   <TableCell>
                     <div className="flex flex-col gap-2">
-                      {subAssignment?.submittedFileUrls?.map((url, index) => (
+                      {
                         <CustomButton
                           className="bg-[#2C2C2C)] text-[#f1f1f1] hover:bg-[#3C3C3C] transition px-3"
                           handleClick={() => {
-                            window.open(url, "_blank");
+                            window.open(
+                              subAssignment?.submittedFileUrl,
+                              "_blank"
+                            );
                           }}
                         >
                           <DownloadIcon size={15} className="mr-2" />{" "}
                           {/* Download icon */}
-                          Download file {index + 1}
+                          Download file
                         </CustomButton>
-                      ))}
+                      }
                     </div>
                   </TableCell>
 
-                  <TableCell>
-                    {formatDate(subAssignment.submittedAt).split(",")[0]}
-                  </TableCell>
                   <TableCell>{subAssignment.score}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
