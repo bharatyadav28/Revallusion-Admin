@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { courseType } from "@/lib/interfaces-types";
+import libraryApi from "./library-apis";
 
 interface ResponseType {
   data: {
@@ -65,6 +66,15 @@ export const courseApi = createApi({
       invalidatesTags: (_, __, { courseId }) => [
         { type: "Course", id: courseId },
       ],
+
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(
+            libraryApi.util.invalidateTags([{ type: "Videos", id: "LIST" }])
+          );
+        } catch {}
+      },
     }),
 
     // Add module
@@ -127,6 +137,15 @@ export const courseApi = createApi({
       invalidatesTags: (_, __, { courseId }) => [
         { type: "Course", id: courseId },
       ],
+
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(
+            libraryApi.util.invalidateTags([{ type: "Videos", id: "LIST" }])
+          );
+        } catch {}
+      },
     }),
 
     deleteSubmodule: builder.mutation<
@@ -140,6 +159,15 @@ export const courseApi = createApi({
       invalidatesTags: (_, __, { courseId }) => [
         { type: "Course", id: courseId },
       ],
+
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(
+            libraryApi.util.invalidateTags([{ type: "Videos", id: "LIST" }])
+          );
+        } catch {}
+      },
     }),
 
     // update video sequence

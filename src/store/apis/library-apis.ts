@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { courseType, videoType } from "@/lib/interfaces-types";
+import courseApi from "./course-apis";
 
 interface ResponseType {
   data: {
@@ -34,6 +35,13 @@ export const libraryApi = createApi({
       }),
 
       invalidatesTags: [{ type: "Videos", id: "LIST" }],
+
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(courseApi.util.invalidateTags([{ type: "Course" }]));
+        } catch {}
+      },
     }),
 
     // Update video
@@ -48,6 +56,13 @@ export const libraryApi = createApi({
       }),
 
       invalidatesTags: [{ type: "Videos", id: "LIST" }],
+
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(courseApi.util.invalidateTags([{ type: "Course" }]));
+        } catch {}
+      },
     }),
 
     // Delete video
@@ -58,13 +73,14 @@ export const libraryApi = createApi({
       }),
 
       invalidatesTags: [{ type: "Videos", id: "LIST" }],
-    }),
 
-    // get video list
-    // getVideoList: builder.query<ResponseType, string>({
-    //   query: (searchQuery) => `list?${searchQuery}`,
-    //   providesTags: [{ type: "VideoList", id: "LIST" }],
-    // })
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(courseApi.util.invalidateTags([{ type: "Course" }]));
+        } catch {}
+      },
+    }),
 
     // Get video list
     getVideoList: builder.mutation<
