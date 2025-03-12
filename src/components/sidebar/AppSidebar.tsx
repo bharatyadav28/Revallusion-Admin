@@ -41,7 +41,7 @@ function AppSidebar() {
       path: "/",
     },
     {
-      name: "Content Management",
+      name: "Landing Page",
       Icon: ContentIcon,
       hasSubMenu: true,
       subMenuItems: [
@@ -114,7 +114,7 @@ function AppSidebar() {
     //   path: "/comment",
     // },
     {
-      name: "Quick Links",
+      name: "Quick Links - CMS",
       Icon: PageIcon,
       path: "/static-pages",
     },
