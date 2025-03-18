@@ -41,6 +41,7 @@ import Comment from "./pages/Comment";
 import PrimaryDashboard from "./pages/PrimaryDashboard";
 import UsersList from "./pages/users/UsersList";
 import UsersDetails from "./pages/users/UsersDetails";
+import Transactions from "./pages/Transactions";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -111,6 +112,8 @@ function App() {
             <Route index element={<UsersList />} />
             <Route path=":id" element={<UsersDetails />} />
           </Route>
+
+          <Route path="transactions" element={<Transactions />} />
 
           <Route path="/primary-dashboard" element={<PrimaryDashboard />} />
 

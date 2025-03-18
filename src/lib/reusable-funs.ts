@@ -40,13 +40,13 @@ export function formatDate(isoDate: string): string {
     month: "2-digit",
     day: "2-digit",
     year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
     hour12: true,
+    timeZone: "UTC",
   };
   return new Intl.DateTimeFormat("en-GB", options).format(date);
 }
-
 // Formate String to Date short/long format
 export const convertToDate = (
   date: string | undefined,

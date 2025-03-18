@@ -40,15 +40,15 @@ function UserTransactions({ transactions, plansMapping }: Props) {
                 <TableCell>{transaction.payment_id}</TableCell>
                 <TableCell>{convertToDate(transaction.createdAt)}</TableCell>
                 <TableCell>
-                  <span
+                  <div
                     className={`${
                       transaction.status === "Completed"
                         ? "green-button"
                         : "red-button"
-                    } py-1 px-2 rounded-sm text-sm`}
+                    } py-1 px-2 rounded-sm text-sm w-[6rem] text-center`}
                   >
                     {transaction.status}
-                  </span>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

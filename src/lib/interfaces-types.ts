@@ -249,6 +249,11 @@ export interface transactionType {
   status: string;
   createdAt: string;
   plan: string;
+  user?: {
+    _id: string;
+    name?: string;
+    email: string;
+  };
 }
 
 // Users management

@@ -29,7 +29,7 @@ import {
 import { useGetPlansQuery } from "@/store/apis/content-mangement/plans-apis";
 import { showError } from "@/lib/reusable-funs";
 import { userDetailsType } from "@/lib/interfaces-types";
-import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
+import { TableLoader } from "@/components/common/LoadingSpinner";
 import CustomPagination from "@/components/common/CustomPagination";
 import EmptyValue from "@/components/common/EmptyValue";
 import UserForm from "@/components/users/UserForm";
@@ -108,6 +108,7 @@ function UsersList() {
   }, [search]);
 
   const totalPages = data?.data?.pagesCount || 1;
+  const isPageLoading = isLoading || isPlansLoading;
 
   return (
     <>
@@ -146,39 +147,41 @@ function UsersList() {
           </TableHeader>
 
           <TableBody>
-            {data?.data?.users?.map((user: userDetailsType) => (
-              <TableRow key={user._id}>
-                <TableCell>{user.name || <EmptyValue />}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.mobile || <EmptyValue />}</TableCell>
+            {isPageLoading && <TableLoader colSpan={4} />}
+            {!isPageLoading &&
+              data?.data?.users?.map((user: userDetailsType) => (
+                <TableRow key={user._id}>
+                  <TableCell>{user.name || <EmptyValue />}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.mobile || <EmptyValue />}</TableCell>
 
-                <TableCell>
-                  <div className="flex gap-2">
-                    <ViewButton
-                      handleClick={() => {
-                        navigate(`/users/${user._id}`);
-                      }}
-                    />
-                    <UpdateButton
-                      handleClick={() => {
-                        setOpenSheet(true);
-                        setSelectedUser(user);
-                        //   setOpen(true);
-                        //   setUpdateId(String(index));
-                      }}
-                    />
-                    <DeleteButton
-                      className="ml-0"
-                      handleClick={() => {
-                        handleDeleteDialog();
-                        setSelectedUser(user);
-                      }}
-                      isDeleting={false}
-                    />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <ViewButton
+                        handleClick={() => {
+                          navigate(`/users/${user._id}`);
+                        }}
+                      />
+                      <UpdateButton
+                        handleClick={() => {
+                          setOpenSheet(true);
+                          setSelectedUser(user);
+                          //   setOpen(true);
+                          //   setUpdateId(String(index));
+                        }}
+                      />
+                      <DeleteButton
+                        className="ml-0"
+                        handleClick={() => {
+                          handleDeleteDialog();
+                          setSelectedUser(user);
+                        }}
+                        isDeleting={false}
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
         {totalPages > 1 && (
@@ -208,12 +211,6 @@ function UsersList() {
         onConfirm={handleUserDelete}
         isDeleting={isDeleting}
       />
-
-      {(isLoading || isPlansLoading) && (
-        <div>
-          <PageLoadingSpinner />
-        </div>
-      )}
     </>
   );
 }

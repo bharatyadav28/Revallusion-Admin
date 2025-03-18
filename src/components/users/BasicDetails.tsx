@@ -27,7 +27,9 @@ function BasicDetails({ user, activeOrder, plansMapping }: Props) {
             <div className="mt-2 text-gray-400 ">
               Email Address: {user?.email}
             </div>
-            <div className=" text-gray-400">Mobile Number: {user?.mobile}</div>
+            <div className=" text-gray-400">
+              Mobile Number: {user?.mobile || "NA"}
+            </div>
           </div>
         </div>
 
