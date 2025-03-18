@@ -68,3 +68,7 @@ td {
 input[type="date"] {
   accent-color: red; /* Changes highlight color */
 }
+
+.plan-container {
+  @apply flex items-center gap-4 w-full p-2 px-4 rounded-lg bg-[#34343a] hover:scale-105 transition-all ease-out duration-300 cursor-pointer;
+}

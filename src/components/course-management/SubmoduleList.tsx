@@ -59,7 +59,6 @@ function SubmoduleList({
 
         handleDeleteDialog();
         setSelectedSubmodule(null);
-        console.log("Response", response);
         toast.success(response.message);
       }
     } catch (error) {

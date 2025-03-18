@@ -58,7 +58,7 @@ function VideosList({
 
       <TableBody>
         {sortedData?.map((video) => (
-          <TableRow className="!hover:bg-blue-500 dfdf  s" key={video?._id}>
+          <TableRow className="!hover:bg-blue-500" key={video?._id}>
             <TableCell className="font-medium">{video?.title}</TableCell>
             <TableCell className="font-medium">{video?.description}</TableCell>
             <TableCell className="font-medium ">

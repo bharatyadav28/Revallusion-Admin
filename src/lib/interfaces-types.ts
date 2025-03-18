@@ -234,3 +234,25 @@ export interface dashboardSectionType {
   name: string;
   videos: [videoType];
 }
+
+export interface orderType {
+  _id: string;
+  plan: string;
+  expiry_date: string;
+}
+
+export interface transactionType {
+  _id: string;
+  payment_id: string;
+  gateway: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+  plan: string;
+}
+
+// Users management
+export interface userDetailsType extends userType {
+  transactions: transactionType[];
+  plan?: null;
+}

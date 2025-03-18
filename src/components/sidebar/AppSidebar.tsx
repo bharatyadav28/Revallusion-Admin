@@ -10,6 +10,7 @@ import { FaList as ListIcon } from "react-icons/fa";
 import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
 import { HiLibrary as LibraryIcon } from "react-icons/hi";
 import { GiBookshelf as CourseIcon } from "react-icons/gi";
+import { FaUsers as UsersIcon } from "react-icons/fa";
 
 // import { FaCommentDots as CommentIcon } from "react-icons/fa6";
 
@@ -108,11 +109,11 @@ function AppSidebar() {
       Icon: CourseIcon,
       path: "/course-management",
     },
-    // {
-    //   name: "User Comments",
-    //   Icon: CommentIcon,
-    //   path: "/comment",
-    // },
+    {
+      name: "Users Mangement",
+      Icon: UsersIcon,
+      path: "/users",
+    },
     {
       name: "Quick Links - CMS",
       Icon: PageIcon,

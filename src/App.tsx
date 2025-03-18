@@ -39,6 +39,8 @@ import Curriculum from "./pages/content-pages/Curriculum";
 import SubmittedAssignments from "./pages/course-management/SubmittedAssignments";
 import Comment from "./pages/Comment";
 import PrimaryDashboard from "./pages/PrimaryDashboard";
+import UsersList from "./pages/users/UsersList";
+import UsersDetails from "./pages/users/UsersDetails";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -103,6 +105,11 @@ function App() {
           <Route path="/queries">
             <Route index element={<QueriesList />} />
             <Route path=":id" element={<QueryDetails />} />
+          </Route>
+
+          <Route path="/users">
+            <Route index element={<UsersList />} />
+            <Route path=":id" element={<UsersDetails />} />
           </Route>
 
           <Route path="/primary-dashboard" element={<PrimaryDashboard />} />
