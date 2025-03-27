@@ -43,9 +43,9 @@ export function formatDate(isoDate: string): string {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
-    timeZone: "UTC",
+    timeZone: "Asia/Kolkata",
   };
-  return new Intl.DateTimeFormat("en-GB", options).format(date);
+  return new Intl.DateTimeFormat("en-IN", options).format(date);
 }
 // Formate String to Date short/long format
 export const convertToDate = (
