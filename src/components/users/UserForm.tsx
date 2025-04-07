@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import CustomSheet from "../common/CustomSheet";
 import {
   CustomButton,
+  CustomCheckBox,
   CustomInput,
   CustomSelectSeperate,
 } from "@/components/common/Inputs";
@@ -14,6 +15,7 @@ import {
 import { showError } from "@/lib/reusable-funs";
 import toast from "react-hot-toast";
 import { LoadingSpinner } from "../common/LoadingSpinner";
+import { issuedCertificatesType } from "@/lib/interfaces-types";
 
 interface Props {
   open: boolean;
@@ -22,12 +24,16 @@ interface Props {
   user: userDetailsType | null;
   setUser: React.Dispatch<React.SetStateAction<userDetailsType | null>>;
 }
+
 function UserForm({ open, handleOpen, plans, user }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [plan, setPlan] = useState("");
   const [newPlan, setNewPlan] = useState("");
+  const [issuedCertificates, setIssuedCertficates] = useState<
+    issuedCertificatesType[] | null
+  >(null);
 
   const [addUser, { isLoading: isAdding }] = useAddUserMutation();
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
@@ -51,6 +57,7 @@ function UserForm({ open, handleOpen, plans, user }: Props) {
           _id: user?._id,
           isPlanUpdated,
           plan: plan === "noPlan" ? "" : plan,
+          issuedCertificates,
         },
         id: user._id,
       });
@@ -71,6 +78,21 @@ function UserForm({ open, handleOpen, plans, user }: Props) {
     }
   };
 
+  const handleCertificateUpdate = (planId: string) => {
+    setIssuedCertficates((prev) => {
+      if (prev) {
+        const updatedItems = prev.map((item) => {
+          if (item._id === planId) {
+            return { ...item, certificate: !item.certificate };
+          }
+          return item;
+        });
+        return updatedItems;
+      }
+      return null;
+    });
+  };
+
   useEffect(() => {
     if (user) {
       setName(user?.name || "");
@@ -82,6 +104,28 @@ function UserForm({ open, handleOpen, plans, user }: Props) {
       setName(""), setEmail(""), setMobile(""), setPlan("noPlan");
     }
   }, [user]);
+
+  useEffect(() => {
+    const userCertificates = user?.certificates;
+
+    const restructuredPlans =
+      plans?.map((plan) => ({
+        _id: plan._id,
+        plan_type: plan.plan_type,
+        level: plan.level,
+        certificate: false,
+      })) || null;
+
+    userCertificates?.forEach((certificate) => {
+      restructuredPlans?.forEach((plan) => {
+        if (certificate.plan === plan._id) {
+          plan.certificate = true;
+        }
+      });
+    });
+
+    setIssuedCertficates(restructuredPlans);
+  }, [plans, user]);
 
   const plansReformat =
     plans?.map((plan) => {
@@ -95,7 +139,7 @@ function UserForm({ open, handleOpen, plans, user }: Props) {
 
   return (
     <CustomSheet open={open} handleOpen={handleOpen}>
-      <div className="uppercase text-lg">{user ? "Add" : "Edit" + " User"}</div>
+      <div className="uppercase text-lg">{user ? "Edit" : "Add" + " User"}</div>
       <div className="main-container mt-4">
         <div className="input-container">
           <div className="label">Name</div>
@@ -144,6 +188,29 @@ function UserForm({ open, handleOpen, plans, user }: Props) {
             />
           </div>
         </div>
+
+        {user && (
+          <div className="input-container">
+            <div className="label">Certificates</div>
+            <div className="user-input">
+              <div className="flex gap-4">
+                {issuedCertificates?.map((item) => {
+                  return (
+                    <div className="flex gap-2 item-center mb-0">
+                      <div>
+                        <CustomCheckBox
+                          value={item.certificate}
+                          onChange={() => handleCertificateUpdate(item._id)}
+                        />
+                      </div>
+                      <div>{item.plan_type}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
 
         <CustomButton
           className="purple-button mt-2 lg:ml-[17.3rem]"

@@ -1,5 +1,7 @@
-import { orderType, userDetailsType } from "@/lib/interfaces-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+import { orderType, userDetailsType } from "@/lib/interfaces-types";
+import { issuedCertificatesType } from "@/lib/interfaces-types";
 
 interface ResponseType {
   message: string;
@@ -25,6 +27,7 @@ interface addUserType {
   mobile: string;
   plan?: string;
   isPlanUpdated?: boolean;
+  issuedCertificates?: issuedCertificatesType[] | null;
 }
 
 export const usersApi = createApi({

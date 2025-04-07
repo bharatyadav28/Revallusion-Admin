@@ -56,6 +56,7 @@ export interface planType {
   plan_type: string;
   inr_price: string;
   validity: number;
+  level?: number;
 }
 
 export interface moduleType {
@@ -256,8 +257,23 @@ export interface transactionType {
   };
 }
 
+interface CertficateType {
+  _id: string;
+  plan: string;
+  user: string;
+  path: string;
+}
+
 // Users management
 export interface userDetailsType extends userType {
   transactions: transactionType[];
   plan?: null;
+  certificates?: CertficateType[];
+}
+
+export interface issuedCertificatesType {
+  _id: string;
+  plan_type: string;
+  level?: number;
+  certificate: boolean;
 }
