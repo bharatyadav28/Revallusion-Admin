@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import CountUp from "react-countup";
 
 // import WorkInProgress from "@/components/common/WorkInProgress";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
