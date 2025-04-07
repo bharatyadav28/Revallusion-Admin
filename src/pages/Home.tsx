@@ -79,7 +79,7 @@ function Home() {
   return (
     <div className="mt-2">
       {!isLoading && (
-        <div className=" grid grid-cols-4 gap-4">
+        <div className="grid md:grid-cols-4  grid-cols-2 gap-4">
           {dataList?.map((item, index) => (
             <DashboardItem
               key={item.name}
