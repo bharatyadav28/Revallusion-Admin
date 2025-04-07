@@ -21,6 +21,7 @@ import commentApi from "./apis/comment-apis";
 import primaryDashboardApi from "./apis/primary-dashboard-apis";
 import usersApi from "./apis/users-apis";
 import transactionsApi from "./apis/transactions-apis";
+import dashboardApi from "./apis/dashboard-apis";
 
 export const store = configureStore({
   reducer: {
@@ -44,6 +45,7 @@ export const store = configureStore({
     [primaryDashboardApi.reducerPath]: primaryDashboardApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [transactionsApi.reducerPath]: transactionsApi.reducer,
+    [dashboardApi.reducerPath]: dashboardApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -66,7 +68,8 @@ export const store = configureStore({
       .concat(commentApi.middleware)
       .concat(primaryDashboardApi.middleware)
       .concat(usersApi.middleware)
-      .concat(transactionsApi.middleware),
+      .concat(transactionsApi.middleware)
+      .concat(dashboardApi.middleware),
 
   devTools: process.env.NODE_ENV !== "production",
 

@@ -277,3 +277,19 @@ export interface issuedCertificatesType {
   level?: number;
   certificate: boolean;
 }
+
+export interface dashboardType {
+  usersCount: number;
+  activeOrder: {
+    usersCount: number;
+    planName: string;
+  }[];
+  plansUpgraded: number;
+  queries: number;
+  revenues: {
+    daily: number;
+    weekly: number;
+    monthly: number;
+    yearly: number;
+  };
+}
