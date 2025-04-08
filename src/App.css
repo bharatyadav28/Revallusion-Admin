@@ -72,3 +72,7 @@ input[type="date"] {
 .plan-container {
   @apply flex items-center gap-4 w-full p-2 px-4 rounded-lg bg-[#34343a] hover:scale-105 transition-all ease-out duration-300 cursor-pointer;
 }
+
+.sub-heading {
+  @apply text-semibold text-[0.9rem];
+}

@@ -204,7 +204,12 @@ export interface SubmittedAssignmentType {
     name: string;
     email: string;
   };
-  revokedSubmissions: string[];
+  revokedSubmissions: {
+    submittedAt: string;
+    submittedFileUrl: string;
+    score: number;
+    revokedAt: string;
+  }[];
 }
 
 export interface ResourceType {
