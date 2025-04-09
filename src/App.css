@@ -74,5 +74,5 @@ input[type="date"] {
 }
 
 .sub-heading {
-  @apply text-semibold text-[0.9rem];
+  @apply font-semibold text-[0.9rem];
 }

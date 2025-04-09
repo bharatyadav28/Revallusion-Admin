@@ -142,7 +142,7 @@ function Transactions() {
               <TableHead>Email</TableHead>
               <TableHead>Plan</TableHead>
               <TableHead>Amount</TableHead>
-              <TableHead>Payment Id</TableHead>
+              {/* <TableHead>Payment Id</TableHead> */}
               <TableHead>Date & Time</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
@@ -168,7 +168,12 @@ function Transactions() {
                   </TableCell>
                   <TableCell>{plansMap.get(transaction.plan)}</TableCell>
                   <TableCell>{transaction.amount}</TableCell>
-                  <TableCell>{transaction.payment_id}</TableCell>
+                  {/* <TableCell>
+                    {" "}
+                    <div className="max-w-[10rem] text-wrap break-all">
+                      {transaction.payment_id}
+                    </div> 
+                  </TableCell> */}
                   <TableCell>{formatDate(transaction.createdAt)}</TableCell>
                   <TableCell>
                     <div
