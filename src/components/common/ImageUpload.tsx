@@ -12,12 +12,14 @@ interface Props {
   setImageSrc: React.Dispatch<React.SetStateAction<string>>;
   alt?: string;
   className?: string;
+  folder?: string;
 }
 const ImageUploader: React.FC<Props> = ({
   imageSrc,
   setImageSrc,
   alt,
   className,
+  folder,
 }) => {
   const [uploading, setUploading] = useState<boolean>(false);
 
@@ -33,6 +35,7 @@ const ImageUploader: React.FC<Props> = ({
         const formData = new FormData();
         formData.append("file", file);
         if (alt) formData.append("type", alt);
+        if (folder) formData.append("folder", folder);
 
         // Upload to backend
         const response = await fetch("/api/v1/admin/upload-image", {

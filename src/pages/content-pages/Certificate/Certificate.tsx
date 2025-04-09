@@ -98,6 +98,7 @@ function Certificate() {
               imageSrc={image}
               setImageSrc={setImage}
               alt="certificate"
+              folder="Thumbnails"
             />
           </div>
         </div>

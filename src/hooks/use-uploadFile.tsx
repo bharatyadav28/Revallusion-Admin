@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
-function useUploadFile() {
+function useUploadFile(folder?: string) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const [fileSrc, setFileSrc] = useState<string>("");
@@ -23,6 +23,7 @@ function useUploadFile() {
 
         const formData = new FormData();
         formData.append("file", file);
+        if (folder) formData.append("folder", folder);
 
         // Get url to upload
         const response = await fetch("/api/v1/admin/upload-file", {

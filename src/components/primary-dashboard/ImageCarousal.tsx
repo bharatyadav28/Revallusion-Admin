@@ -86,6 +86,7 @@ const ImageCarousal = () => {
         // Prepare FormData
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("folder", "Dashboard");
 
         // Upload to backend
         const response = await fetch("/api/v1/admin/upload-image", {

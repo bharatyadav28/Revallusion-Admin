@@ -53,7 +53,7 @@ function AddEditVideo() {
     handleFileUpload,
     triggerFileUpload,
     setFileSrc,
-  } = useUploadFile();
+  } = useUploadFile("assignments");
 
   const [
     addVideo,
