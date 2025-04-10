@@ -11,7 +11,7 @@ function CustomDrawer({ open, handleOpen, children, className }: Props) {
   return (
     <Drawer open={open} onOpenChange={handleOpen}>
       <DrawerContent
-        className={`md:w-[calc(100%-16.5rem) md:ml-[16.5rem] ${className}`}
+        className={`md:w-[calc(100%-16.5rem) md:ml-[17.5rem] md:mr-6 ${className}`}
       >
         {children}
       </DrawerContent>

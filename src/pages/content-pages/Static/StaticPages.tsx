@@ -37,14 +37,14 @@ function StaticPages() {
     <>
       <div className="main-container">
         <Table className="custom-table">
-          <TableCaption>A list of static pages</TableCaption>
+          <TableCaption>A list of quick links</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Page Title</TableHead>
-              <TableHead className="">Description</TableHead>
-              <TableHead className="">Status</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Status</TableHead>
 
-              <TableHead className="">Action</TableHead>
+              <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -57,7 +57,9 @@ function StaticPages() {
                 </TableCell>
                 <TableCell className="text-center w-[6rem]">
                   <CustomButton
-                    className="green-button w-[5rem]"
+                    className={`${
+                      page.status === "Inactive" ? "red-button" : "green-button"
+                    } w-[5rem]`}
                     handleClick={() => {}}
                   >
                     {page.status}

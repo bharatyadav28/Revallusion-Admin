@@ -139,7 +139,9 @@ function UserForm({ open, handleOpen, plans, user }: Props) {
 
   return (
     <CustomSheet open={open} handleOpen={handleOpen}>
-      <div className="uppercase text-lg">{user ? "Edit" : "Add" + " User"}</div>
+      <div className="uppercase text-lg">
+        {(user ? "Edit" : "Create") + " User"}
+      </div>
       <div className="main-container mt-4">
         <div className="input-container">
           <div className="label">Name</div>

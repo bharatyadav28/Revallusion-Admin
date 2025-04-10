@@ -20,6 +20,7 @@ import { formatDate, showError } from "@/lib/reusable-funs";
 import { TableLoader } from "@/components/common/LoadingSpinner";
 import CustomPagination from "@/components/common/CustomPagination";
 import EmptyValue from "@/components/common/EmptyValue";
+import { EmptyTable } from "@/components/common/EmptyTable";
 
 // import DeleteQuery from "./DeleteQuery";
 
@@ -83,6 +84,7 @@ function Transactions() {
   });
 
   const isDataLoading = isFetching || isPlansLoading;
+  const noTransactions = data?.data?.transactions.length === 0;
 
   return (
     <>
@@ -149,7 +151,10 @@ function Transactions() {
           </TableHeader>
 
           <TableBody>
-            {isDataLoading && <TableLoader colSpan={7} />}
+            {isDataLoading && <TableLoader colSpan={6} />}
+            {!isDataLoading && noTransactions && (
+              <EmptyTable colSpan={6} text="No transaction found" />
+            )}
 
             {!isDataLoading &&
               data?.data?.transactions?.map((transaction) => (

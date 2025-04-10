@@ -136,7 +136,7 @@ function UsersList() {
         </div>
 
         <Table className="custom-table">
-          <TableCaption>A list of user queries</TableCaption>
+          <TableCaption>A list of users</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>

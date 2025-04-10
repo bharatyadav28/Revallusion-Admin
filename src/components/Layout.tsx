@@ -27,7 +27,7 @@ function SidebarLayout() {
       <main className="ps-6 pr-6 w-full h-screen flex flex-col">
         <Header />
 
-        <div className="relative flex-grow overflow-auto pb-4 ">
+        <div className="relative flex-grow pb-4 ">
           <Outlet />
         </div>
       </main>

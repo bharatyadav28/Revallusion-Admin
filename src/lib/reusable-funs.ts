@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
+
 import { videoDurationType } from "./interfaces-types";
 
 // Show error toast
