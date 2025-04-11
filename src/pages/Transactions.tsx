@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { SearchIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { FaFileInvoice as InvoiceIcon } from "react-icons/fa";
 
 import {
   Table,
@@ -147,13 +148,14 @@ function Transactions() {
               {/* <TableHead>Payment Id</TableHead> */}
               <TableHead>Date & Time</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Invoice</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {isDataLoading && <TableLoader colSpan={6} />}
+            {isDataLoading && <TableLoader colSpan={7} />}
             {!isDataLoading && noTransactions && (
-              <EmptyTable colSpan={6} text="No transaction found" />
+              <EmptyTable colSpan={7} text="No transaction found" />
             )}
 
             {!isDataLoading &&
@@ -190,6 +192,23 @@ function Transactions() {
                     >
                       {transaction.status}
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <button
+                      className={`p-0 m-0 ${
+                        !transaction?.invoice_url ? "cursor-not-allowed" : ""
+                      } `}
+                      onClick={() => {
+                        if (!transaction?.invoice_url) return;
+                        window.open(
+                          transaction?.invoice_url,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                      }}
+                    >
+                      <InvoiceIcon size={25} className="" />
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}

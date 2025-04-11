@@ -260,6 +260,7 @@ export interface transactionType {
     name?: string;
     email: string;
   };
+  invoice_url?: string;
 }
 
 interface CertficateType {
