@@ -41,7 +41,18 @@ function VideosList({
   className,
 }: Props) {
   // Sort data by sequence
-  const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
+  // const sortedData = [...data].sort((a, b) => {
+  //   const aIsActive = a.isActive ?? false;
+  //   const bIsActive = b.isActive ?? false;
+
+  //   if (aIsActive === bIsActive) {
+  //     return a.sequence - b.sequence;
+  //   }
+
+  //   return Number(bIsActive) - Number(aIsActive);
+  // });
+
+  const sortedData = data;
 
   const MainTable = (
     <Table className={`custom-table  w-full ${className}`}>

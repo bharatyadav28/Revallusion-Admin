@@ -94,7 +94,7 @@ function EditCourse() {
 
   return (
     <>
-      {!course?.isFree && <CustomBreadcumb list={breadcrumbList} />}
+      {<CustomBreadcumb list={breadcrumbList} />}
       {/* Paid course */}
       {!course?.isFree && (
         <div className="main-container">
@@ -211,12 +211,15 @@ function EditCourse() {
 
       {/* Free course */}
       {course?.isFree && (
-        <VideosList
-          data={course?.freeVideos}
-          handleOpenDialog={handleOpenDialog}
-          setDialogData={setDialogData}
-          courseId={course?._id}
-        />
+        <div className="main-container">
+          <VideosList
+            data={course?.freeVideos}
+            handleOpenDialog={handleOpenDialog}
+            setDialogData={setDialogData}
+            courseId={course?._id}
+            className="bg-[hsl(var(--border))]"
+          />
+        </div>
       )}
 
       {/* Dialog box */}

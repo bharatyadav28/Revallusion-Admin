@@ -69,7 +69,9 @@ function SubmoduleList({
   };
 
   // Sort data by sequence
-  const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
+  // const sortedData = [...data]?.sort((a, b) => a.sequence - b.sequence);
+
+  const sortedData = data;
 
   return (
     <>
