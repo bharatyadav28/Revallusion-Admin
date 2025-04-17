@@ -11,7 +11,7 @@ import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
 import { HiLibrary as LibraryIcon } from "react-icons/hi";
 import { GiBookshelf as CourseIcon } from "react-icons/gi";
 import { FaUsers as UsersIcon } from "react-icons/fa";
-
+import { FaTrophy as LeaderboardIcon } from "react-icons/fa";
 import { MdReceiptLong as TransactionIcon } from "react-icons/md";
 
 // import { FaCommentDots as CommentIcon } from "react-icons/fa6";
@@ -116,10 +116,16 @@ function AppSidebar() {
       Icon: UsersIcon,
       path: "/users",
     },
+
     {
       name: "Transactions",
       Icon: TransactionIcon,
       path: "/transactions",
+    },
+    {
+      name: "Leader Board",
+      Icon: LeaderboardIcon,
+      path: "/leader-board",
     },
     {
       name: "Quick Links - CMS",

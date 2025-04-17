@@ -299,3 +299,15 @@ export interface dashboardType {
     yearly: number;
   };
 }
+
+export interface LeaderBoardItemType {
+  _id: string;
+  user: {
+    _id: string;
+    email: string;
+    name: string;
+  };
+  scoresSum: number;
+  averageAssigmentsScore: string;
+  createdAt: string;
+}

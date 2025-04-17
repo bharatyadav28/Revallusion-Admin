@@ -1,5 +1,3 @@
-// View all user queries
-
 import { useState, useEffect } from "react";
 import { SearchIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
