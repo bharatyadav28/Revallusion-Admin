@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { CgProfile as ProfileIcon } from "react-icons/cg";
+import { HiOutlineCog as SettingsIcon } from "react-icons/hi";
 import { useLogoutQueryMutation } from "@/store/apis/auth.apis";
 import { showError } from "@/lib/reusable-funs";
 import { setUser, userInitalState } from "@/store/features/generalSlice";
@@ -16,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { PageLoadingSpinner } from "./common/LoadingSpinner";
+import GatewayButton from "./Gateway/GatewayButton";
 
 function Header() {
   const { pageName } = useAppSelector((state) => state.general);
@@ -68,18 +70,32 @@ function Header() {
         )}
         <div>{pageName} </div>
       </div>
-      <div className="hover:cursor-pointer">
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <ProfileIcon size={25} />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => navigate("/profile")}>
-              Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+
+      <div className="flex gap-16 items-center">
+        {/* <GatewayButton /> */}
+
+        <div className="hover:cursor-pointer">
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <ProfileIcon size={25} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                className="hover:cursor-pointer"
+                onClick={() => navigate("/profile")}
+              >
+                Profile
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className="hover:cursor-pointer"
+                onClick={handleLogout}
+              >
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       {isLoading && <PageLoadingSpinner />}
