@@ -311,3 +311,7 @@ export interface LeaderBoardItemType {
   averageAssigmentsScore: string;
   createdAt: string;
 }
+
+export interface AppConfigsType {
+  activeGateways: string[];
+}

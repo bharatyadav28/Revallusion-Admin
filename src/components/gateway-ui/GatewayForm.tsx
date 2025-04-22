@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomSheet from "../common/CustomSheet";
 import { CustomButton } from "../common/Inputs";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  useGetAppConfigsQuery,
+  useUpdateActiveGatewayMutation,
+} from "@/store/apis/app-congif-apis";
+import { showError } from "@/lib/reusable-funs";
+import { LoadingSpinner } from "../common/LoadingSpinner";
 
 interface PropsTypes {
   open: boolean;
@@ -11,7 +17,42 @@ interface PropsTypes {
 function GatewayForm({ open, handleOpen }: PropsTypes) {
   const [gateway, setGateway] = useState("Razorpay");
 
-  const handleSubmit = () => {};
+  const { data, error: LoadingError, isFetching } = useGetAppConfigsQuery();
+
+  const [
+    updateGateway,
+    { isLoading: isUpdating, error: updateError, data: updateData },
+  ] = useUpdateActiveGatewayMutation();
+
+  // Handle success
+  useEffect(() => {
+    if (data) {
+      setGateway(data?.data?.activeGateways[0]);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (updateData) {
+      setGateway(updateData?.message);
+    }
+  }, [updateData]);
+
+  // Handle errors
+  useEffect(() => {
+    if (LoadingError) {
+      showError(LoadingError);
+    }
+  }, [LoadingError]);
+
+  useEffect(() => {
+    if (updateError) {
+      showError(updateError);
+    }
+  }, [updateError]);
+
+  const handleSubmit = async () => {
+    await updateGateway([gateway]);
+  };
 
   return (
     <CustomSheet open={open} handleOpen={handleOpen} className="!w-[25rem]">
@@ -45,10 +86,9 @@ function GatewayForm({ open, handleOpen }: PropsTypes) {
         <CustomButton
           className="purple-button mt-8"
           handleClick={handleSubmit}
-          // disabled={isUpdating}
+          disabled={isUpdating || isFetching}
         >
-          Save
-          {/* {isUpdating ? <LoadingSpinner /> : "Save"} */}
+          {isUpdating || isFetching ? <LoadingSpinner /> : "Save"}
         </CustomButton>
       </div>
     </CustomSheet>

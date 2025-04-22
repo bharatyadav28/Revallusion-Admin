@@ -23,6 +23,7 @@ import usersApi from "./apis/users-apis";
 import transactionsApi from "./apis/transactions-apis";
 import dashboardApi from "./apis/dashboard-apis";
 import leaderBoardApi from "./apis/leaderboard-apis";
+import appConfigApi from "./apis/app-congif-apis";
 
 export const store = configureStore({
   reducer: {
@@ -48,6 +49,7 @@ export const store = configureStore({
     [transactionsApi.reducerPath]: transactionsApi.reducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,
     [leaderBoardApi.reducerPath]: leaderBoardApi.reducer,
+    [appConfigApi.reducerPath]: appConfigApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -72,7 +74,8 @@ export const store = configureStore({
       .concat(usersApi.middleware)
       .concat(transactionsApi.middleware)
       .concat(dashboardApi.middleware)
-      .concat(leaderBoardApi.middleware),
+      .concat(leaderBoardApi.middleware)
+      .concat(appConfigApi.middleware),
 
   devTools: process.env.NODE_ENV !== "production",
 
