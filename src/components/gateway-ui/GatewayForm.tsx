@@ -9,6 +9,7 @@ import {
 } from "@/store/apis/app-congif-apis";
 import { showError } from "@/lib/reusable-funs";
 import { LoadingSpinner } from "../common/LoadingSpinner";
+import toast from "react-hot-toast";
 
 interface PropsTypes {
   open: boolean;
@@ -33,7 +34,7 @@ function GatewayForm({ open, handleOpen }: PropsTypes) {
 
   useEffect(() => {
     if (updateData) {
-      setGateway(updateData?.message);
+      toast.success(updateData?.message);
     }
   }, [updateData]);
 
@@ -55,7 +56,11 @@ function GatewayForm({ open, handleOpen }: PropsTypes) {
   };
 
   return (
-    <CustomSheet open={open} handleOpen={handleOpen} className="!w-[25rem]">
+    <CustomSheet
+      open={open}
+      handleOpen={handleOpen}
+      className="!w-[25rem] !sm:w-full"
+    >
       <div className=" flex flex-col">
         <div className="text-xl font-semibold">Update Gateway</div>
         <div className="mt-2 text-gray-400">
