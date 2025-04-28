@@ -68,7 +68,7 @@ export default function CustomPagination({
 
   return (
     <Pagination
-      className={`overflow-x-auto mt-4 w-full px-4 ${className} w-max`}
+      className={`overflow-x-auto mt-4 w-full lg:px-4 ${className} w-full lg:justify-center justify-start`}
     >
       <PaginationContent className=" flex items-center  ">
         <PaginationItem className="cursor-pointer">

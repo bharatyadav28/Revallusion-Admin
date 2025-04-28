@@ -13,7 +13,7 @@ function GatewayButton() {
     <div>
       <button className="!p-0 m-0 flex gap-1 items-center" onClick={handleOpen}>
         <div>
-          <div>Gateway</div>
+          <div className="lg:block hidden">Gateway</div>
         </div>
         <GatewayIcon size={15} color="#c8c4c2" />
       </button>

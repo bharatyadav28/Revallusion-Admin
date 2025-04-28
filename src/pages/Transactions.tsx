@@ -171,7 +171,9 @@ function Transactions() {
                       {transaction?.user?.email}
                     </button>
                   </TableCell>
-                  <TableCell>{plansMap.get(transaction.plan)}</TableCell>
+                  <TableCell>
+                    {plansMap.get(transaction.plan) || <EmptyValue />}
+                  </TableCell>
                   <TableCell>{transaction.amount}</TableCell>
                   {/* <TableCell>
                     {" "}

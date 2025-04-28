@@ -70,7 +70,7 @@ function Header() {
         <div>{pageName} </div>
       </div>
 
-      <div className="flex gap-16 items-center">
+      <div className="flex lg:gap-16 gap-8 items-center">
         <GatewayButton />
 
         <div className="hover:cursor-pointer">
