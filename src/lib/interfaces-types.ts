@@ -315,3 +315,9 @@ export interface LeaderBoardItemType {
 export interface AppConfigsType {
   activeGateways: string[];
 }
+
+export interface TimeStampType {
+  _id?: string;
+  time: string;
+  title: string;
+}

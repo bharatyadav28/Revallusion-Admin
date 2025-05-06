@@ -160,3 +160,26 @@ export const truncateString = (str: string, num: number) => {
   }
   return str; // Return as is if within limit
 };
+
+const getCleanTime = (time: string) => {
+  let cleanTime = "";
+  cleanTime += time[0] == "_" ? "0" : time[0];
+  if (time[1] !== "_") cleanTime += time[1];
+  return Number(cleanTime);
+};
+
+export const TimeToSeconds = (time: string) => {
+  const [h, m, s] = time.split(":");
+  // console.log("dgdg", getCleanTime(h));
+  return getCleanTime(h) * 3600 + getCleanTime(m) * 60 + getCleanTime(s);
+};
+
+export function secondsToTime(totalSeconds: number): string {
+  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
+    2,
+    "0"
+  );
+  const seconds = String(totalSeconds % 60).padStart(2, "0");
+  return `${hours}:${minutes}:${seconds}`;
+}
