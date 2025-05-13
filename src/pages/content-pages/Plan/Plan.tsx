@@ -45,9 +45,9 @@ function Plan() {
           <TableHeader>
             <TableRow>
               <TableHead>Plan Name</TableHead>
-              <TableHead className="">Price</TableHead>
+              <TableHead className="">INR Price</TableHead>
+              <TableHead className="">USD Price</TableHead>
               <TableHead className="">Validity</TableHead>
-
               <TableHead className="">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -56,12 +56,13 @@ function Plan() {
             {data?.data?.plans.map((plan: planType) => (
               <TableRow key={plan._id}>
                 <TableCell>{plan.plan_type}</TableCell>
-                <TableCell className="">
+                <TableCell>
                   ₹ {Number(plan.inr_price).toLocaleString("en-US")}
                 </TableCell>
-                <TableCell className="">
-                  {secondsToDays(plan.validity)} days
+                <TableCell>
+                  $ {Number(plan.usd_price).toLocaleString("en-US")}
                 </TableCell>
+                <TableCell>{secondsToDays(plan.validity)} days</TableCell>
 
                 <TableCell>
                   <div className="flex">

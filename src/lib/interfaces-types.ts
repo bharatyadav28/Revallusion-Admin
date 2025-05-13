@@ -55,6 +55,7 @@ export interface planType {
   _id: string;
   plan_type: string;
   inr_price: string;
+  usd_price: string;
   validity: number;
   level?: number;
 }

@@ -19,6 +19,8 @@ interface Props {
 }
 function EditPlan({ open, handleOpen, plans, updateId, setUpdateId }: Props) {
   const [price, setPrice] = useState("");
+  const [usdPrice, setUsdPrice] = useState("");
+
   const existingPlan = plans.find((plan: planType) => plan._id === updateId);
 
   const [updatePlan, { isLoading, error, isSuccess, data }] =
@@ -31,7 +33,7 @@ function EditPlan({ open, handleOpen, plans, updateId, setUpdateId }: Props) {
     if (!isDigitsOnly(price)) return toast.error("Please enter a valid price");
     if (existingPlan) {
       updatePlan({
-        plan: { ...existingPlan, inr_price: price },
+        plan: { ...existingPlan, inr_price: price, usd_price: usdPrice },
         id: updateId,
       });
     }
@@ -74,11 +76,23 @@ function EditPlan({ open, handleOpen, plans, updateId, setUpdateId }: Props) {
 
       <div className="main-container !bg-[var(--dark-black)] !py-8">
         <div className="flex flex-col gap-2">
-          <div className="label">Price</div>
+          <div className="label">INR Price</div>
           <div className="user-input">
             <CustomInput
               text={price}
               setText={setPrice}
+              className="py-5"
+              placeholder="Type plan price here..."
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div className="label">USD Price</div>
+          <div className="user-input">
+            <CustomInput
+              text={usdPrice}
+              setText={setUsdPrice}
               className="py-5"
               placeholder="Type plan price here..."
             />
