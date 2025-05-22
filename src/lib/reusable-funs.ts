@@ -183,3 +183,8 @@ export function secondsToTime(totalSeconds: number): string {
   const seconds = String(totalSeconds % 60).padStart(2, "0");
   return `${hours}:${minutes}:${seconds}`;
 }
+
+export function extractVideoURLKey(url: string) {
+  const fileName = url.split("/").pop();
+  return fileName?.replace(/\.[^/.]+$/, "");
+}

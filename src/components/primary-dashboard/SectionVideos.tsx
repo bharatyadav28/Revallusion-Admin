@@ -20,10 +20,10 @@ import { showError } from "@/lib/reusable-funs";
 
 interface Props {
   data: videoType[];
-  allowedVideos: number;
+  // allowedVideos: number;
   sectionId: string;
 }
-function SectionVideos({ data, allowedVideos, sectionId }: Props) {
+function SectionVideos({ data, sectionId }: Props) {
   const [openDeleteDialgo, setOpenDeleteDialog] = useState(false);
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
 
@@ -73,9 +73,7 @@ function SectionVideos({ data, allowedVideos, sectionId }: Props) {
       >
         <TableCell colSpan={4}>
           <Table className="custom-table bg-[#34343a]">
-            <TableCaption>
-              A list of Videos({data?.length}/{allowedVideos})
-            </TableCaption>
+            <TableCaption>A list of Videos</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead className="min-w-[6rem]">Video name</TableHead>

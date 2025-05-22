@@ -18,6 +18,7 @@ import { TableLoader } from "@/components/common/LoadingSpinner";
 import CustomPagination from "@/components/common/CustomPagination";
 import EmptyValue from "@/components/common/EmptyValue";
 import { EmptyTable } from "@/components/common/EmptyTable";
+import { Link } from "react-router-dom";
 
 function LeaderBoard() {
   const [search, setSearch] = useState("");
@@ -124,8 +125,22 @@ function LeaderBoard() {
                 <TableRow key={item._id}>
                   <TableCell>{index + 1}</TableCell>
 
-                  <TableCell>{item?.user?.name || <EmptyValue />}</TableCell>
-                  <TableCell>{item?.user?.email}</TableCell>
+                  <TableCell>
+                    <Link
+                      className="hover:underline"
+                      to={`/users/${item.user._id}`}
+                    >
+                      {item?.user?.name || <EmptyValue />}
+                    </Link>{" "}
+                  </TableCell>
+                  <TableCell>
+                    <Link
+                      className="hover:underline"
+                      to={`/users/${item.user._id}`}
+                    >
+                      {item?.user?.email}
+                    </Link>
+                  </TableCell>
                   <TableCell>{item.scoresSum}</TableCell>
                   <TableCell>{item.averageAssigmentsScore}</TableCell>
 

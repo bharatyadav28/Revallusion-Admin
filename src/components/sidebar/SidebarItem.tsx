@@ -8,6 +8,7 @@ import {
 } from "../ui/sidebar";
 import { replacePageName } from "@/store/features/generalSlice";
 import { useEffect } from "react";
+import { setSelectedPlan } from "@/store/features/selectedPlanSlice";
 
 interface Props {
   pathname: string;
@@ -24,6 +25,9 @@ function SidebarItem({ pathname, Icon, name, isSubItem = false }: Props) {
   const currentPath = location.pathname;
 
   const handleClick = () => {
+    if (pathname === "/users") {
+      dispatch(setSelectedPlan(""));
+    }
     navigate(pathname);
   };
 

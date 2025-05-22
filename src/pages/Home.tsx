@@ -26,46 +26,55 @@ function Home() {
       name: "Users",
       count: dashboardData?.usersCount,
       color: "#ADD8E6",
+      href: "/users",
     },
     {
       name: "Active Beginner",
       count: getActiveOrderCount("Beginner"),
       color: "#90EE90",
+      href: "/users",
     },
     {
       name: "Active Advanced",
       count: getActiveOrderCount("Advanced"),
       color: "#F08080",
+      href: "/users",
     },
     {
       name: "Upgraded Plan",
       count: dashboardData?.plansUpgraded,
       color: "#FFB6C1",
+      href: "#",
     },
     {
       name: "Today's Revenue",
       count: dashboardData?.revenues.daily,
       color: "#FFA07A",
+      href: "#",
     },
     {
       name: "Weekly Revenue",
       count: dashboardData?.revenues.weekly,
       color: "#FAFAD2",
+      href: "#",
     },
     {
       name: "Monthly Revenue",
       count: dashboardData?.revenues.monthly,
       color: "#E6E6FA",
+      href: "#",
     },
     {
       name: "Yearly Revenue",
       count: dashboardData?.revenues.yearly,
       color: "#FFE4E1",
+      href: "#",
     },
     {
       name: "Queries",
       count: dashboardData?.queries,
       color: "#87CEFA",
+      href: "/queries",
     },
   ];
 
@@ -87,6 +96,7 @@ function Home() {
               count={item?.count || 0}
               color={item?.color || "#fff"}
               index={index}
+              href={item.href}
             />
           ))}
         </div>

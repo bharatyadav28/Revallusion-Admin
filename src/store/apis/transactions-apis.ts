@@ -16,15 +16,21 @@ export const transactionsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1/",
   }),
-  tagTypes: ["Transactions"],
+  tagTypes: ["Transactions", "Filtered-Transactions"],
   endpoints: (builder) => ({
     getTransactions: builder.query<ResponseType, string>({
       query: (extra) => `transaction${extra}`,
       providesTags: [{ type: "Transactions", id: "LIST" }],
     }),
+
+    getAllFilteredTransactions: builder.query<ResponseType, string>({
+      query: (extra) => `transaction/filtered${extra}`,
+      providesTags: [{ type: "Filtered-Transactions", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useGetTransactionsQuery } = transactionsApi;
+export const { useGetTransactionsQuery, useGetAllFilteredTransactionsQuery } =
+  transactionsApi;
 
 export default transactionsApi;

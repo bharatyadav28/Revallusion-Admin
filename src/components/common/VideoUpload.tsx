@@ -1,12 +1,13 @@
 // Component for uploading image
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { DotLoader as UploadSpinner } from "react-spinners";
 
 import { Button } from "../ui/button";
-import { calculateDuration } from "@/lib/reusable-funs";
+import { calculateDuration, extractVideoURLKey } from "@/lib/reusable-funs";
 import { videoDurationType } from "@/lib/interfaces-types";
+import VideoPlayer from "../VideoPlayer";
 
 interface Props {
   videoSrc: string;
@@ -27,6 +28,10 @@ const VideoUploader: React.FC<Props> = ({
   uploading,
   setUploading,
 }) => {
+  const [openPlayer, setOpenPlayer] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const abortMultipartUpload = async (uploadId: string, key: string) => {
     try {
       const abortResponse = await fetch("/api/v1/video/uploads/abort", {
@@ -52,6 +57,10 @@ const VideoUploader: React.FC<Props> = ({
     }
   };
 
+  const handleOpenPlayer = () => {
+    setOpenPlayer((prev) => !prev);
+  };
+
   const handleVideoUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
@@ -61,7 +70,7 @@ const VideoUploader: React.FC<Props> = ({
       const fileSize = file.size;
       const fileSizeInMB = file.size / (1024 * 1024);
 
-      // TODO: Remove in production
+      // TODO: Remove in production;
       if (fileSizeInMB > 150) {
         toast.error("For free aws tier, video size should be less than 150MB");
         return;
@@ -74,7 +83,7 @@ const VideoUploader: React.FC<Props> = ({
         const videoExtension = file.name.split(".").pop();
 
         let stringUrl = "";
-        if (fileSizeInMB <= 100) {
+        if (fileSizeInMB <= 150) {
           console.log("Single upload");
           // Get url to upload
           const response = await fetch("/api/v1/video/get-upload-url", {
@@ -110,7 +119,7 @@ const VideoUploader: React.FC<Props> = ({
           stringUrl = cleanUrl.toString();
         } else {
           console.log("Multi upload");
-          const CHUNK_SIZE = 25 * 1024 * 1024;
+          const CHUNK_SIZE = 25 * 1024 * 1024; // 25 MB
           let uploadId;
           let key;
 
@@ -225,6 +234,7 @@ const VideoUploader: React.FC<Props> = ({
           }
         }
 
+        stringUrl = extractVideoURLKey(decodeURIComponent(stringUrl)) || "";
         setVideoSrc(stringUrl);
       } catch (error) {
         toast.error(
@@ -232,6 +242,9 @@ const VideoUploader: React.FC<Props> = ({
         );
       } finally {
         setUploading(false);
+        if (inputRef.current) {
+          inputRef.current.value = "";
+        }
       }
     }
   };
@@ -239,46 +252,58 @@ const VideoUploader: React.FC<Props> = ({
   // Handle choose file button click
   const handleClick = () => {
     if (!videoSrc) {
-      document.getElementById("videoInput")?.click();
+      // document.getElementById("videoInput")?.click();
+      inputRef.current?.click();
     } else {
-      window.open(videoSrc);
+      handleOpenPlayer();
     }
   };
 
   return (
-    <div className="relative border bottom-1 rounded-sm w-full  group">
-      <div className="flex gap-2 items-center border border-gray-400 rounded-md">
-        <Button
-          onClick={handleClick}
-          className="rounded-sm"
-          disabled={uploading}
-        >
-          {videoSrc ? "View file" : "Choose file"}
-        </Button>
-        <p className="text-sm">
-          {uploading
-            ? ""
-            : videoSrc
-            ? videoSrc.split("/").pop()
-            : "No file choosen"}{" "}
-        </p>
+    <>
+      <div className="relative border bottom-1 rounded-sm w-full  group">
+        <div className="flex gap-2 items-center border border-gray-400 rounded-md">
+          <Button
+            onClick={handleClick}
+            className="rounded-sm"
+            disabled={uploading}
+          >
+            {videoSrc ? "View file" : "Choose file"}
+          </Button>
+          <p className="text-sm">
+            {uploading
+              ? ""
+              : videoSrc
+              ? videoSrc.split("/").pop()
+              : "No file choosen"}{" "}
+          </p>
+        </div>
+
+        {/* Hidden File Input */}
+        <input
+          id="videoInput"
+          type="file"
+          accept=".mp4,.m4v,.mkv,.avi,.mov,.wmv,.flv,.webm,.ogg,video/*"
+          className="hidden"
+          onChange={handleVideoUpload}
+          ref={inputRef}
+        />
+        {uploading && (
+          <div className=" flex items-center gap-2 text-sm mt-1">
+            <div>Please wait while the video is uploading</div>
+            <UploadSpinner color="#f1f1f1" size={20} />{" "}
+          </div>
+        )}
       </div>
 
-      {/* Hidden File Input */}
-      <input
-        id="videoInput"
-        type="file"
-        accept=".mp4,.m4v,.mkv,.avi,.mov,.wmv,.flv,.webm,.ogg,video/*"
-        className="hidden"
-        onChange={handleVideoUpload}
-      />
-      {uploading && (
-        <div className=" flex items-center gap-2 text-sm mt-1">
-          <div>Please wait while the video is uploading</div>
-          <UploadSpinner color="#f1f1f1" size={20} />{" "}
-        </div>
+      {openPlayer && (
+        <VideoPlayer
+          open={openPlayer}
+          handleOpen={handleOpenPlayer}
+          source={`/videos/${videoSrc}/1080p.m3u8`}
+        />
       )}
-    </div>
+    </>
   );
 };
 

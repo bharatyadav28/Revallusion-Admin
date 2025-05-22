@@ -18,6 +18,7 @@ import {
 import {
   CustomButton,
   CustomInput,
+  CustomSelectSeperate,
   DeleteButton,
   UpdateButton,
   ViewButton,
@@ -34,6 +35,8 @@ import CustomPagination from "@/components/common/CustomPagination";
 import EmptyValue from "@/components/common/EmptyValue";
 import UserForm from "@/components/users/UserForm";
 import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "@/hooks/use-redux";
+import { setSelectedPlan } from "@/store/features/selectedPlanSlice";
 
 // import DeleteQuery from "./DeleteQuery";
 
@@ -44,6 +47,9 @@ function UsersList() {
   const [openSheet, setOpenSheet] = useState(false);
   const [openDeleteDialgo, setOpenDeleteDialog] = useState(false);
 
+  const selectedPlan = useAppSelector(
+    (state) => state.selectedPlan.selectedPlan
+  );
   const [selectedUser, setSelectedUser] = useState<userDetailsType | null>(
     null
   );
@@ -52,12 +58,15 @@ function UsersList() {
   };
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const {
     data,
     error: loadingError,
     isFetching: isLoading,
-  } = useGetUsersQuery(`search=${deboounceSearch}&currentPage=${currentPage}`);
+  } = useGetUsersQuery(
+    `search=${deboounceSearch}&currentPage=${currentPage}&selectedPlan=${selectedPlan}`
+  );
 
   const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
 
@@ -66,6 +75,24 @@ function UsersList() {
     error: planLoadingError,
     isFetching: isPlansLoading,
   } = useGetPlansQuery();
+
+  const plans = plansData?.data?.plans;
+  const plansMenu = [
+    {
+      key: "No filter",
+      value: "clear",
+    },
+  ];
+  const plansFiltered = plans?.map((plan) => ({
+    key: plan.plan_type,
+    value: plan._id,
+  }));
+  if (plansFiltered) plansMenu.push(...plansFiltered);
+
+  const getPlanName = (planId: string | undefined) => {
+    const plan = plans?.find((plan) => plan._id == planId);
+    return plan?.plan_type;
+  };
 
   const handleOpenSheet = () => {
     setOpenSheet((prev) => !prev);
@@ -82,6 +109,14 @@ function UsersList() {
       handleDeleteDialog();
       setSelectedUser(null);
     }
+  };
+
+  const handleSelectedPlan: React.Dispatch<React.SetStateAction<string>> = (
+    e
+  ) => {
+    const value = typeof e === "function" ? e(selectedPlan) : e;
+
+    dispatch(setSelectedPlan(value)); // Update Redux store
   };
 
   // Show error
@@ -124,6 +159,16 @@ function UsersList() {
             />
           </div>
 
+          {plansMenu && (
+            <CustomSelectSeperate
+              menu={plansMenu}
+              value={selectedPlan}
+              onChange={handleSelectedPlan}
+              placeholder="Filter by plan"
+              className="max-w-[15rem]"
+            />
+          )}
+
           <CustomButton
             className="green-button ps-2 pr-3 py-5"
             handleClick={() => {
@@ -142,18 +187,35 @@ function UsersList() {
               <TableHead>Name</TableHead>
               <TableHead className="">Email</TableHead>
               <TableHead className="">Mobile no</TableHead>
+              <TableHead className="">Plan</TableHead>
+              <TableHead className="">Status</TableHead>
               <TableHead className="">Action</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {isPageLoading && <TableLoader colSpan={4} />}
+            {isPageLoading && <TableLoader colSpan={6} />}
             {!isPageLoading &&
               data?.data?.users?.map((user: userDetailsType) => (
                 <TableRow key={user._id}>
                   <TableCell>{user.name || <EmptyValue />}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.mobile || <EmptyValue />}</TableCell>
+                  <TableCell>
+                    {user?.plan ? getPlanName(user?.plan) : <EmptyValue />}
+                  </TableCell>
+
+                  <TableCell>
+                    {user?.plan && user?.certificates ? (
+                      user.certificates?.length > 0 ? (
+                        "Completed"
+                      ) : (
+                        "Active"
+                      )
+                    ) : (
+                      <EmptyValue />
+                    )}
+                  </TableCell>
 
                   <TableCell>
                     <div className="flex gap-2">

@@ -25,17 +25,31 @@ interface SubmittedResponseType {
   };
 }
 
+interface UserAssigmentResponseType {
+  message: string;
+  success: boolean;
+  data: {
+    assigments: SubmittedAssignmentType[];
+    pagesCount: number;
+  };
+}
+
 export const assignmentApi = createApi({
   reducerPath: "assignmentApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1/",
   }),
-  tagTypes: ["Assignments", "SubmittedAssignments"],
+  tagTypes: ["Assignments", "SubmittedAssignments", "UserAssignments"],
   endpoints: (builder) => ({
     // Get submitted assignments by course
     getSubmittedAssignments: builder.query<SubmittedResponseType, string>({
-      query: (courseId) => `submitted-assignment/course/${courseId}`,
+      query: (query) => `submitted-assignment${query}`,
       providesTags: [{ type: "SubmittedAssignments", id: "LIST" }],
+    }),
+
+    getUserAssignments: builder.query<UserAssigmentResponseType, string>({
+      query: (query) => `submitted-assignment/user/${query}`,
+      providesTags: [{ type: "UserAssignments", id: "LIST" }],
     }),
 
     // Update assignment score
@@ -49,7 +63,10 @@ export const assignmentApi = createApi({
         body: { score },
       }),
 
-      invalidatesTags: [{ type: "SubmittedAssignments", id: "LIST" }],
+      invalidatesTags: [
+        { type: "SubmittedAssignments", id: "LIST" },
+        { type: "UserAssignments", id: "LIST" },
+      ],
     }),
 
     // Revoke assignment
@@ -58,13 +75,17 @@ export const assignmentApi = createApi({
         url: `submitted-assignment/${id}/revoke`,
         method: "PUT",
       }),
-      invalidatesTags: [{ type: "SubmittedAssignments", id: "LIST" }],
+      invalidatesTags: [
+        { type: "SubmittedAssignments", id: "LIST" },
+        { type: "UserAssignments", id: "LIST" },
+      ],
     }),
   }),
 });
 
 export const {
   useGetSubmittedAssignmentsQuery,
+  useGetUserAssignmentsQuery,
   useUpdateAssignmentScoreMutation,
   useRevokeAssignmentMutation,
 } = assignmentApi;

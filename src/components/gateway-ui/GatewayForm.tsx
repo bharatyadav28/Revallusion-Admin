@@ -34,7 +34,6 @@ function GatewayForm({ open, handleOpen }: PropsTypes) {
 
   useEffect(() => {
     if (updateData) {
-      console.log("Update data:", updateData);
       toast.success(updateData?.message);
     }
   }, [updateData]);

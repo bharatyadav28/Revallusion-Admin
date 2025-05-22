@@ -120,7 +120,7 @@ interface Props {
   alreadySelected: courseVideoType[] | videoType[];
   handleSubmit: () => void;
   isSubmitting: boolean;
-  remainingCapacity: number;
+  remainingCapacity?: number;
   excludeVideos?: string[] | [];
 }
 
@@ -271,7 +271,10 @@ function VideoMenu({
           <CustomButton
             className="green-button mt-2 "
             handleClick={() => {
-              if (newelySelected.length > remainingCapacity) {
+              if (
+                remainingCapacity &&
+                newelySelected.length > remainingCapacity
+              ) {
                 toast.error(
                   `Only ${remainingCapacity} more videos can be added`
                 );

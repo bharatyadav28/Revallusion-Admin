@@ -129,7 +129,7 @@ const Sections = () => {
   }, [deletionError]);
 
   const sections = data?.data?.content;
-  const allowedSectionVideos = 4;
+  // const allowedSectionVideos = 4;
 
   const alreadySelected: videoType[] = [];
 
@@ -201,13 +201,13 @@ const Sections = () => {
                             <AddButton
                               className="!bg-[var(--golden)] !hover:bg-[var(--dark-golden)]"
                               handleClick={() => {
-                                if (
-                                  section.videos.length >= allowedSectionVideos
-                                ) {
-                                  return toast.error(
-                                    "Section videos limit reached"
-                                  );
-                                }
+                                // if (
+                                //   section.videos.length >= allowedSectionVideos
+                                // ) {
+                                //   return toast.error(
+                                //     "Section videos limit reached"
+                                //   );
+                                // }
 
                                 handleOpenSheet();
                                 setSelectedSection(section);
@@ -242,7 +242,7 @@ const Sections = () => {
                     {sectionId === section._id && (
                       <SectionVideos
                         data={section.videos}
-                        allowedVideos={allowedSectionVideos}
+                        // allowedVideos={allowedSectionVideos}
                         sectionId={section._id}
                       />
                     )}
@@ -261,9 +261,9 @@ const Sections = () => {
         alreadySelected={alreadySelected}
         handleSubmit={handleVideoSelect}
         isSubmitting={isUpdating}
-        remainingCapacity={
-          allowedSectionVideos - (selectedSection?.videos?.length || 0)
-        }
+        // remainingCapacity={
+        //   allowedSectionVideos - (selectedSection?.videos?.length || 0)
+        // }
         excludeVideos={excludeVideos}
       />
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { SearchIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FaFileInvoice as InvoiceIcon } from "react-icons/fa";
+import JSZip from "jszip";
 
 import {
   Table,
@@ -12,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CustomInput } from "@/components/common/Inputs";
+import { CustomButton, CustomInput } from "@/components/common/Inputs";
 import { useGetTransactionsQuery } from "@/store/apis/transactions-apis";
 import { useGetPlansQuery } from "@/store/apis/content-mangement/plans-apis";
 import { formatDate, showError } from "@/lib/reusable-funs";
@@ -20,15 +21,14 @@ import { TableLoader } from "@/components/common/LoadingSpinner";
 import CustomPagination from "@/components/common/CustomPagination";
 import EmptyValue from "@/components/common/EmptyValue";
 import { EmptyTable } from "@/components/common/EmptyTable";
+import toast from "react-hot-toast";
 
 // import DeleteQuery from "./DeleteQuery";
 
 function Transactions() {
   const [search, setSearch] = useState("");
   const [debounceSearch, setDebounceSearch] = useState("");
-
-  const [paymentId, setPaymentId] = useState("");
-  const [debouncePaymentId, setDebouncePaymentId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -39,7 +39,6 @@ function Transactions() {
 
   let query = "?";
   if (debounceSearch) query += `search=${debounceSearch}&`;
-  if (debouncePaymentId) query += `paymentId=${paymentId}&`;
   if (currentPage) query += `currentPage=${currentPage}&`;
   if (from) query += `from=${from}&`;
   if (to) query += `to=${to}&`;
@@ -65,16 +64,6 @@ function Transactions() {
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Debouncing on payment id
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncePaymentId(paymentId);
-      setCurrentPage(1);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [paymentId]);
-
   const totalPages = data?.data?.pagesCount || 1;
 
   const plansMap = new Map();
@@ -84,6 +73,70 @@ function Transactions() {
 
   const isDataLoading = isFetching || isPlansLoading;
   const noTransactions = data?.data?.transactions.length === 0;
+
+  const downloadBulkInvoices = async () => {
+    if (isLoading) return;
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        `/api/v1/transaction/filtered?to=${to}&from=${from}`
+      );
+      if (!response.ok) {
+        throw new Error("Download invoices failed");
+      }
+      const res = await response.json();
+      const transactions = res?.data?.transactions;
+      if (transactions.length === 0) {
+        toast.error("No transactions found");
+        setIsLoading(false);
+        return;
+      }
+
+      const zip = new JSZip();
+      for (let transaction of transactions) {
+        if (transaction.invoice_url) {
+          try {
+            const invoiceUrl = transaction.invoice_url;
+            const invoiceBlob = await fetch(invoiceUrl).then((res) => {
+              if (!res.ok)
+                throw new Error(`Failed to fetch invoice: ${res.statusText}`);
+              return res.blob();
+            });
+
+            const fileName = `Invoice_${transaction.payment_id}.pdf`;
+            zip.file(fileName, invoiceBlob);
+          } catch (error) {
+            console.error(
+              "Error fetching invoice for transaction",
+              transaction.payment_id,
+              error
+            );
+            toast.error(`Error fetching invoice for ${transaction.payment_id}`);
+          }
+        }
+      }
+
+      if (Object.keys(zip.files).length === 0) {
+        toast.error("No invoices available to download.");
+        setIsLoading(false);
+        return;
+      }
+
+      zip.generateAsync({ type: "blob" }).then((content) => {
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(content);
+        link.download = `Invoices_${from}_to_${to}.zip`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        toast.success("Invoices downloaded successfully.");
+        setIsLoading(false); // Set loading to false after the process completes
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Download invoices failed");
+    }
+  };
 
   return (
     <>
@@ -99,15 +152,6 @@ function Transactions() {
                 placeholder="Search..."
               />
             </div>
-
-            <div className="w-[15rem] max-w-full flex items-center border border-gray-400 rounded-md ps-2 ">
-              <CustomInput
-                text={paymentId}
-                setText={setPaymentId}
-                className="py-5 border-none focus-visible:ring-0 "
-                placeholder="Payment Id"
-              />
-            </div>
           </div>
 
           <div className="flex lg:flex-row flex-col  gap-2">
@@ -118,7 +162,10 @@ function Transactions() {
                 type="date"
                 placeholder="filter by date"
                 value={from}
-                onChange={(e) => setFrom(e.target.value)}
+                onChange={(e) => {
+                  setFrom(e.target.value);
+                  setCurrentPage(1);
+                }}
               />
             </div>
 
@@ -129,10 +176,19 @@ function Transactions() {
                 type="date"
                 placeholder="filter by date"
                 value={to}
-                onChange={(e) => setTo(e.target.value)}
+                onChange={(e) => {
+                  setTo(e.target.value);
+                  setCurrentPage(1);
+                }}
               />
             </div>
           </div>
+          <CustomButton
+            className="green-button px-2  py-5 "
+            handleClick={downloadBulkInvoices}
+          >
+            Download invoices
+          </CustomButton>
         </div>
 
         <Table className="custom-table">
@@ -143,7 +199,7 @@ function Transactions() {
               <TableHead>Email</TableHead>
               <TableHead>Plan</TableHead>
               <TableHead>Amount</TableHead>
-              {/* <TableHead>Payment Id</TableHead> */}
+              <TableHead>Payment Id</TableHead>
               <TableHead>Date & Time</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Invoice</TableHead>
@@ -151,9 +207,9 @@ function Transactions() {
           </TableHeader>
 
           <TableBody>
-            {isDataLoading && <TableLoader colSpan={7} />}
+            {isDataLoading && <TableLoader colSpan={8} />}
             {!isDataLoading && noTransactions && (
-              <EmptyTable colSpan={7} text="No transaction found" />
+              <EmptyTable colSpan={8} text="No transaction found" />
             )}
 
             {!isDataLoading &&
@@ -175,12 +231,12 @@ function Transactions() {
                     {plansMap.get(transaction.plan) || <EmptyValue />}
                   </TableCell>
                   <TableCell>{transaction.amount}</TableCell>
-                  {/* <TableCell>
+                  <TableCell>
                     {" "}
                     <div className="max-w-[10rem] text-wrap break-all">
                       {transaction.payment_id}
-                    </div> 
-                  </TableCell> */}
+                    </div>
+                  </TableCell>
                   <TableCell>{formatDate(transaction.createdAt)}</TableCell>
                   <TableCell>
                     <div
@@ -190,7 +246,9 @@ function Transactions() {
                           : "red-button"
                       } py-1 px-2 w-[6rem] rounded-sm text-sm text-center`}
                     >
-                      {transaction.status}
+                      {transaction.status === "Completed"
+                        ? "Successful"
+                        : transaction.status}
                     </div>
                   </TableCell>
                   <TableCell>

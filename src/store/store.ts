@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 import generalReducer from "./features/generalSlice";
+import selectedPlanReducer from "./features/selectedPlanSlice";
 import heroSectionApi from "./apis/content-mangement/hero-section-apis";
 import faqApi from "./apis/content-mangement/faq-apis";
 import carousalApi from "./apis/content-mangement/carousal-apis";
@@ -29,6 +30,7 @@ import timestampApi from "./apis/timestamp-apis";
 export const store = configureStore({
   reducer: {
     general: generalReducer,
+    selectedPlan: selectedPlanReducer,
     [heroSectionApi.reducerPath]: heroSectionApi.reducer,
     [faqApi.reducerPath]: faqApi.reducer,
     [carousalApi.reducerPath]: carousalApi.reducer,

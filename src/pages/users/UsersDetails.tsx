@@ -9,6 +9,7 @@ import BasicDetails from "@/components/users/BasicDetails";
 import UserTransactions from "@/components/users/UserTransactions";
 import { useGetPlansQuery } from "@/store/apis/content-mangement/plans-apis";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
+import UserAssignments from "./UserAssignments";
 
 function UsersDetails() {
   const dispatch = useAppDispatch();
@@ -50,11 +51,15 @@ function UsersDetails() {
           user={user}
           activeOrder={activeOrder}
           plansMapping={plansMapping}
+          completionDate={user?.certificate?.completionDate}
+          completionTime={user?.certificate?.completionTime}
+          file={user?.certificate?.path}
         />
         <UserTransactions
           transactions={transactions}
           plansMapping={plansMapping}
         />
+        <UserAssignments />
       </div>
 
       {(isLoading || isPlansLoading) && <PageLoadingSpinner />}

@@ -36,7 +36,7 @@ import CourseList from "./pages/course-management/CourseList";
 import EditCourse from "./pages/course-management/EditCourse";
 import LatestTutorialsList from "./pages/content-pages/latest-tutorials/LatestTutorialsList";
 import Curriculum from "./pages/content-pages/Curriculum";
-import SubmittedAssignments from "./pages/course-management/SubmittedAssignments";
+import SubmittedAssignments from "./pages/SubmittedAssignments";
 import Comment from "./pages/Comment";
 import PrimaryDashboard from "./pages/PrimaryDashboard";
 import UsersList from "./pages/users/UsersList";
@@ -129,14 +129,15 @@ function App() {
           <Route path="/course-management">
             <Route index element={<CourseList />} />
             <Route path=":id" element={<EditCourse />} />
-            <Route
-              path=":id/submitted-assignments"
-              element={<SubmittedAssignments />}
-            />
           </Route>
 
           <Route path="/profile" element={<Profile />} />
           <Route path="/comment" element={<Comment />} />
+
+          <Route
+            path="/submitted-assignments"
+            element={<SubmittedAssignments />}
+          />
         </Route>
 
         <Route path="*" element={<NotFound />} />

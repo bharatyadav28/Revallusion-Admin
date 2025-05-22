@@ -20,6 +20,11 @@ export default defineConfig({
         target: "http://localhost:4000",
         changeOrigin: true, // This is required to ensure the Host header matches the target domain
       },
+      "/videos": {
+        target: "https://dcays3srybill.cloudfront.net",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/videos/, ""),
+      },
     },
   },
 });

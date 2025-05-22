@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { FaDownload as DownloadIcon } from "react-icons/fa";
 import toast from "react-hot-toast";
 
@@ -30,15 +29,13 @@ import {
 import EditScore from "@/components/course-management/submitted-assignments/EditScore";
 import ViewDetails from "@/components/course-management/submitted-assignments/ViewDetails";
 import { SubmittedAssignmentType } from "@/lib/interfaces-types";
-import CustomBreadcumb from "@/components/common/CustomBreadcumb";
-import { useGetCourseTitleQuery } from "@/store/apis/course-apis";
 import CustomTooltip from "@/components/common/CustomTooltip";
 import DeleteDialog from "@/components/common/DeleteDialog";
 import CustomPagination from "@/components/common/CustomPagination";
+import EmptyValue from "@/components/common/EmptyValue";
 
 function SubmittedAssignments() {
   const dispatch = useAppDispatch();
-  const { id: courseId } = useParams();
 
   const [openScore, setOpenScore] = useState(false);
   const [score, setScore] = useState<number | null>(0);
@@ -65,7 +62,7 @@ function SubmittedAssignments() {
     SetOpenDeleteDialog((prev) => !prev);
   };
 
-  let query = courseId + "?" || " ";
+  let query = "?";
   if (graded !== "clear") query += `isGraded=${graded}&`;
   if (submoduleFilter !== "clear") query += `submoduleId=${submoduleFilter}&`;
   if (currentPage) query += `currentPage=${currentPage}`;
@@ -75,9 +72,7 @@ function SubmittedAssignments() {
     data,
     error: loadingError,
     isFetching: isLoading,
-  } = useGetSubmittedAssignmentsQuery(query, {
-    skip: !courseId,
-  });
+  } = useGetSubmittedAssignmentsQuery(query);
 
   const [
     revokeAssignment,
@@ -88,10 +83,6 @@ function SubmittedAssignments() {
       data: revokingData,
     },
   ] = useRevokeAssignmentMutation();
-
-  const { data: courseTitleData } = useGetCourseTitleQuery(query, {
-    skip: !courseId,
-  });
 
   // Handle success
   useEffect(() => {
@@ -145,26 +136,10 @@ function SubmittedAssignments() {
     setCurrentPage(1);
   }, [submoduleFilter, graded]);
 
-  const breadcrumbList = {
-    currentPage: "Submitted assignments",
-    pageTraces: [
-      {
-        name: "Courses management",
-        href: "/course-management",
-      },
-      {
-        name:
-          "Edit course" + " - " + (courseTitleData?.data?.course?.title || ""),
-        href: "..",
-      },
-    ],
-  };
-
   const totalPages = data?.data?.pagesCount;
 
   return (
     <>
-      <CustomBreadcumb list={breadcrumbList} />
       <div className="main-container">
         <div className="flex gap-2">
           <CustomSelectSeperate
@@ -203,9 +178,15 @@ function SubmittedAssignments() {
               submittedAssignments.map((subAssignment) => (
                 <TableRow key={subAssignment._id}>
                   <TableCell>{subAssignment.user.email}</TableCell>
-                  <TableCell>{subAssignment.video.title}</TableCell>
-                  <TableCell>{subAssignment.video.module.name}</TableCell>
-                  <TableCell>{subAssignment.video.submodule.name}</TableCell>
+                  <TableCell>
+                    {subAssignment.video?.title || <EmptyValue />}
+                  </TableCell>
+                  <TableCell>
+                    {subAssignment.video?.module?.name || <EmptyValue />}
+                  </TableCell>
+                  <TableCell>
+                    {subAssignment.video?.submodule?.name || <EmptyValue />}
+                  </TableCell>
                   <TableCell>
                     <div className="flex flex-col gap-2">
                       {

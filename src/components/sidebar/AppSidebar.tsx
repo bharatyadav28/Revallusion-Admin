@@ -13,6 +13,7 @@ import { GiBookshelf as CourseIcon } from "react-icons/gi";
 import { FaUsers as UsersIcon } from "react-icons/fa";
 import { FaTrophy as LeaderboardIcon } from "react-icons/fa";
 import { MdReceiptLong as TransactionIcon } from "react-icons/md";
+import { MdAssignmentTurnedIn as AssignmentIcon } from "react-icons/md";
 
 // import { FaCommentDots as CommentIcon } from "react-icons/fa6";
 
@@ -42,6 +43,11 @@ function AppSidebar() {
       name: "Dashboard",
       Icon: DashboardIcon,
       path: "/",
+    },
+    {
+      name: "Users Mangement",
+      Icon: UsersIcon,
+      path: "/users",
     },
     {
       name: "Landing Page",
@@ -111,10 +117,11 @@ function AppSidebar() {
       Icon: CourseIcon,
       path: "/course-management",
     },
+
     {
-      name: "Users Mangement",
-      Icon: UsersIcon,
-      path: "/users",
+      name: "Submitted Assignments",
+      Icon: AssignmentIcon,
+      path: "/submitted-assignments",
     },
 
     {

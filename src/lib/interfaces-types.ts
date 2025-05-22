@@ -246,6 +246,7 @@ export interface orderType {
   _id: string;
   plan: string;
   expiry_date: string;
+  createdAt: string;
 }
 
 export interface transactionType {
@@ -270,11 +271,17 @@ interface CertficateType {
   user: string;
   path: string;
 }
-
 // Users management
 export interface userDetailsType extends userType {
   transactions: transactionType[];
   plan?: null;
+  completionTime?: number;
+  completionDate?: string;
+  certificate?: {
+    completionTime: number;
+    completionDate: string;
+    path: string;
+  };
   certificates?: CertficateType[];
 }
 

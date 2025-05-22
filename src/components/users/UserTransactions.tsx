@@ -47,7 +47,9 @@ function UserTransactions({ transactions, plansMapping }: Props) {
                         : "red-button"
                     } py-1 px-2 rounded-sm text-sm w-[6rem] text-center`}
                   >
-                    {transaction.status}
+                    {transaction.status === "Completed"
+                      ? "Successful"
+                      : transaction.status}
                   </div>
                 </TableCell>
               </TableRow>
