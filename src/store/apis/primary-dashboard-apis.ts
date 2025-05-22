@@ -1,13 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import {
-  dashboardCarousalType,
-  dashboardSectionType,
-} from "@/lib/interfaces-types";
+import { carousalType, dashboardSectionType } from "@/lib/interfaces-types";
 
 interface ResponseType {
   data: {
-    carousal?: [dashboardCarousalType];
+    carousals?: [carousalType];
     content?: [dashboardSectionType];
   };
   message: string;
@@ -28,11 +25,14 @@ export const primaryDashboardApi = createApi({
     }),
 
     // Add new image in carousal
-    addCarousal: builder.mutation<ResponseType, { imageUrl: string }>({
-      query: ({ imageUrl }) => ({
+    addCarousal: builder.mutation<
+      ResponseType,
+      { videos: { videoId: string; sequence: number }[] }
+    >({
+      query: ({ videos }) => ({
         url: "/carousal",
         method: "POST",
-        body: { imageUrl },
+        body: { videos },
       }),
 
       invalidatesTags: [{ type: "Carousal", id: "LIST" }],
@@ -41,10 +41,13 @@ export const primaryDashboardApi = createApi({
     // Update image sequence in carousal
     updateCarousalSequence: builder.mutation<
       ResponseType,
-      { sequence: number; id: string }
+      {
+        videoId: string;
+        sequence: number;
+      }
     >({
-      query: ({ sequence, id }) => ({
-        url: `/carousal/${id}`,
+      query: ({ videoId, sequence }) => ({
+        url: `/carousal/${videoId}`,
         method: "PUT",
         body: { sequence },
       }),
@@ -53,9 +56,9 @@ export const primaryDashboardApi = createApi({
     }),
 
     // Delete an image in carousal
-    deleteCarousalItem: builder.mutation<ResponseType, string>({
-      query: (id) => ({
-        url: `/carousal/${id}`,
+    deleteCarousalItem: builder.mutation<ResponseType, { videoId: string }>({
+      query: ({ videoId }) => ({
+        url: `/carousal/${videoId}`,
         method: "DELETE",
       }),
 

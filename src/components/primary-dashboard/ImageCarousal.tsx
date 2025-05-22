@@ -1,59 +1,42 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { CustomButton, DeleteButton } from "@/components/common/Inputs";
-import { UpdateButton } from "@/components/common/Inputs";
-import { showError } from "@/lib/reusable-funs";
-
-import {
-  useAddCarousalMutation,
   useGetCarousalQuery,
+  useAddCarousalMutation,
   useDeleteCarousalItemMutation,
 } from "@/store/apis/primary-dashboard-apis";
-import DeleteDialog from "../common/DeleteDialog";
-import toast from "react-hot-toast";
-import { LoadingSpinner, TableLoader } from "../common/LoadingSpinner";
+import { showError } from "@/lib/reusable-funs";
+import VideosList from "@/components/common/VideosList";
+import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
+import VideoMenu from "@/components/common/VideoMenu";
+import { courseVideoType, videoType } from "@/lib/interfaces-types";
+import { CustomButton } from "@/components/common/Inputs";
 import EditSequence from "./EditSequence";
 
-const ImageCarousal = () => {
-  const [openDeleteDialgo, setOpenDeleteDialog] = useState(false);
-  const [openEditDialgo, setOpenEditDialog] = useState(false);
-
-  const [selectedCarousal, setSelectedCarousal] = useState<any>(null);
-  const [uploading, setUploading] = useState(false);
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // Fetch Images
+function LatestTutorialsList() {
+  // Fetch latest tutorials data
   const {
     data,
     error: loadingError,
     isFetching: isLoading,
   } = useGetCarousalQuery();
 
-  // Add image
+  // Add videos to tutorial
   const [
-    addImage,
+    addCarousal,
     {
-      isLoading: isAdding,
-      isSuccess: additionSuccess,
-      error: additionError,
-      data: additionData,
+      isLoading: isUpdating,
+      isSuccess: updationSuccess,
+      error: updateError,
+      data: updateData,
     },
   ] = useAddCarousalMutation();
 
-  // Delete image
+  // Delete video from tutorial
   const [
-    deleteImage,
+    deleteCarousal,
     {
       isLoading: isDeleting,
       isSuccess: deletionSuccess,
@@ -62,199 +45,169 @@ const ImageCarousal = () => {
     },
   ] = useDeleteCarousalItemMutation();
 
-  // Open/close delete dialog
-  const handleDeleteDialog = () => {
-    setOpenDeleteDialog((prev) => !prev);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openSheet, setOpenSheet] = useState(false);
+
+  // New selected videos
+  const [newelySelected, setNewelySelected] = useState<videoType[]>([]);
+
+  // Id of video to delete
+  const [deleteVideoId, setDeleteVideoId] = useState<string | null>(null);
+
+  // video data
+  const [dialogData, setDialogData] = useState<{
+    item: {
+      sequence: number;
+      videoId: string;
+    };
+  } | null>(null);
+
+  // Allowed:
+  const allowedCarousals = 10;
+
+  // Handle edit video sequence dialog
+  const handleOpenDialog = () => {
+    setOpenDialog((prev) => !prev);
   };
 
-  const handleDeleteImage = () => {
-    if (selectedCarousal?._id) deleteImage(selectedCarousal?._id);
+  // Handle video menu dialog
+  const handleOpenSheet = () => {
+    setOpenSheet((prev) => !prev);
+    setNewelySelected([]);
   };
 
-  const handleEditDialog = () => {
-    setOpenEditDialog((prev) => !prev);
+  // Handle video addition
+  const handleVideoSelect = () => {
+    if (newelySelected.length === 0) return;
+
+    addCarousal({
+      videos: newelySelected?.map((video) => {
+        return {
+          videoId: video._id || "",
+          sequence: -1,
+        };
+      }),
+    });
+    // setShowSectionId(null);
   };
 
-  const handleImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): Promise<void> => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setUploading(true);
+  // Handle video deletion
+  const handleVideoDelete = (videoId: string) => {
+    if (isDeleting) return;
 
-      try {
-        // Prepare FormData
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("folder", "Dashboard");
-
-        // Upload to backend
-        const response = await fetch("/api/v1/admin/upload-image", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to upload image");
-        }
-
-        const data = await response.json();
-        if (data?.data?.imageUrl) {
-          const imageUrl = data?.data?.imageUrl;
-          await addImage({ imageUrl });
-        } else {
-          alert("Image upload failed. No URL returned.");
-        }
-      } catch (error) {
-        toast.error("Image upload failed");
-      } finally {
-        setUploading(false);
-      }
-    }
+    setDeleteVideoId(videoId);
+    deleteCarousal({
+      videoId,
+    });
   };
 
-  // Show error
+  // Handles loading error
   useEffect(() => {
-    if (loadingError) {
-      showError(loadingError);
+    let error = loadingError || updateError || deletionError;
+    if (error) {
+      showError(error);
     }
-  }, [loadingError]);
+  }, [loadingError, updateError, deletionError]);
 
+  // Handles deletion error
   useEffect(() => {
-    if (additionError) {
-      showError(additionError);
-    }
-  }, [additionError]);
-
-  useEffect(() => {
-    if (deletionError) {
-      showError(deletionError);
-    }
-  }, [deletionError]);
-
-  // Handle success
-  useEffect(() => {
-    if (deletionSuccess && deletionData) {
-      handleDeleteDialog();
+    if (deletionData?.message) {
       toast.success(deletionData?.message);
-      setSelectedCarousal(null);
     }
   }, [deletionSuccess]);
 
+  // Handles updation success
   useEffect(() => {
-    if (additionSuccess) {
-      toast.success(additionData?.message);
+    if (updateData?.message) {
+      toast.success(updateData?.message);
+      handleOpenSheet();
     }
-  }, [additionSuccess]);
+  }, [updationSuccess]);
 
-  const carousal = data?.data?.carousal || [];
+  // Handles deleting
+  useEffect(() => {
+    if (!isDeleting) {
+      setDeleteVideoId(null);
+    }
+  }, [isDeleting]);
+
+  const carousals = data?.data?.carousals;
+
+  const videos: courseVideoType[] = [];
+  const alreadySelected: courseVideoType[] = [];
+
+  if (carousals) {
+    for (let carousal of carousals) {
+      if (carousal.sequence)
+        videos.push({
+          ...carousal.video,
+          sequence: carousal.sequence,
+          _id: carousal._id,
+        });
+      alreadySelected.push({
+        ...carousal.video,
+      });
+    }
+  }
+
+  const excludeVideos =
+    carousals?.map((carousal) => carousal.video._id || "") || [];
 
   return (
     <div className="main-container">
       <CustomButton
-        className="green-button px-2 py-4 min-w-[8rem]"
+        className="green-button px-2 py-4"
         handleClick={() => {
-          if (uploading || isAdding) return;
-          inputRef.current?.click();
+          if (videos && videos?.length >= allowedCarousals) {
+            toast.error(`You can't add more than ${allowedCarousals} videos`);
+            return;
+          }
+          handleOpenSheet();
         }}
       >
-        {uploading || isAdding ? (
-          <LoadingSpinner />
-        ) : (
-          <>
-            <AddIcon size={30} className="p-0 m-0" /> Add Image{" "}
-          </>
-        )}
+        <AddIcon size={30} className="p-0 m-0" /> Add Videos
       </CustomButton>
-      <Table className="custom-table">
-        <TableCaption>A list of images</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="">S.no.</TableHead>
-            <TableHead className="min-w-[6rem]">Image</TableHead>
-            {/* <TableHead>Created at</TableHead> */}
-            <TableHead className="">Sequence</TableHead>
-            <TableHead className="">Action</TableHead>
-          </TableRow>
-        </TableHeader>
 
-        <TableBody>
-          {isLoading && <TableLoader colSpan={5} />}
-          {!isLoading &&
-            carousal?.map((item, index) => {
-              return (
-                <TableRow>
-                  <TableCell>Image {index + 1}</TableCell>
-                  <TableCell className="font-medium">
-                    <div className="relative h-[5.5rem] w-[5.5rem] hover:cursor-pointer group ">
-                      <img
-                        src={item.image}
-                        alt={`image ${index}`}
-                        className="w-full h-full object-cover rounded-md"
-                      />
-                    </div>
-                  </TableCell>
-                  {/* <TableCell>{formatDate(item?.createdAt || "")}</TableCell> */}
-                  <TableCell className="font-medium">
-                    {item?.sequence}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex">
-                      <UpdateButton
-                        handleClick={() => {
-                          handleEditDialog();
-                          setSelectedCarousal(item);
-                        }}
-                      />
-                      <DeleteButton
-                        handleClick={() => {
-                          if (isDeleting) return;
-                          handleDeleteDialog();
-                          setSelectedCarousal(item);
-                        }}
-                      />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-      {/* 
-  {isLoading && (
-    <div>
-      <PageLoadingSpinner />
-    </div>
-  )} */}
-      <input
-        id="imageInput"
-        type="file"
-        className="hidden"
-        onChange={handleImageUpload}
-        ref={inputRef}
-        multiple
+      {/* Main table */}
+      <VideosList
+        data={videos}
+        handleOpenDialog={handleOpenDialog}
+        setDialogData={(data) => setDialogData(data)}
+        handleDelete={handleVideoDelete}
+        deletingItem={deleteVideoId}
+        caption={` A list of carousal videos (${carousals?.length}/${allowedCarousals})`}
       />
 
-      <EditSequence
-        open={openEditDialgo}
-        handleOpen={handleEditDialog}
-        item={selectedCarousal}
-      />
+      {/* Dialog box */}
+      {openDialog && dialogData && (
+        <EditSequence
+          open={openDialog}
+          handleOpen={handleOpenDialog}
+          video={dialogData?.item}
+        />
+      )}
 
-      <DeleteDialog
-        openDialog={openDeleteDialgo}
-        handleOpenDialog={handleDeleteDialog}
-        title="Delete Image"
-        description="Are you sure you want to delete this image?"
-        onCancel={() => {
-          handleDeleteDialog();
-          setSelectedCarousal(null);
-        }}
-        onConfirm={handleDeleteImage}
-        isDeleting={isDeleting}
-      />
+      {carousals && (
+        <VideoMenu
+          open={openSheet}
+          handleOpen={handleOpenSheet}
+          newelySelected={newelySelected}
+          setNewelySelected={setNewelySelected}
+          alreadySelected={alreadySelected}
+          handleSubmit={handleVideoSelect}
+          isSubmitting={isUpdating}
+          remainingCapacity={allowedCarousals - videos.length}
+          excludeVideos={excludeVideos}
+        />
+      )}
+
+      {isLoading && (
+        <div>
+          <PageLoadingSpinner />
+        </div>
+      )}
     </div>
   );
-};
+}
 
-export default ImageCarousal;
+export default LatestTutorialsList;

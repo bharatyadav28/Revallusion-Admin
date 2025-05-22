@@ -8,16 +8,18 @@ import { CustomInput, CustomButton } from "../common/Inputs";
 import { LoadingSpinner } from "../common/LoadingSpinner";
 
 import { showError } from "@/lib/reusable-funs";
-import { dashboardCarousalType } from "@/lib/interfaces-types";
 import { useUpdateCarousalSequenceMutation } from "@/store/apis/primary-dashboard-apis";
 
 interface Props {
   open: boolean;
   handleOpen: () => void;
-  item: dashboardCarousalType;
+  video: {
+    sequence: number;
+    videoId: string;
+  };
 }
 
-function EditSequence({ open, handleOpen, item }: Props) {
+function EditSequence({ open, handleOpen, video }: Props) {
   const [sequence, setSequence] = useState("");
 
   // Update sequence
@@ -49,10 +51,10 @@ function EditSequence({ open, handleOpen, item }: Props) {
 
   // Intialise sequence
   useEffect(() => {
-    if (item && item?.sequence) {
-      setSequence(item?.sequence.toString());
+    if (video) {
+      setSequence(video.sequence.toString());
     }
-  }, [item]);
+  }, [video]);
 
   return (
     <CustomDialog open={open} handleOpen={handleOpen} className="w-[30rem]">
@@ -78,9 +80,9 @@ function EditSequence({ open, handleOpen, item }: Props) {
           className="green-button mt-2"
           handleClick={() => {
             if (isUpdatingSequence) return;
-            if (item._id)
+            if (video.videoId)
               updateSequence({
-                id: item._id,
+                videoId: video.videoId,
                 sequence: Number(sequence),
               });
           }}
