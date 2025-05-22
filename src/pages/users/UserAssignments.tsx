@@ -28,6 +28,7 @@ import EditScore from "@/components/course-management/submitted-assignments/Edit
 import CustomTooltip from "@/components/common/CustomTooltip";
 import DeleteDialog from "@/components/common/DeleteDialog";
 import CustomPagination from "@/components/common/CustomPagination";
+import { EmptyTable } from "@/components/common/EmptyTable";
 
 function UserAssignments() {
   const { id: userId } = useParams();
@@ -89,6 +90,7 @@ function UserAssignments() {
   const submittedAssignments = data?.data?.assigments || [];
 
   const totalPages = data?.data?.pagesCount;
+  const noAssignments = submittedAssignments?.length == 0;
 
   return (
     <>
@@ -108,6 +110,9 @@ function UserAssignments() {
 
           <TableBody>
             {isLoading && <TableLoader colSpan={7} />}
+            {!isLoading && noAssignments && (
+              <EmptyTable colSpan={7} text="No assignments found" />
+            )}
             {!isLoading &&
               submittedAssignments.map((subAssignment, index) => (
                 <TableRow key={subAssignment._id}>
@@ -166,7 +171,7 @@ function UserAssignments() {
           </TableBody>
         </Table>
 
-        {totalPages && totalPages > 1 && (
+        {!noAssignments && totalPages && totalPages > 1 && (
           <CustomPagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

@@ -36,7 +36,6 @@ function UsersDetails() {
 
   const user = data?.data?.user;
   const activeOrder = data?.data?.activeOrder;
-  const transactions = data?.data?.user?.transactions;
   const plans = plansData?.data?.plans;
 
   const plansMapping = new Map();
@@ -55,10 +54,7 @@ function UsersDetails() {
           completionTime={user?.certificate?.completionTime}
           file={user?.certificate?.path}
         />
-        <UserTransactions
-          transactions={transactions}
-          plansMapping={plansMapping}
-        />
+        <UserTransactions plansMapping={plansMapping} />
         <UserAssignments />
       </div>
 

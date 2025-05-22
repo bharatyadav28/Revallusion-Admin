@@ -16,11 +16,16 @@ export const transactionsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "/api/v1/",
   }),
-  tagTypes: ["Transactions", "Filtered-Transactions"],
+  tagTypes: ["Transactions", "Filtered-Transactions", "UserTransactions"],
   endpoints: (builder) => ({
     getTransactions: builder.query<ResponseType, string>({
       query: (extra) => `transaction${extra}`,
       providesTags: [{ type: "Transactions", id: "LIST" }],
+    }),
+
+    getUserTransactions: builder.query<ResponseType, string>({
+      query: (extra) => `transaction/user/${extra}`,
+      providesTags: [{ type: "UserTransactions", id: "LIST" }],
     }),
 
     getAllFilteredTransactions: builder.query<ResponseType, string>({
@@ -30,7 +35,10 @@ export const transactionsApi = createApi({
   }),
 });
 
-export const { useGetTransactionsQuery, useGetAllFilteredTransactionsQuery } =
-  transactionsApi;
+export const {
+  useGetTransactionsQuery,
+  useGetAllFilteredTransactionsQuery,
+  useGetUserTransactionsQuery,
+} = transactionsApi;
 
 export default transactionsApi;
