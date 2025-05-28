@@ -31,6 +31,9 @@ function EditPlan({ open, handleOpen, plans, updateId, setUpdateId }: Props) {
   // Handle plan updation
   const handleSubmit = () => {
     if (!isDigitsOnly(price)) return toast.error("Please enter a valid price");
+    if (Number(price) <= 0 || Number(usdPrice) <= 0)
+      return toast.error("Price must be greater than 0");
+
     if (existingPlan) {
       updatePlan({
         plan: { ...existingPlan, inr_price: price, usd_price: usdPrice },
@@ -46,6 +49,7 @@ function EditPlan({ open, handleOpen, plans, updateId, setUpdateId }: Props) {
     if (updateId) {
       if (existingPlan) {
         setPrice(existingPlan.inr_price);
+        setUsdPrice(existingPlan.usd_price);
       }
     }
   }, [updateId, existingPlan]);

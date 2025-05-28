@@ -14,7 +14,7 @@ import {
   LoadingSpinner,
   PageLoadingSpinner,
 } from "@/components/common/LoadingSpinner";
-import { showError } from "@/lib/reusable-funs";
+import { showError, strippedHtmlTags } from "@/lib/reusable-funs";
 
 function HeroSection() {
   const [caption, setCaption] = useState("");
@@ -31,6 +31,9 @@ function HeroSection() {
   ] = useUpdateHeroSectionMutation();
 
   const handleSubmit = () => {
+    if (!strippedHtmlTags(caption)) return toast.error("Please enter caption");
+    if (!description) return toast.error("Please enter description");
+
     updateHero({
       caption,
       description,

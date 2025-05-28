@@ -82,6 +82,10 @@ function UsersList() {
       key: "No filter",
       value: "clear",
     },
+    {
+      key: "No plan",
+      value: "noPlan",
+    },
   ];
   const plansFiltered = plans?.map((plan) => ({
     key: plan.plan_type,
@@ -141,6 +145,12 @@ function UsersList() {
 
     return () => clearTimeout(timer);
   }, [search]);
+
+  useEffect(() => {
+    if (selectedPlan) {
+      setCurrentPage(1);
+    }
+  }, [selectedPlan]);
 
   const totalPages = data?.data?.pagesCount || 1;
   const isPageLoading = isLoading || isPlansLoading;

@@ -3,6 +3,7 @@ import { SearchIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FaFileInvoice as InvoiceIcon } from "react-icons/fa";
 import JSZip from "jszip";
+import { FaSort as SortIcon } from "react-icons/fa";
 
 import {
   Table,
@@ -13,7 +14,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CustomButton, CustomInput } from "@/components/common/Inputs";
+import {
+  CustomButton,
+  CustomInput,
+  CustomSelectSeperate,
+} from "@/components/common/Inputs";
 import { useGetTransactionsQuery } from "@/store/apis/transactions-apis";
 import { useGetPlansQuery } from "@/store/apis/content-mangement/plans-apis";
 import { formatDate, showError } from "@/lib/reusable-funs";
@@ -34,6 +39,9 @@ function Transactions() {
   const [to, setTo] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortByAmount, setSortByAmount] = useState("");
+  const [sortByDate, setSortByDate] = useState("");
+  const [status, setStatus] = useState("");
 
   const navigate = useNavigate();
 
@@ -42,6 +50,9 @@ function Transactions() {
   if (currentPage) query += `currentPage=${currentPage}&`;
   if (from) query += `from=${from}&`;
   if (to) query += `to=${to}&`;
+  if (sortByAmount) query += `sortByAmount=${sortByAmount}&`;
+  if (sortByDate) query += `sortByDate=${sortByDate}&`;
+  if (status) query += `status=${status}&`;
 
   const { data, error, isFetching } = useGetTransactionsQuery(query);
 
@@ -138,6 +149,28 @@ function Transactions() {
     }
   };
 
+  const handleSortByAmount = () => {
+    if (sortByAmount === "asc") {
+      setSortByAmount("desc");
+    } else {
+      setSortByAmount("asc");
+    }
+  };
+
+  const handleSortByDate = () => {
+    if (sortByDate === "asc") {
+      setSortByDate("desc");
+    } else {
+      setSortByDate("asc");
+    }
+  };
+
+  const statusMenu = [
+    { key: "No filter", value: "No filter" },
+    { key: "Successful", value: "Completed" },
+    { key: "Failed", value: "Failed" },
+  ];
+
   return (
     <>
       <div className="main-container">
@@ -153,6 +186,14 @@ function Transactions() {
               />
             </div>
           </div>
+
+          <CustomSelectSeperate
+            menu={statusMenu}
+            value={status}
+            onChange={setStatus}
+            placeholder="Filter by status"
+            className="max-w-[15rem]"
+          />
 
           <div className="flex lg:flex-row flex-col  gap-2">
             <div className="flex items-center px-2 gap-2 lg:max-w-[12rem] lg:w-full  w-[15rem] bg-inherit border border-gray-400 rounded-md  py-[0.6rem]">
@@ -198,9 +239,35 @@ function Transactions() {
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Plan</TableHead>
-              <TableHead>Amount</TableHead>
+              <TableHead>
+                <button onClick={handleSortByAmount}>
+                  <div className="flex gap-2 items-center">
+                    <div>Amount</div>
+                    <div>
+                      <SortIcon
+                        className={
+                          sortByAmount ? "text-[var(--lightpurple)]" : ""
+                        }
+                      />
+                    </div>
+                  </div>
+                </button>
+              </TableHead>
               <TableHead>Payment Id</TableHead>
-              <TableHead>Date & Time</TableHead>
+              <TableHead>
+                <button onClick={handleSortByDate}>
+                  <div className="flex gap-2 items-center">
+                    <div> Date & Time </div>
+                    <div>
+                      <SortIcon
+                        className={
+                          sortByDate ? "text-[var(--lightpurple)]" : ""
+                        }
+                      />
+                    </div>
+                  </div>
+                </button>
+              </TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Invoice</TableHead>
             </TableRow>

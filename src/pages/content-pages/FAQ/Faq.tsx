@@ -21,7 +21,7 @@ function Faq() {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("Active");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -43,6 +43,9 @@ function Faq() {
 
   // Handle faq updation or additon
   const handleSubmit = async () => {
+    if (!title.trim()) return toast.error("Title is required");
+    if (!description.trim()) return toast.error("Description is required");
+
     if (location.state?.isEdit) {
       await updateFaq({
         faq: { title, description, status },
@@ -107,7 +110,12 @@ function Faq() {
         <div className="input-container">
           <div className="label">Title</div>
           <div className="user-input">
-            <CustomInput text={title} setText={setTitle} className="py-5" />
+            <CustomInput
+              text={title}
+              setText={setTitle}
+              className="py-5"
+              maxChars={80}
+            />
           </div>
         </div>
 

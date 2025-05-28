@@ -171,6 +171,7 @@ function Certificate() {
                 );
                 return;
               }
+              setUpdateId("");
               setOpen(true);
             }}
           >

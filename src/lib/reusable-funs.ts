@@ -188,3 +188,7 @@ export function extractVideoURLKey(url: string) {
   const fileName = url.split("/").pop();
   return fileName?.replace(/\.[^/.]+$/, "");
 }
+
+export function strippedHtmlTags(str: string) {
+  return str.replace(/<(.|\n)*?>/g, "").trim();
+}

@@ -31,7 +31,7 @@ import {
 } from "@/store/apis/library-apis";
 import { showError, truncateString } from "@/lib/reusable-funs";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
-import TimeStampList from "@/components/timestamp/TimestampList";
+// import TimeStampList from "@/components/timestamp/TimestampList";
 import TimestampForm from "@/components/timestamp/TimestampForm";
 
 function AddEditVideo() {
@@ -99,7 +99,7 @@ function AddEditVideo() {
 
   const handleSubmit = async () => {
     const videodata: videoType = {
-      title,
+      title: title?.replace(/[^a-zA-Z0-9 ]/g, ""),
       description,
       thumbnailUrl,
       course,
@@ -343,7 +343,7 @@ function AddEditVideo() {
           </div>
         </div>
 
-        {isEdit && (
+        {/* isEdit && (
           <div className="input-container gap-2">
             <div className="label">Timestamps</div>
 
@@ -354,7 +354,7 @@ function AddEditVideo() {
               />
             </div>
           </div>
-        )}
+        )*/}
 
         <div className="mt-2 lg:ml-[17.3rem] flex gap-2">
           <CustomButton

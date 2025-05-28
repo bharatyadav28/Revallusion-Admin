@@ -55,6 +55,10 @@ function HeroSection() {
 
   // Handle updation
   const handleSubmit = () => {
+    if (!name) return toast.error("Name is required");
+    if (!designation) return toast.error("Designation is required");
+    if (!about) return toast.error("About is required");
+
     const filteredNetworks = networks.map(({ _id, ...rest }) => rest);
     updateMentor({
       name,

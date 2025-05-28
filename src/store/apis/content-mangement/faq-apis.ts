@@ -4,7 +4,8 @@ import { faqType } from "@/lib/interfaces-types";
 
 interface ResponseType {
   data: {
-    faqs: [faqType];
+    faqs: faqType[];
+    pagesCount: number;
   };
   message: string;
   success: boolean;
@@ -18,8 +19,8 @@ export const faqApi = createApi({
   tagTypes: ["Faq"],
   endpoints: (builder) => ({
     // Fetch FAQs
-    getFaqs: builder.query<ResponseType, void>({
-      query: () => "content/faq",
+    getFaqs: builder.query<ResponseType, string>({
+      query: (query) => `content/faq?${query}`,
       providesTags: [{ type: "Faq", id: "LIST" }],
     }),
 

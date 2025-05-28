@@ -1,5 +1,5 @@
 // View all faqs data
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CustomButton, UpdateButton } from "@/components/common/Inputs";
 import { useNavigate } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
@@ -18,15 +18,21 @@ import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 import { faqType } from "@/lib/interfaces-types";
 import { showError } from "@/lib/reusable-funs";
 import DeleteFaq from "./DeleteFaq";
+import CustomPagination from "@/components/common/CustomPagination";
 
 function ViewFaqs() {
+  const [currentPage, setCurrentPage] = useState(1);
+
   const navigate = useNavigate();
+
+  let query = "";
+  if (currentPage) query += `currentPage=${currentPage}`;
 
   const {
     data,
     error: loadingError,
     isFetching: isLoading,
-  } = useGetFaqsQuery();
+  } = useGetFaqsQuery(query);
 
   // Show error
   useEffect(() => {
@@ -34,6 +40,9 @@ function ViewFaqs() {
       showError(loadingError);
     }
   }, [loadingError]);
+
+  const totalPages = data?.data?.pagesCount;
+  const noFaqs = data?.data?.faqs?.length == 0;
 
   return (
     <>
@@ -63,7 +72,9 @@ function ViewFaqs() {
                 <TableCell className="min-w-[10rem]">{faq.title}</TableCell>
                 <TableCell>
                   <CustomButton
-                    className="green-button w-[5rem]"
+                    className={`${
+                      faq.status === "Active" ? "green-button" : "red-button"
+                    }  w-[5rem]`}
                     handleClick={() => {}}
                   >
                     {faq.status}
@@ -89,6 +100,15 @@ function ViewFaqs() {
             ))}
           </TableBody>
         </Table>
+
+        {!noFaqs && totalPages && totalPages > 1 && (
+          <CustomPagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
+            className="!pl-0"
+          />
+        )}
       </div>
 
       {isLoading && (

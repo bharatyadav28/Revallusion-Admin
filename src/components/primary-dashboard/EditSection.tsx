@@ -96,6 +96,7 @@ function EditSection({ open, handleOpen, section }: Props) {
               setText={setName}
               className="py-5"
               placeholder="Type name here..."
+              maxChars={50}
             />
           </div>
         </div>

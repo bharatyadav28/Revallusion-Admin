@@ -280,6 +280,11 @@ function VideoMenu({
                 );
                 return;
               }
+
+              if (newelySelected.length === 0) {
+                toast.error("Please select atleast one video");
+                return;
+              }
               handleSubmit();
             }}
             disabled={isSubmitting}

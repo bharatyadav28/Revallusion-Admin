@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { CustomDialog } from "@/components/common/CustomDialog";
 import { CustomButton, CustomTextArea } from "@/components/common/Inputs";
+import toast from "react-hot-toast";
 
 interface Props {
   open: boolean;
@@ -35,11 +36,21 @@ function KeyPoint({
   // Handle key point updation or additon
   const handleSubmit = () => {
     const newKeyPoints = [...keyPoints];
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle) {
+      toast.error("Title cannot be empty");
+      return;
+    }
+
+    if (newKeyPoints.includes(trimmedTitle)) {
+      toast.error("Key points must be unique");
+      return;
+    }
 
     if (updateId) {
-      newKeyPoints[Number(updateId)] = title;
+      newKeyPoints[Number(updateId)] = trimmedTitle;
     } else {
-      newKeyPoints.push(title);
+      newKeyPoints.push(trimmedTitle);
     }
 
     setKeyPoints(newKeyPoints);
