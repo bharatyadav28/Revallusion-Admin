@@ -5,6 +5,10 @@
       "destination": "https://revallusion.onrender.com/api/:path*"
     },
     {
+      "source": "/videos/:path*",
+      "destination": "https://dcays3srybill.cloudfront.net/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
