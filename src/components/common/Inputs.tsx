@@ -275,7 +275,9 @@ export const CustomSelect = ({
 interface SelectProps2 {
   menu: { value: string; key: string }[];
   value: string;
-  onChange: React.Dispatch<React.SetStateAction<string>>;
+  onChange:
+    | React.Dispatch<React.SetStateAction<string>>
+    | ((val: string) => void);
   className?: string;
   placeholder?: string;
 }

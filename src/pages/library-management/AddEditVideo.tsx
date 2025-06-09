@@ -233,7 +233,11 @@ function AddEditVideo() {
             <CustomSelectSeperate
               menu={courseMenu}
               value={course}
-              onChange={setCourse}
+              onChange={(value: string) => {
+                setCourse(value);
+                setModule("");
+                setSubModule("");
+              }}
             />
           </div>
         </div>
@@ -245,7 +249,10 @@ function AddEditVideo() {
               <CustomSelectSeperate
                 menu={moduleMenu}
                 value={module}
-                onChange={setModule}
+                onChange={(value: string) => {
+                  setModule(value);
+                  setSubModule("");
+                }}
               />
             </div>
           </div>
@@ -365,7 +372,7 @@ function AddEditVideo() {
             {isAdding || isUpdating ? <LoadingSpinner /> : "Save"}
           </CustomButton>
 
-          {isEdit && (
+          {/* isEdit && (
             <CustomButton
               className="green-button"
               handleClick={() => {
@@ -375,7 +382,7 @@ function AddEditVideo() {
             >
               Add timestamp
             </CustomButton>
-          )}
+          ) */}
         </div>
       </div>
 
