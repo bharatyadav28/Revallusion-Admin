@@ -16,10 +16,11 @@ function useUploadFile(folder?: string) {
       try {
         // TODO: Remove in production
         const fileSizeInMB = file.size / (1024 * 1024);
-        if (fileSizeInMB > 50) {
-          toast.error("For free aws tier, file size should be less than 50MB");
-          return;
-        }
+        console.log("File size", fileSizeInMB);
+        // if (fileSizeInMB > 50) {
+        //   toast.error("For free aws tier, file size should be less than 50MB");
+        //   return;
+        // }
 
         const formData = new FormData();
         formData.append("file", file);
