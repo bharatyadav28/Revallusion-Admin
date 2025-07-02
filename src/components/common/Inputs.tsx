@@ -355,7 +355,7 @@ export const CustomReactQuill = ({ text, setText, maxChars }: QuillProps) => {
           formats={formats}
           ref={quillRef}
           //   style={{ height: "300px" }} // Adjust the height value as needed
-          className="bg-[#fff] text-black h-full overflow-hidden border rounded-md "
+          className="bg-[#fff] text-black h-full overflow-hidden border rounded-md  "
         />
       </div>
 

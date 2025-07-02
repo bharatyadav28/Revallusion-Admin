@@ -17,8 +17,8 @@ export default defineConfig({
     proxy: {
       "/api": {
         // target: "https://revallusion.onrender.com",
-        target: "https://api.ravallusion.com",
-        // target: "http://localhost:4000",
+        // target: "https://api.ravallusion.com",
+        target: "http://localhost:4000",
         changeOrigin: true,
       },
       "/videos": {

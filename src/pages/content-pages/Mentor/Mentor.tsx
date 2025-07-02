@@ -13,6 +13,7 @@ import {
   CustomInput,
   CustomTextArea,
   CustomButton,
+  CustomReactQuill,
 } from "@/components/common/Inputs";
 import {
   useGetMentorQuery,
@@ -40,7 +41,7 @@ function HeroSection() {
     setOpen((prev) => !prev);
   };
 
-  const allowedNetworks = 3;
+  const allowedNetworks = 8;
 
   const {
     data,
@@ -129,14 +130,17 @@ function HeroSection() {
 
         <div className="input-container">
           <div className="label">About</div>
-          <div className="user-input">
-            <CustomTextArea
+          {/* <div className="user-input"> */}
+          {/* <CustomTextArea
               maxChars={1000}
               text={about}
               setText={setAbout}
               className="h-40"
               placeholder="Type details here..."
-            />
+            /> */}
+
+          <div className="grow lg:max-w-[47rem]">
+            <CustomReactQuill maxChars={1000} text={about} setText={setAbout} />
           </div>
         </div>
 

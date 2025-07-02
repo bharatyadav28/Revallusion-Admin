@@ -167,7 +167,6 @@ function LatestTutorialsList() {
       >
         <AddIcon size={30} className="p-0 m-0" /> Add Videos
       </CustomButton>
-
       {/* Main table */}
       <VideosList
         data={videos}
@@ -176,8 +175,8 @@ function LatestTutorialsList() {
         handleDelete={handleVideoDelete}
         deletingItem={deleteVideoId}
         caption={` A list of carousal videos (${carousals?.length}/${allowedCarousals})`}
+        hideDescription={true}
       />
-
       {/* Dialog box */}
       {openDialog && dialogData && (
         <EditCarousal
@@ -186,7 +185,6 @@ function LatestTutorialsList() {
           video={dialogData?.item}
         />
       )}
-
       {carousals && (
         <VideoMenu
           open={openSheet}
@@ -200,7 +198,6 @@ function LatestTutorialsList() {
           excludeVideos={excludeVideos}
         />
       )}
-
       {isLoading && (
         <div>
           <PageLoadingSpinner />

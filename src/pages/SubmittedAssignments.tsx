@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaDownload as DownloadIcon } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { SearchIcon } from "lucide-react";
 
 import {
   Table,
@@ -33,6 +34,7 @@ import CustomTooltip from "@/components/common/CustomTooltip";
 import DeleteDialog from "@/components/common/DeleteDialog";
 import CustomPagination from "@/components/common/CustomPagination";
 import EmptyValue from "@/components/common/EmptyValue";
+import { CustomInput } from "@/components/common/Inputs";
 
 function SubmittedAssignments() {
   const dispatch = useAppDispatch();
@@ -41,6 +43,8 @@ function SubmittedAssignments() {
   const [score, setScore] = useState<number | null>(0);
   const [subAssignmentId, setSubAssignmentId] = useState("");
   const [openDeleteDialog, SetOpenDeleteDialog] = useState(false);
+  const [email, setEmail] = useState("");
+  const [deboounceEmail, setDebounceEmail] = useState("");
 
   const [graded, setGraded] = useState<string>("");
   const [submoduleFilter, setSubmoduleFilter] = useState<string>("");
@@ -65,6 +69,7 @@ function SubmittedAssignments() {
   let query = "?";
   if (graded !== "clear") query += `isGraded=${graded}&`;
   if (submoduleFilter !== "clear") query += `submoduleId=${submoduleFilter}&`;
+  query += `email=${deboounceEmail}&`;
   if (currentPage) query += `currentPage=${currentPage}`;
 
   // Fetching
@@ -136,12 +141,33 @@ function SubmittedAssignments() {
     setCurrentPage(1);
   }, [submoduleFilter, graded]);
 
+  // Debouncing on search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebounceEmail(email);
+      setCurrentPage(1);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [email]);
+
+  console.log("Email", email, deboounceEmail);
+
   const totalPages = data?.data?.pagesCount;
 
   return (
     <>
       <div className="main-container">
         <div className="flex gap-2">
+          <div className="w-[20rem] max-w-full flex items-center border border-gray-400 rounded-md ps-2 ">
+            <SearchIcon size={18} />
+            <CustomInput
+              text={email}
+              setText={setEmail}
+              className="py-5 border-none focus-visible:ring-0 "
+              placeholder="Search by email"
+            />
+          </div>
           <CustomSelectSeperate
             menu={GradedMenu}
             value={graded}

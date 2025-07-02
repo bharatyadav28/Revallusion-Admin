@@ -68,7 +68,10 @@ function UserForm({ open, handleOpen, plans, user }: Props) {
         handleOpen();
       }
     } else {
-      const response = await addUser(formdata);
+      const response = await addUser({
+        ...formdata,
+        plan: plan === "noPlan" ? "" : plan,
+      });
 
       if (response?.error) showError(response.error);
       else {

@@ -26,6 +26,7 @@ interface Props {
   deletingItem?: string | null;
   caption?: string;
   className?: string;
+  hideDescription?: true;
 }
 function VideosList({
   data,
@@ -39,6 +40,7 @@ function VideosList({
   deletingItem,
   caption,
   className,
+  hideDescription,
 }: Props) {
   // Sort data by sequence
   // const sortedData = [...data].sort((a, b) => {
@@ -60,7 +62,9 @@ function VideosList({
       <TableHeader>
         <TableRow>
           <TableHead className="min-w-[6rem]">Video name</TableHead>
-          <TableHead className="min-w-[6rem]">Video Description</TableHead>
+          {!hideDescription && (
+            <TableHead className="min-w-[6rem]">Video Description</TableHead>
+          )}
           <TableHead>Sequence</TableHead>
           {courseId && <TableHead>Status</TableHead>}
           <TableHead className="">Action</TableHead>
@@ -71,7 +75,11 @@ function VideosList({
         {sortedData?.map((video) => (
           <TableRow className="!hover:bg-blue-500" key={video?._id}>
             <TableCell className="font-medium">{video?.title}</TableCell>
-            <TableCell className="font-medium">{video?.description}</TableCell>
+            {!hideDescription && (
+              <TableCell className="font-medium">
+                {video?.description}
+              </TableCell>
+            )}
             <TableCell className="font-medium ">
               <span className="highlight-digit">
                 {video?.sequence > 0 ? video?.sequence : "NA"}

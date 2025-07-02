@@ -176,6 +176,7 @@ function LatestTutorialsList() {
         handleDelete={handleVideoDelete}
         deletingItem={deleteVideoId}
         caption={` A list of carousal videos (${carousals?.length}/${allowedCarousals})`}
+        hideDescription={true}
       />
 
       {/* Dialog box */}
