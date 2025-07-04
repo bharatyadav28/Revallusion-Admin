@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/table";
 import {
   CustomInput,
-  CustomTextArea,
   CustomButton,
   CustomReactQuill,
 } from "@/components/common/Inputs";
