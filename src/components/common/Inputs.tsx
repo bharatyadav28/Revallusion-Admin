@@ -346,7 +346,7 @@ export const CustomReactQuill = ({ text, setText, maxChars }: QuillProps) => {
 
   return (
     <>
-      <div className="lg:h-[10rem] h-[20rem]">
+      <div className="h-full overflow-scroll ">
         <ReactQuill
           theme="snow"
           value={text}
@@ -355,7 +355,9 @@ export const CustomReactQuill = ({ text, setText, maxChars }: QuillProps) => {
           formats={formats}
           ref={quillRef}
           //   style={{ height: "300px" }} // Adjust the height value as needed
-          className="bg-[#fff] text-black h-full overflow-hidden border rounded-md  "
+          // className="bg-[#fff] text-black h-full overflow-hidden border rounded-md  "
+          className="bg-[#fff]"
+          style={{ border: "1px solid black ", color: "black" }}
         />
       </div>
 

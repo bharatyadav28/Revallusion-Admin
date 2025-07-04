@@ -7,6 +7,7 @@ import {
   CustomInput,
   CustomSelect,
   CustomButton,
+  CustomReactQuill,
 } from "@/components/common/Inputs";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import ReactQuill from "react-quill";
@@ -90,14 +91,14 @@ function EditStaticPage() {
 
         <div className="input-container">
           <div className="label">Description</div>
-          <div className="user-input h-[20rem] ">
+          <div className="user-input max-h-[30rem] overflow-y-scroll ">
             <ReactQuill
               theme="snow"
               value={description}
               onChange={(value) => setDescription(value)}
               modules={modules}
               formats={formats}
-              className="bg-[#fff] rounded-md text-black h-full overflow-hidden border  "
+              className="bg-[#fff] text-black pb-4"
             />
           </div>
         </div>

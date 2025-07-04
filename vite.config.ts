@@ -22,7 +22,7 @@ export default defineConfig({
         changeOrigin: true,
       },
       "/videos": {
-        target: "https://dcays3srybill.cloudfront.net",
+        target: "https://d2b1ol8c9bt133.cloudfront.net",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/videos/, ""),
       },
