@@ -7,7 +7,6 @@ import {
   CustomInput,
   CustomSelect,
   CustomButton,
-  CustomReactQuill,
 } from "@/components/common/Inputs";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import ReactQuill from "react-quill";
