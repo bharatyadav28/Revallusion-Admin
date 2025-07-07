@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaFileInvoice as InvoiceIcon } from "react-icons/fa";
 import JSZip from "jszip";
 import { FaSort as SortIcon } from "react-icons/fa";
+import * as XLSX from "xlsx";
 
 import {
   Table,
@@ -149,6 +150,47 @@ function Transactions() {
     }
   };
 
+  const exportTransactions = async () => {
+    if (isLoading) return;
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        `/api/v1/transaction/export?to=${to}&from=${from}`
+      );
+      if (!response.ok) {
+        throw new Error("Download invoices failed");
+      }
+
+      const data = await response.arrayBuffer();
+
+      const workbook = XLSX.read(data, { type: "array" });
+      const xlsxData = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+
+      const blob = new Blob([xlsxData], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute("download", `Ravallusion.xlsx`);
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(link.href);
+
+      toast.success("File Downloaded Successfully");
+    } catch (error) {
+      console.log("Error", error);
+      toast.error("An error occured");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSortByAmount = () => {
     if (sortByAmount === "asc") {
       setSortByAmount("desc");
@@ -174,7 +216,7 @@ function Transactions() {
   return (
     <>
       <div className="main-container">
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap gap-3 items-center">
           <div className="flex flex-wrap gap-2">
             <div className="w-[15rem] max-w-full flex items-center border border-gray-400 rounded-md ps-2 ">
               <SearchIcon size={18} />
@@ -229,6 +271,12 @@ function Transactions() {
             handleClick={downloadBulkInvoices}
           >
             Download invoices
+          </CustomButton>
+          <CustomButton
+            className="green-button px-2  py-5 "
+            handleClick={exportTransactions}
+          >
+            Export Transactions
           </CustomButton>
         </div>
 
