@@ -80,6 +80,14 @@ export const usersApi = createApi({
       }),
       invalidatesTags: [{ type: "users", id: "LIST" }],
     }),
+
+    restoreUser: builder.mutation<ResponseType, string>({
+      query: (id) => ({
+        url: `/admin/users/${id}/restore`,
+        method: "PUT",
+      }),
+      invalidatesTags: [{ type: "users", id: "LIST" }],
+    }),
   }),
 });
 
@@ -89,6 +97,7 @@ export const {
   useGetUsersQuery,
   useGetUserDetailsQuery,
   useUpdateUserMutation,
+  useRestoreUserMutation,
 } = usersApi;
 
 export default usersApi;

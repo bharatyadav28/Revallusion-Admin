@@ -10,10 +10,12 @@ import { FaList as ListIcon } from "react-icons/fa";
 import { AiOutlineQuestionCircle as QueryIcon } from "react-icons/ai";
 import { HiLibrary as LibraryIcon } from "react-icons/hi";
 import { GiBookshelf as CourseIcon } from "react-icons/gi";
-import { FaUsers as UsersIcon } from "react-icons/fa";
+import { FaUsers as UserManagementIcon } from "react-icons/fa";
 import { FaTrophy as LeaderboardIcon } from "react-icons/fa";
 import { MdReceiptLong as TransactionIcon } from "react-icons/md";
 import { MdAssignmentTurnedIn as AssignmentIcon } from "react-icons/md";
+import { AiOutlineUser as UsersIcon } from "react-icons/ai";
+import { FaUserSlash as DeletedUsersIcon } from "react-icons/fa";
 
 // import { FaCommentDots as CommentIcon } from "react-icons/fa6";
 
@@ -46,8 +48,20 @@ function AppSidebar() {
     },
     {
       name: "Users Mangement",
-      Icon: UsersIcon,
-      path: "/users",
+      Icon: UserManagementIcon,
+      hasSubMenu: true,
+      subMenuItems: [
+        {
+          name: "Active Users",
+          Icon: UsersIcon,
+          path: "/users",
+        },
+        {
+          name: "Deleted Users",
+          Icon: DeletedUsersIcon,
+          path: "/deleted-users",
+        },
+      ],
     },
     {
       name: "Landing Page",

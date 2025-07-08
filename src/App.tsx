@@ -43,6 +43,7 @@ import UsersList from "./pages/users/UsersList";
 import UsersDetails from "./pages/users/UsersDetails";
 import Transactions from "./pages/Transactions";
 import LeaderBoard from "./pages/leader-board/LeaderBoard";
+import DeletedUsers from "./pages/users/DeletedUsers";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -113,6 +114,8 @@ function App() {
             <Route index element={<UsersList />} />
             <Route path=":id" element={<UsersDetails />} />
           </Route>
+
+          <Route path="deleted-users" element={<DeletedUsers />} />
 
           <Route path="leader-board" element={<LeaderBoard />} />
 
