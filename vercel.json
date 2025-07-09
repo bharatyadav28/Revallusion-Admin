@@ -6,7 +6,7 @@
     },
     {
       "source": "/videos/:path*",
-      "destination": "https://dcays3srybill.cloudfront.net/:path*"
+      "destination": "https://d2b1ol8c9bt133.cloudfront.net/:path*"
     },
     {
       "source": "/(.*)",
