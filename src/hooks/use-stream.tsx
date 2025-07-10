@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { videoDurationType } from "@/lib/interfaces-types";
 import { calculateDuration } from "@/lib/reusable-funs";
 import { baseAddr } from "@/lib/resuable-data";
+import toast from "react-hot-toast";
 
 interface UploadPart {
   ETag: string;
@@ -32,33 +33,40 @@ function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
     const contentType = setVideoDuration ? null : file?.type;
 
     setUploading(true);
-    if (setVideoDuration)
-      calculateDuration({ file, setDuration: setVideoDuration });
 
-    // Preview
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+    try {
+      if (setVideoDuration)
+        calculateDuration({ file, setDuration: setVideoDuration });
 
-    // Start upload
-    const fileType = setVideoDuration ? null : "assignments";
-    const initData = await startUpload(contentType, fileType);
+      // Preview
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
 
-    if (initData) {
-      await uploadFileInChunks(
-        file,
-        initData.fileName,
-        initData.UploadId,
-        fileType
-      );
+      // Start upload
+      const fileType = setVideoDuration ? null : "assignments";
+      const initData = await startUpload(contentType, fileType);
+
+      if (initData) {
+        await uploadFileInChunks(
+          file,
+          initData.fileName,
+          initData.UploadId,
+          fileType
+        );
+      }
+      // setFileSrc(initData?.fileName?.split("/")?.pop() || "");
+      let fileName = initData?.fileName;
+      if (setVideoDuration) {
+        fileName = fileName?.split("/")?.pop();
+      }
+      if (fileName) {
+        setFileSrc(fileName);
+      }
+    } catch (error) {
+      console.log("Error in video upload: ", error);
+      toast.error("Video upload failed");
     }
-    // setFileSrc(initData?.fileName?.split("/")?.pop() || "");
-    let fileName = initData?.fileName;
-    if (setVideoDuration) {
-      fileName = fileName?.split("/")?.pop();
-    }
-    if (fileName) {
-      setFileSrc(fileName);
-    }
+
     setUploading(false);
   };
 
@@ -66,21 +74,16 @@ function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
     contentType: string | null,
     fileType: string | null
   ): Promise<UploadInitResponse | null> => {
-    try {
-      const res = await fetch(`${baseAddr}/api/v1/video/stream/start-upload`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contentType, fileType }),
-      });
+    const res = await fetch(`${baseAddr}/api/v1/video/stream/start-upload`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contentType, fileType }),
+    });
 
-      if (!res.ok) throw new Error("Failed to start upload");
-      const data = await res.json();
-      return data;
-    } catch (err) {
-      console.error("startUpload error:", err);
-      return null;
-    }
+    if (!res.ok) throw new Error("Failed to start upload");
+    const data = await res.json();
+    return data;
   };
 
   const uploadChunk = async (
@@ -129,23 +132,18 @@ function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
       const chunk = file.slice(start, end);
       const partNumber = i + 1;
 
-      try {
-        const part = await uploadChunk(
-          chunk,
-          partNumber,
-          fileName,
-          uploadId,
-          fileType
-        );
-        uploadedParts.push(part);
+      const part = await uploadChunk(
+        chunk,
+        partNumber,
+        fileName,
+        uploadId,
+        fileType
+      );
+      uploadedParts.push(part);
 
-        uploadedBytes += chunk.size;
-        const percent = ((uploadedBytes / file.size) * 100).toFixed(2);
-        setProgress(Number(percent));
-      } catch (err) {
-        console.error(`Error uploading part ${partNumber}`, err);
-        return;
-      }
+      uploadedBytes += chunk.size;
+      const percent = ((uploadedBytes / file.size) * 100).toFixed(2);
+      setProgress(Number(percent));
     }
 
     await completeUpload(uploadedParts, fileName, uploadId, fileType);
@@ -157,26 +155,19 @@ function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
     uploadId: string,
     fileType: string | null
   ) => {
-    try {
-      const res = await fetch(
-        `${baseAddr}/api/v1/video/stream/complete-upload`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            uploadId,
-            fileName,
-            parts,
-            fileType,
-          }),
-        }
-      );
+    const res = await fetch(`${baseAddr}/api/v1/video/stream/complete-upload`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        uploadId,
+        fileName,
+        parts,
+        fileType,
+      }),
+    });
 
-      if (!res.ok) throw new Error("Failed to complete upload");
-    } catch (err) {
-      console.error("completeUpload error:", err);
-    }
+    if (!res.ok) throw new Error("Failed to complete upload");
   };
 
   return {
