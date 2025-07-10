@@ -22,7 +22,7 @@ interface Props {
   setVideoDuration?: React.Dispatch<React.SetStateAction<videoDurationType>>;
 }
 function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
-  const chunkSize = 100 * 1024 * 1024; // 100MB
+  const chunkSize = 50 * 1024 * 1024; // 50MB
 
   const [progress, setProgress] = useState<number>(0);
 
@@ -64,7 +64,7 @@ function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
       }
     } catch (error) {
       console.log("Error in video upload: ", error);
-      toast.error("Video upload failed");
+      toast.error("File upload failed");
     }
 
     setUploading(false);
