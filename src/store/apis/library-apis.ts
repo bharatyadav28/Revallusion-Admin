@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { courseType, videoType } from "@/lib/interfaces-types";
 import courseApi from "./course-apis";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface ResponseType {
   data: {
@@ -16,7 +17,8 @@ interface ResponseType {
 export const libraryApi = createApi({
   reducerPath: "libraryApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/video",
+    baseUrl: baseAddr + "/api/v1/video",
+    credentials: "include",
   }),
   tagTypes: ["Videos", "VideoList"],
   endpoints: (builder) => ({

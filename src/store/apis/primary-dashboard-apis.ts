@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { carousalType, dashboardSectionType } from "@/lib/interfaces-types";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface ResponseType {
   data: {
@@ -14,7 +15,8 @@ interface ResponseType {
 export const primaryDashboardApi = createApi({
   reducerPath: "primaryDashboardApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/dashboard",
+    baseUrl: baseAddr + "/api/v1/dashboard",
+    credentials: "include",
   }),
   tagTypes: ["Carousal", "Content"],
   endpoints: (builder) => ({

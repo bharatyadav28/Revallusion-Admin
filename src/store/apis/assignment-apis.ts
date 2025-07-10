@@ -3,6 +3,7 @@ import {
   SubmittedAssignmentType,
 } from "@/lib/interfaces-types";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface ResponseType {
   message: string;
@@ -37,7 +38,8 @@ interface UserAssigmentResponseType {
 export const assignmentApi = createApi({
   reducerPath: "assignmentApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/",
+    baseUrl: baseAddr + "/api/v1/",
+    credentials: "include",
   }),
   tagTypes: ["Assignments", "SubmittedAssignments", "UserAssignments"],
   endpoints: (builder) => ({

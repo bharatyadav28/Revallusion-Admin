@@ -1,3 +1,0 @@
-/api/* https://api.ravallusion.com/api/:splat 200
-/videos/* https://dcays3srybill.cloudfront.net/:splat 200
-/* /index.html 200

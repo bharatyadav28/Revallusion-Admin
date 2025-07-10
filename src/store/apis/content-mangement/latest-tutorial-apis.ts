@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { carousalType } from "@/lib/interfaces-types";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface ResponseType {
   data: {
@@ -13,7 +14,8 @@ interface ResponseType {
 export const latestTutorialsApi = createApi({
   reducerPath: "latestTutorials",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/",
+    baseUrl: baseAddr + "/api/v1/",
+    credentials: "include",
   }),
   tagTypes: ["LatestTutorials"],
   endpoints: (builder) => ({

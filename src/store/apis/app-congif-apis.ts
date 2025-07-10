@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { AppConfigsType } from "@/lib/interfaces-types";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface ResponseType {
   data: AppConfigsType;
@@ -11,7 +12,8 @@ interface ResponseType {
 export const appConfigApi = createApi({
   reducerPath: "appConfigApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/app-config/active-gateways",
+    baseUrl: baseAddr + "/api/v1/app-config/active-gateways",
+    credentials: "include",
   }),
   tagTypes: ["AppConfig"],
   endpoints: (builder) => ({

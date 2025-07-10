@@ -1,14 +1,6 @@
 {
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://api.ravallusion.com/api/:path*"
-    },
-    {
-      "source": "/videos/:path*",
-      "destination": "https://d2b1ol8c9bt133.cloudfront.net/:path*"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

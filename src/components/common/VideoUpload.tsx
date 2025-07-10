@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { calculateDuration, extractVideoURLKey } from "@/lib/reusable-funs";
 import { videoDurationType } from "@/lib/interfaces-types";
 import VideoPlayer from "../VideoPlayer";
+import { cdnAddr } from "@/lib/resuable-data";
 
 interface Props {
   videoSrc: string;
@@ -300,7 +301,7 @@ const VideoUploader: React.FC<Props> = ({
         <VideoPlayer
           open={openPlayer}
           handleOpen={handleOpenPlayer}
-          source={`/videos/${videoSrc}/1080p.m3u8`}
+          source={`${cdnAddr}/${videoSrc}/1080p.m3u8`}
         />
       )}
     </>

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { dashboardType } from "@/lib/interfaces-types";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface ResponseType {
   data: dashboardType;
@@ -11,7 +12,8 @@ interface ResponseType {
 export const dashboardApi = createApi({
   reducerPath: "dashboardApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/admin",
+    baseUrl: baseAddr + "/api/v1/admin",
+    credentials: "include",
   }),
   tagTypes: ["Dashboard"],
   endpoints: (builder) => ({

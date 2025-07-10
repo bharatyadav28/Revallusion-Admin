@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { courseType } from "@/lib/interfaces-types";
 import libraryApi from "./library-apis";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface ResponseType {
   data: {
@@ -22,7 +23,8 @@ interface courseResponseType {
 export const courseApi = createApi({
   reducerPath: "courseApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1",
+    baseUrl: baseAddr + "/api/v1",
+    credentials: "include",
   }),
   tagTypes: ["Courses", "Course"],
   endpoints: (builder) => ({
