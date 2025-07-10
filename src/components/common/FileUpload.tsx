@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { DotLoader as UploadSpinner } from "react-spinners";
 
 import { Button } from "../ui/button";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface Props {
   fileSrc: string;
@@ -31,8 +32,9 @@ const FileUploader: React.FC<Props> = ({
         formData.append("file", file);
 
         // Get url to upload
-        const response = await fetch("/api/v1/admin/upload-file", {
+        const response = await fetch(`${baseAddr}/api/v1/admin/upload-file`, {
           method: "POST",
+          credentials: "include",
           body: formData,
         });
 

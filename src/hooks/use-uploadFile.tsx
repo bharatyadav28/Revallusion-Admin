@@ -27,8 +27,9 @@ function useUploadFile(folder?: string) {
         if (folder) formData.append("folder", folder);
 
         // Get url to upload
-        const response = await fetch("/api/v1/admin/upload-file", {
+        const response = await fetch("`${baseAddr}/api/v1/admin/upload-file", {
           method: "POST",
+          credentials: "include",
           body: formData,
         });
 

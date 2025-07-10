@@ -6,6 +6,7 @@ import { MdOutlineEdit as EditIcon } from "react-icons/md";
 
 import { Button } from "../ui/button";
 import { UploadSpinner } from "./LoadingSpinner";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface Props {
   imageSrc: string;
@@ -38,8 +39,9 @@ const ImageUploader: React.FC<Props> = ({
         if (folder) formData.append("folder", folder);
 
         // Upload to backend
-        const response = await fetch("/api/v1/admin/upload-image", {
+        const response = await fetch(`${baseAddr}/api/v1/admin/upload-image`, {
           method: "POST",
+          credentials: "include",
           body: formData,
         });
 

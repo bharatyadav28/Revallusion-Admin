@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { videoDurationType } from "@/lib/interfaces-types";
 import { calculateDuration } from "@/lib/reusable-funs";
-import { FileType } from "lucide-react";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface UploadPart {
   ETag: string;
@@ -16,20 +16,20 @@ interface UploadInitResponse {
 
 interface Props {
   setFileSrc: React.Dispatch<React.SetStateAction<string>>;
+  uploading: boolean;
+  setUploading: React.Dispatch<React.SetStateAction<boolean>>;
   setVideoDuration?: React.Dispatch<React.SetStateAction<videoDurationType>>;
 }
-function useStream({ setFileSrc, setVideoDuration }: Props) {
+function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
   const chunkSize = 100 * 1024 * 1024; // 100MB
 
   const [progress, setProgress] = useState<number>(0);
-  const [uploading, setUploading] = useState(false);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const contentType = setVideoDuration ? null : file?.type;
-    console.log("content type", contentType);
 
     setUploading(true);
     if (setVideoDuration)
@@ -57,9 +57,8 @@ function useStream({ setFileSrc, setVideoDuration }: Props) {
       fileName = fileName?.split("/")?.pop();
     }
     if (fileName) {
-      setFileSrc(initData?.fileName || "");
+      setFileSrc(fileName);
     }
-    console.log("File name", fileName);
     setUploading(false);
   };
 
@@ -68,8 +67,9 @@ function useStream({ setFileSrc, setVideoDuration }: Props) {
     fileType: string | null
   ): Promise<UploadInitResponse | null> => {
     try {
-      const res = await fetch("/api/v1/video/stream/start-upload", {
+      const res = await fetch(`${baseAddr}/api/v1/video/stream/start-upload`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contentType, fileType }),
       });
@@ -97,8 +97,9 @@ function useStream({ setFileSrc, setVideoDuration }: Props) {
     formData.append("fileName", fileName);
     formData.append("fileType", fileType || "");
 
-    const res = await fetch("/api/v1/video/stream/upload", {
+    const res = await fetch(`${baseAddr}/api/v1/video/stream/upload`, {
       method: "POST",
+      credentials: "include",
       body: formData,
     });
 
@@ -157,20 +158,22 @@ function useStream({ setFileSrc, setVideoDuration }: Props) {
     fileType: string | null
   ) => {
     try {
-      const res = await fetch("/api/v1/video/stream/complete-upload", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          uploadId,
-          fileName,
-          parts,
-          fileType,
-        }),
-      });
+      const res = await fetch(
+        `${baseAddr}/api/v1/video/stream/complete-upload`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            uploadId,
+            fileName,
+            parts,
+            fileType,
+          }),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to complete upload");
-
-      alert("Upload complete!");
     } catch (err) {
       console.error("completeUpload error:", err);
     }
@@ -178,7 +181,6 @@ function useStream({ setFileSrc, setVideoDuration }: Props) {
 
   return {
     handleFileChange,
-    uploading,
     progress,
   };
 }

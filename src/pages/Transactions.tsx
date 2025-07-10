@@ -28,6 +28,7 @@ import CustomPagination from "@/components/common/CustomPagination";
 import EmptyValue from "@/components/common/EmptyValue";
 import { EmptyTable } from "@/components/common/EmptyTable";
 import toast from "react-hot-toast";
+import { baseAddr } from "@/lib/resuable-data";
 
 // import DeleteQuery from "./DeleteQuery";
 
@@ -91,7 +92,10 @@ function Transactions() {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `/api/v1/transaction/filtered?to=${to}&from=${from}`
+        `${baseAddr}/api/v1/transaction/filtered?to=${to}&from=${from}`,
+        {
+          credentials: "include",
+        }
       );
       if (!response.ok) {
         throw new Error("Download invoices failed");
@@ -155,7 +159,10 @@ function Transactions() {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `/api/v1/transaction/export?to=${to}&from=${from}`
+        `${baseAddr}/api/v1/transaction/export?to=${to}&from=${from}`,
+        {
+          credentials: "include",
+        }
       );
       if (!response.ok) {
         throw new Error("Download invoices failed");

@@ -1,15 +1,16 @@
 // Component for uploading image
 
 import React, { useRef, useState } from "react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { DotLoader as UploadSpinner } from "react-spinners";
 
 import { Button } from "../ui/button";
-import { calculateDuration, extractVideoURLKey } from "@/lib/reusable-funs";
+// import { calculateDuration, extractVideoURLKey } from "@/lib/reusable-funs";
 import { videoDurationType } from "@/lib/interfaces-types";
 import VideoPlayer from "../VideoPlayer";
 import useStream from "@/hooks/use-stream";
 import { cdnAddr } from "@/lib/resuable-data";
+import { Progress } from "../ui/progress";
 
 interface Props {
   videoSrc: string;
@@ -18,16 +19,16 @@ interface Props {
   setUploading: React.Dispatch<React.SetStateAction<boolean>>;
   setVideoDuration: React.Dispatch<React.SetStateAction<videoDurationType>>;
 }
-interface urlType {
-  partNumber: number;
-  url: string;
-}
+// interface urlType {
+//   partNumber: number;
+//   url: string;
+// }
 
 const VideoUploader: React.FC<Props> = ({
   videoSrc,
   setVideoSrc,
   setVideoDuration,
-  // uploading,
+  uploading,
   setUploading,
 }) => {
   const [openPlayer, setOpenPlayer] = useState(false);
@@ -275,9 +276,11 @@ const VideoUploader: React.FC<Props> = ({
 
   // const [progress, setProgress] = useState<number>(0);
 
-  const { handleFileChange, uploading, progress } = useStream({
+  const { handleFileChange, progress } = useStream({
     setFileSrc: setVideoSrc,
     setVideoDuration: setVideoDuration,
+    uploading: uploading,
+    setUploading: setUploading,
   });
 
   // const handleVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -400,6 +403,8 @@ const VideoUploader: React.FC<Props> = ({
   //   }
   // };
 
+  console.log("Progress", progress);
+
   return (
     <>
       <div className="relative border bottom-1 rounded-sm w-full  group">
@@ -430,10 +435,15 @@ const VideoUploader: React.FC<Props> = ({
           ref={inputRef}
         />
         {uploading && (
-          <div className=" flex items-center gap-2 text-sm mt-1">
-            <div>Please wait while the video is uploading</div>
-            <UploadSpinner color="#f1f1f1" size={20} />
-            <div>{progress}...</div>
+          <div className=" flex items-center lg:flex-row flex-col justify-between gap-2 text-sm mt-1">
+            <div className="flex items-center gap-2">
+              <div>Please wait while the video is uploading </div>
+              <UploadSpinner color="#f1f1f1" size={20} />
+            </div>
+            <div className="flex items-center gap-2">
+              <Progress value={progress} className=" w-[5rem]" />
+              <div className="text-sm">{progress}%</div>
+            </div>
           </div>
         )}
       </div>

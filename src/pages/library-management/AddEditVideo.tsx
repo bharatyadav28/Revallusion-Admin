@@ -1,11 +1,10 @@
 // Add or Edit video
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation, useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaFileZipper as ZipIcon } from "react-icons/fa6";
 import { RxCrossCircled as RemoveIcon } from "react-icons/rx";
 import { motion } from "motion/react";
-import useUploadFile from "@/hooks/use-uploadFile";
 import { Upload } from "lucide-react";
 
 import { replacePageName } from "@/store/features/generalSlice";
@@ -34,6 +33,8 @@ import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 // import TimeStampList from "@/components/timestamp/TimestampList";
 import TimestampForm from "@/components/timestamp/TimestampForm";
 import useStream from "@/hooks/use-stream";
+import { cdnAddr } from "@/lib/resuable-data";
+import { Progress } from "@/components/ui/progress";
 
 function AddEditVideo() {
   const [title, setTitle] = useState("");
@@ -45,6 +46,7 @@ function AddEditVideo() {
     minutes: 0,
     seconds: 0,
   });
+
   const [course, setCourse] = useState("");
   const [module, setModule] = useState("");
   const [submodule, setSubModule] = useState("");
@@ -53,6 +55,9 @@ function AddEditVideo() {
   const [timestamp, setTimestamp] = useState<TimeStampType | undefined>(
     undefined
   );
+  const [fileSrc, setFileSrc] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploadingAssignment, setUploadingAssignment] = useState(false);
 
   const handleTimestampForm = (timestamp?: TimeStampType) => {
     setOpenForm((prev) => !prev);
@@ -61,17 +66,19 @@ function AddEditVideo() {
     }
   };
 
-  const {
-    inputRef,
-    uploading: uploadingAssignment,
-    fileSrc,
-    handleFileUpload,
-    triggerFileUpload,
-    setFileSrc,
-  } = useUploadFile("assignments");
+  // const {
+  //   inputRef,
+  //   uploading: uploadingAssignment,
+  //   fileSrc,
+  //   handleFileUpload,
+  //   triggerFileUpload,
+  //   setFileSrc,
+  // } = useUploadFile("assignments");
 
-  const { handleFileChange } = useStream({
+  const { handleFileChange, progress: assigmentUploadProgress } = useStream({
     setFileSrc: setFileSrc,
+    uploading: uploadingAssignment,
+    setUploading: setUploadingAssignment,
   });
 
   const [
@@ -124,6 +131,11 @@ function AddEditVideo() {
         id: video._id,
       });
     }
+  };
+
+  const triggerFileUpload = () => {
+    if (uploading) return;
+    inputRef.current?.click();
   };
 
   //   Create course menu
@@ -277,7 +289,10 @@ function AddEditVideo() {
         )}
 
         <div className="input-container">
-          <div className="label">Video</div>
+          <div className="label">
+            <div> Video </div>
+            <div> </div>
+          </div>
           <div className="user-input">
             <VideoUploader
               videoSrc={videoUrl}
@@ -295,7 +310,7 @@ function AddEditVideo() {
             <input
               id="resourceInput"
               type="file"
-              // className="hidden"
+              className="hidden"
               // onChange={handleFileUpload}
               onChange={handleFileChange}
               ref={inputRef}
@@ -304,52 +319,68 @@ function AddEditVideo() {
             {fileSrc && (
               <div>
                 <div className="flex items-center gap-2 border border-gray-400  rounded-md px-4 py-2 w-max">
-                  <ZipIcon size={16} />
-                  <div className="flex items-center gap-5 border  ">
-                    <span> File -</span>
-                    <span className="monospace">
-                      {" "}
-                      {truncateString(
-                        fileSrc?.split("/").pop()?.split("-").pop() || "",
-                        20
-                      )}
-                    </span>
-
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: "spring" }}
-                      className="!p-0 m-0 sm:ml-[2rem] "
-                      onClick={() => {
-                        setFileSrc("");
-                      }}
-                    >
-                      <RemoveIcon
-                        className="hover:text-[var(--softpurple)] transition-all"
-                        size={20}
-                      />
-                    </motion.button>
-                  </div>
+                  <Link
+                    to={`${cdnAddr}/${fileSrc}`}
+                    className="flex items-center gap-1"
+                  >
+                    <ZipIcon size={16} />
+                    <div className="flex items-center gap-5 border  ">
+                      <span> File -</span>
+                      <span className="monospace">
+                        {" "}
+                        {truncateString(
+                          fileSrc?.split("/").pop()?.split("-").pop() || "",
+                          20
+                        )}
+                      </span>
+                    </div>
+                  </Link>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring" }}
+                    className="!p-0 m-0 sm:ml-[2rem] "
+                    onClick={() => {
+                      setFileSrc("");
+                    }}
+                  >
+                    <RemoveIcon
+                      className="hover:text-[var(--softpurple)] transition-all"
+                      size={20}
+                    />
+                  </motion.button>
                 </div>
               </div>
             )}
             {!fileSrc && (
-              <label
-                onClick={triggerFileUpload}
-                className="flex items-center gap-2 px-5 py-2 bg-black backdrop-blur-md  text-white text-sm font-medium rounded-md cursor-pointer hover:bg-gray-900 transition w-[15rem] min-w-[10rem] "
-              >
-                {!uploadingAssignment ? (
-                  <>
-                    <Upload size={16} />
-                    <div className=" w-full flex ml-2 items-center">
-                      No file choosen
+              <div className="flex flex-col gap-2 w-max">
+                <label
+                  onClick={triggerFileUpload}
+                  className="flex items-center gap-2 px-5 py-2 bg-black backdrop-blur-md  text-white text-sm font-medium rounded-md cursor-pointer hover:bg-gray-900 transition w-[15rem] min-w-[10rem] "
+                >
+                  {!uploadingAssignment ? (
+                    <>
+                      <Upload size={16} />
+                      <div className=" w-full flex ml-2 items-center">
+                        No file choosen
+                      </div>
+                    </>
+                  ) : (
+                    <div className=" w-full flex justify-center items-center">
+                      <LoadingSpinner size={16} />
                     </div>
-                  </>
-                ) : (
-                  <div className=" w-full flex justify-center items-center">
-                    <LoadingSpinner size={16} />
+                  )}
+                </label>
+
+                {uploadingAssignment && (
+                  <div className="flex items-center justify-center gap-2 ">
+                    <Progress
+                      value={assigmentUploadProgress}
+                      className=" w-[5rem]"
+                    />
+                    <div className="text-sm">{assigmentUploadProgress}%</div>
                   </div>
                 )}
-              </label>
+              </div>
             )}
 
             <input type="file" className="hidden" />
