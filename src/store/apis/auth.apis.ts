@@ -1,4 +1,5 @@
 import { credentialType, userType } from "@/lib/interfaces-types";
+import { baseAddr } from "@/lib/resuable-data";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface ResponseType {
@@ -10,7 +11,8 @@ interface ResponseType {
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1",
+    baseUrl: baseAddr + "/api/v1",
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     // Signin user

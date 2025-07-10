@@ -9,6 +9,7 @@ import { calculateDuration, extractVideoURLKey } from "@/lib/reusable-funs";
 import { videoDurationType } from "@/lib/interfaces-types";
 import VideoPlayer from "../VideoPlayer";
 import useStream from "@/hooks/use-stream";
+import { cdnAddr } from "@/lib/resuable-data";
 
 interface Props {
   videoSrc: string;
@@ -441,7 +442,7 @@ const VideoUploader: React.FC<Props> = ({
         <VideoPlayer
           open={openPlayer}
           handleOpen={handleOpenPlayer}
-          source={`https://d2b1ol8c9bt133.cloudfront.net/${videoSrc}/1080p.m3u8`}
+          source={`${cdnAddr}/${videoSrc}/1080p.m3u8`}
         />
       )}
     </>

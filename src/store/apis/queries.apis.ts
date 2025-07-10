@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { queryType } from "@/lib/interfaces-types";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface ResponseType {
   data: {
@@ -14,7 +15,8 @@ interface ResponseType {
 export const queriesApi = createApi({
   reducerPath: "queriesApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/",
+    baseUrl: baseAddr + "/api/v1/",
+    credentials: "include",
   }),
   tagTypes: ["Queries"],
   endpoints: (builder) => ({

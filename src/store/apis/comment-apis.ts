@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import { CommentType } from "@/lib/interfaces-types";
+import { baseAddr } from "@/lib/resuable-data";
 
 interface ResponseType {
   data: {
@@ -14,7 +15,8 @@ interface ResponseType {
 export const commentApi = createApi({
   reducerPath: "commentApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "/api/v1/comment",
+    baseUrl: baseAddr + "/api/v1/comment",
+    credentials: "include",
   }),
   tagTypes: ["Comments"],
   endpoints: (builder) => ({
