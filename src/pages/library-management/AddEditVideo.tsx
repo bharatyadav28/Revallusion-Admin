@@ -33,6 +33,7 @@ import { showError, truncateString } from "@/lib/reusable-funs";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 // import TimeStampList from "@/components/timestamp/TimestampList";
 import TimestampForm from "@/components/timestamp/TimestampForm";
+import useStream from "@/hooks/use-stream";
 
 function AddEditVideo() {
   const [title, setTitle] = useState("");
@@ -68,6 +69,10 @@ function AddEditVideo() {
     triggerFileUpload,
     setFileSrc,
   } = useUploadFile("assignments");
+
+  const { handleFileChange } = useStream({
+    setFileSrc: setFileSrc,
+  });
 
   const [
     addVideo,
@@ -290,8 +295,9 @@ function AddEditVideo() {
             <input
               id="resourceInput"
               type="file"
-              className="hidden"
-              onChange={handleFileUpload}
+              // className="hidden"
+              // onChange={handleFileUpload}
+              onChange={handleFileChange}
               ref={inputRef}
               multiple
             />

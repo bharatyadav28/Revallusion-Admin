@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { calculateDuration, extractVideoURLKey } from "@/lib/reusable-funs";
 import { videoDurationType } from "@/lib/interfaces-types";
 import VideoPlayer from "../VideoPlayer";
+import useStream from "@/hooks/use-stream";
 
 interface Props {
   videoSrc: string;
@@ -25,229 +26,229 @@ const VideoUploader: React.FC<Props> = ({
   videoSrc,
   setVideoSrc,
   setVideoDuration,
-  uploading,
+  // uploading,
   setUploading,
 }) => {
   const [openPlayer, setOpenPlayer] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const abortMultipartUpload = async (uploadId: string, key: string) => {
-    try {
-      const abortResponse = await fetch("/api/v1/video/uploads/abort", {
-        method: "POST",
-        body: JSON.stringify({ uploadId, key }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!abortResponse.ok) {
-        throw new Error("Failed to abort multipart upload");
-      }
-
-      const abortData = await abortResponse.json();
-      // console.log("Abort response:", abortData);
-      return abortData;
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to abort upload"
-      );
-      throw error;
-    }
-  };
-
   const handleOpenPlayer = () => {
     setOpenPlayer((prev) => !prev);
   };
 
-  const handleVideoUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): Promise<void> => {
-    const file = e.target.files?.[0];
+  // const abortMultipartUpload = async (uploadId: string, key: string) => {
+  //   try {
+  //     const abortResponse = await fetch("/api/v1/video/uploads/abort", {
+  //       method: "POST",
+  //       body: JSON.stringify({ uploadId, key }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-    if (file) {
-      const fileSize = file.size;
-      const fileSizeInMB = file.size / (1024 * 1024);
+  //     if (!abortResponse.ok) {
+  //       throw new Error("Failed to abort multipart upload");
+  //     }
 
-      // TODO: Remove in production;
-      // if (fileSizeInMB > 150) {
-      //   toast.error("For free aws tier, video size should be less than 150MB");
-      //   return;
-      // }
+  //     const abortData = await abortResponse.json();
+  //     // console.log("Abort response:", abortData);
+  //     return abortData;
+  //   } catch (error) {
+  //     toast.error(
+  //       error instanceof Error ? error.message : "Failed to abort upload"
+  //     );
+  //     throw error;
+  //   }
+  // };
 
-      setUploading(true);
-      calculateDuration({ file, setDuration: setVideoDuration });
+  // const handleVideoUpload = async (
+  //   e: React.ChangeEvent<HTMLInputElement>
+  // ): Promise<void> => {
+  //   const file = e.target.files?.[0];
 
-      try {
-        const videoExtension = file.name.split(".").pop();
+  //   if (file) {
+  //     const fileSize = file.size;
+  //     const fileSizeInMB = file.size / (1024 * 1024);
 
-        let stringUrl = "";
-        if (fileSizeInMB <= 150) {
-          console.log("Single upload");
-          // Get url to upload
-          const response = await fetch("/api/v1/video/get-upload-url", {
-            method: "POST",
-            body: JSON.stringify({ videoExtension }),
-            headers: {
-              "Content-Type": "application/json", // Specify the content type
-            },
-          });
+  //     // TODO: Remove in production;
+  //     // if (fileSizeInMB > 150) {
+  //     //   toast.error("For free aws tier, video size should be less than 150MB");
+  //     //   return;
+  //     // }
 
-          if (!response.ok) {
-            throw new Error("Failed to get upload url");
-          }
+  //     setUploading(true);
+  //     calculateDuration({ file, setDuration: setVideoDuration });
 
-          const data = await response.json();
-          const videoUrl = data?.data?.uploadURL;
+  //     try {
+  //       const videoExtension = file.name.split(".").pop();
 
-          // Upload video to fetched url
-          const response2 = await fetch(videoUrl, {
-            method: "PUT",
-            body: file, // Send the raw file, not FormData
-            headers: {
-              "Content-Type": file.type,
-            },
-          });
+  //       let stringUrl = "";
+  //       if (fileSizeInMB <= 150) {
+  //         console.log("Single upload");
+  //         // Get url to upload
+  //         const response = await fetch("/api/v1/video/get-upload-url", {
+  //           method: "POST",
+  //           body: JSON.stringify({ videoExtension }),
+  //           headers: {
+  //             "Content-Type": "application/json", // Specify the content type
+  //           },
+  //         });
 
-          if (!response2.ok) {
-            throw new Error("Failed to upload video");
-          }
+  //         if (!response.ok) {
+  //           throw new Error("Failed to get upload url");
+  //         }
 
-          const cleanUrl = new URL(videoUrl);
-          cleanUrl.search = ""; // Remove the query string
-          stringUrl = cleanUrl.toString();
-        } else {
-          console.log("Multi upload");
-          const CHUNK_SIZE = 25 * 1024 * 1024; // 25 MB
-          let uploadId;
-          let key;
+  //         const data = await response.json();
+  //         const videoUrl = data?.data?.uploadURL;
 
-          // Multi part upload
-          try {
-            // Initial multipart upload
-            const initialResponse = await fetch(
-              "/api/v1/video/uploads/initiate",
-              {
-                method: "POST",
-                body: JSON.stringify({ videoExtension }),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
+  //         // Upload video to fetched url
+  //         const response2 = await fetch(videoUrl, {
+  //           method: "PUT",
+  //           body: file, // Send the raw file, not FormData
+  //           headers: {
+  //             "Content-Type": file.type,
+  //           },
+  //         });
 
-            if (!initialResponse.ok) {
-              throw new Error("Failed to upload ");
-            }
+  //         if (!response2.ok) {
+  //           throw new Error("Failed to upload video");
+  //         }
 
-            const initialData = await initialResponse.json();
-            uploadId = initialData?.data?.uploadId;
-            key = initialData?.data?.key;
+  //         const cleanUrl = new URL(videoUrl);
+  //         cleanUrl.search = ""; // Remove the query string
+  //         stringUrl = cleanUrl.toString();
+  //       } else {
+  //         console.log("Multi upload");
+  //         const CHUNK_SIZE = 25 * 1024 * 1024; // 25 MB
+  //         let uploadId;
+  //         let key;
 
-            // Fetch signed urls for uploading chunks
-            const totalParts = Math.ceil(fileSize / CHUNK_SIZE);
-            console.log("Total parts: ", totalParts);
+  //         // Multi part upload
+  //         try {
+  //           // Initial multipart upload
+  //           const initialResponse = await fetch(
+  //             "/api/v1/video/uploads/initiate",
+  //             {
+  //               method: "POST",
+  //               body: JSON.stringify({ videoExtension }),
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //               },
+  //             }
+  //           );
 
-            const urlsResponse = await fetch(
-              "/api/v1/video/uploads/generate-urls",
-              {
-                method: "POST",
-                body: JSON.stringify({ uploadId, key, partCount: totalParts }),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            if (!urlsResponse.ok) {
-              throw new Error("Failed to generate urls ");
-            }
-            const { data: urlsData } = await urlsResponse.json();
+  //           if (!initialResponse.ok) {
+  //             throw new Error("Failed to upload ");
+  //           }
 
-            interface presignedUrls {
-              partNumber: number;
-              url: string;
-            }
-            const presignedUrls: presignedUrls[] = urlsData.urls;
-            const completedParts = [];
+  //           const initialData = await initialResponse.json();
+  //           uploadId = initialData?.data?.uploadId;
+  //           key = initialData?.data?.key;
 
-            for (let i = 0; i < totalParts; i++) {
-              const start = i * CHUNK_SIZE;
-              const end = Math.min(file.size, start + CHUNK_SIZE);
-              const chunk = file.slice(start, end);
-              const partNumber = i + 1;
+  //           // Fetch signed urls for uploading chunks
+  //           const totalParts = Math.ceil(fileSize / CHUNK_SIZE);
+  //           console.log("Total parts: ", totalParts);
 
-              const url = presignedUrls?.find(
-                (u: urlType) => u.partNumber === partNumber
-              )?.url;
+  //           const urlsResponse = await fetch(
+  //             "/api/v1/video/uploads/generate-urls",
+  //             {
+  //               method: "POST",
+  //               body: JSON.stringify({ uploadId, key, partCount: totalParts }),
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //               },
+  //             }
+  //           );
+  //           if (!urlsResponse.ok) {
+  //             throw new Error("Failed to generate urls ");
+  //           }
+  //           const { data: urlsData } = await urlsResponse.json();
 
-              if (!url) throw new Error(`Missing URL for part ${partNumber}`);
+  //           interface presignedUrls {
+  //             partNumber: number;
+  //             url: string;
+  //           }
+  //           const presignedUrls: presignedUrls[] = urlsData.urls;
+  //           const completedParts = [];
 
-              const uploadResponse = await fetch(url || "", {
-                method: "PUT",
-                body: chunk,
-                headers: { "Content-Type": file.type, Accept: "/" },
-              });
-              if (!uploadResponse.ok) {
-                throw new Error("Failed to upload video");
-              }
-              let eTag = uploadResponse.headers.get("etag");
-              if (!eTag) throw new Error(`Missing ETag for part ${partNumber}`);
+  //           for (let i = 0; i < totalParts; i++) {
+  //             const start = i * CHUNK_SIZE;
+  //             const end = Math.min(file.size, start + CHUNK_SIZE);
+  //             const chunk = file.slice(start, end);
+  //             const partNumber = i + 1;
 
-              if (eTag && !eTag.startsWith('"') && !eTag.endsWith('"')) {
-                eTag = `"${eTag}"`; // Ensure ETag is wrapped in double quotes
-              }
+  //             const url = presignedUrls?.find(
+  //               (u: urlType) => u.partNumber === partNumber
+  //             )?.url;
 
-              completedParts.push({ ETag: eTag, PartNumber: partNumber });
-            }
+  //             if (!url) throw new Error(`Missing URL for part ${partNumber}`);
 
-            // Merge uploaded chunks
-            const mergeResponse = await fetch(
-              "/api/v1/video/uploads/complete",
-              {
-                method: "POST",
-                body: JSON.stringify({ uploadId, key, parts: completedParts }),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
+  //             const uploadResponse = await fetch(url || "", {
+  //               method: "PUT",
+  //               body: chunk,
+  //               headers: { "Content-Type": file.type, Accept: "/" },
+  //             });
+  //             if (!uploadResponse.ok) {
+  //               throw new Error("Failed to upload video");
+  //             }
+  //             let eTag = uploadResponse.headers.get("etag");
+  //             if (!eTag) throw new Error(`Missing ETag for part ${partNumber}`);
 
-            if (!mergeResponse.ok) {
-              throw new Error("Failed to upload video");
-            }
-            const mergeResponseData = await mergeResponse.json();
+  //             if (eTag && !eTag.startsWith('"') && !eTag.endsWith('"')) {
+  //               eTag = `"${eTag}"`; // Ensure ETag is wrapped in double quotes
+  //             }
 
-            stringUrl = mergeResponseData.data.result.Location;
-          } catch (error) {
-            if (uploadId && key) {
-              try {
-                await abortMultipartUpload(uploadId, key);
-              } catch (abortError) {
-                console.error("Error during abort:", abortError);
-              }
-            }
+  //             completedParts.push({ ETag: eTag, PartNumber: partNumber });
+  //           }
 
-            toast.error(
-              error instanceof Error ? error.message : "Video upload failed"
-            );
-          }
-        }
+  //           // Merge uploaded chunks
+  //           const mergeResponse = await fetch(
+  //             "/api/v1/video/uploads/complete",
+  //             {
+  //               method: "POST",
+  //               body: JSON.stringify({ uploadId, key, parts: completedParts }),
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //               },
+  //             }
+  //           );
 
-        stringUrl = extractVideoURLKey(decodeURIComponent(stringUrl)) || "";
-        setVideoSrc(stringUrl);
-      } catch (error) {
-        toast.error(
-          error instanceof Error ? error?.message : "Video upload failed"
-        );
-      } finally {
-        setUploading(false);
-        if (inputRef.current) {
-          inputRef.current.value = "";
-        }
-      }
-    }
-  };
+  //           if (!mergeResponse.ok) {
+  //             throw new Error("Failed to upload video");
+  //           }
+  //           const mergeResponseData = await mergeResponse.json();
+
+  //           stringUrl = mergeResponseData.data.result.Location;
+  //         } catch (error) {
+  //           if (uploadId && key) {
+  //             try {
+  //               await abortMultipartUpload(uploadId, key);
+  //             } catch (abortError) {
+  //               console.error("Error during abort:", abortError);
+  //             }
+  //           }
+
+  //           toast.error(
+  //             error instanceof Error ? error.message : "Video upload failed"
+  //           );
+  //         }
+  //       }
+
+  //       stringUrl = extractVideoURLKey(decodeURIComponent(stringUrl)) || "";
+  //       setVideoSrc(stringUrl);
+  //     } catch (error) {
+  //       toast.error(
+  //         error instanceof Error ? error?.message : "Video upload failed"
+  //       );
+  //     } finally {
+  //       setUploading(false);
+  //       if (inputRef.current) {
+  //         inputRef.current.value = "";
+  //       }
+  //     }
+  //   }
+  // };
 
   // Handle choose file button click
   const handleClick = () => {
@@ -258,6 +259,145 @@ const VideoUploader: React.FC<Props> = ({
       handleOpenPlayer();
     }
   };
+
+  // interface UploadPart {
+  //   ETag: string;
+  //   PartNumber: number;
+  // }
+
+  // interface UploadInitResponse {
+  //   fileName: string;
+  //   UploadId: string;
+  // }
+
+  // const chunkSize = 100 * 1024 * 1024; // 100MB
+
+  // const [progress, setProgress] = useState<number>(0);
+
+  const { handleFileChange, uploading, progress } = useStream({
+    setFileSrc: setVideoSrc,
+    setVideoDuration: setVideoDuration,
+  });
+
+  // const handleVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
+
+  //   setUploading(true);
+  //   calculateDuration({ file, setDuration: setVideoDuration });
+
+  //   // Preview
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+
+  //   // Start upload
+  //   const initData = await startUpload();
+
+  //   if (initData) {
+  //     await uploadFileInChunks(file, initData.fileName, initData.UploadId);
+  //   }
+  //   setVideoSrc(initData?.fileName?.split("/")?.pop() || "");
+  //   setUploading(false);
+  // };
+
+  // const startUpload = async (): Promise<UploadInitResponse | null> => {
+  //   try {
+  //     const res = await fetch("/api/v1/video/stream/start-upload", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({}),
+  //     });
+
+  //     if (!res.ok) throw new Error("Failed to start upload");
+  //     const data = await res.json();
+  //     return data;
+  //   } catch (err) {
+  //     console.error("startUpload error:", err);
+  //     return null;
+  //   }
+  // };
+
+  // const uploadChunk = async (
+  //   chunk: Blob,
+  //   partNumber: number,
+  //   fileName: string,
+  //   uploadId: string
+  // ): Promise<UploadPart> => {
+  //   const formData = new FormData();
+  //   formData.append("file", chunk);
+  //   formData.append("uploadId", uploadId);
+  //   formData.append("partNumber", String(partNumber));
+  //   formData.append("fileName", fileName);
+
+  //   const res = await fetch("/api/v1/video/stream/upload", {
+  //     method: "POST",
+  //     body: formData,
+  //   });
+
+  //   if (!res.ok) {
+  //     throw new Error(`Chunk ${partNumber} upload failed`);
+  //   }
+
+  //   const data = await res.json();
+  //   return { ETag: data.ETag, PartNumber: partNumber };
+  // };
+
+  // const uploadFileInChunks = async (
+  //   file: File,
+  //   fileName: string,
+  //   uploadId: string
+  // ) => {
+  //   const totalChunks = Math.ceil(file.size / chunkSize);
+  //   console.log("Total chunks", totalChunks);
+  //   const uploadedParts: UploadPart[] = [];
+
+  //   let uploadedBytes = 0;
+
+  //   for (let i = 0; i < totalChunks; i++) {
+  //     const start = i * chunkSize;
+  //     const end = Math.min(start + chunkSize, file.size);
+  //     const chunk = file.slice(start, end);
+  //     const partNumber = i + 1;
+
+  //     try {
+  //       const part = await uploadChunk(chunk, partNumber, fileName, uploadId);
+  //       uploadedParts.push(part);
+
+  //       uploadedBytes += chunk.size;
+  //       const percent = ((uploadedBytes / file.size) * 100).toFixed(2);
+  //       setProgress(Number(percent));
+  //     } catch (err) {
+  //       console.error(`Error uploading part ${partNumber}`, err);
+  //       return;
+  //     }
+  //   }
+
+  //   await completeUpload(uploadedParts, fileName, uploadId);
+  // };
+
+  // const completeUpload = async (
+  //   parts: UploadPart[],
+  //   fileName: string,
+  //   uploadId: string
+  // ) => {
+  //   try {
+  //     const res = await fetch("/api/v1/video/stream/complete-upload", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         uploadId,
+  //         fileName,
+  //         parts,
+  //       }),
+  //     });
+
+  //     if (!res.ok) throw new Error("Failed to complete upload");
+
+  //     alert("Upload complete!");
+  //   } catch (err) {
+  //     console.error("completeUpload error:", err);
+  //   }
+  // };
 
   return (
     <>
@@ -285,13 +425,14 @@ const VideoUploader: React.FC<Props> = ({
           type="file"
           accept=".mp4,.m4v,.mkv,.avi,.mov,.wmv,.flv,.webm,.ogg,video/*"
           className="hidden"
-          onChange={handleVideoUpload}
+          onChange={handleFileChange}
           ref={inputRef}
         />
         {uploading && (
           <div className=" flex items-center gap-2 text-sm mt-1">
             <div>Please wait while the video is uploading</div>
-            <UploadSpinner color="#f1f1f1" size={20} />{" "}
+            <UploadSpinner color="#f1f1f1" size={20} />
+            <div>{progress}...</div>
           </div>
         )}
       </div>
@@ -300,7 +441,7 @@ const VideoUploader: React.FC<Props> = ({
         <VideoPlayer
           open={openPlayer}
           handleOpen={handleOpenPlayer}
-          source={`/videos/${videoSrc}/1080p.m3u8`}
+          source={`https://d2b1ol8c9bt133.cloudfront.net/${videoSrc}/1080p.m3u8`}
         />
       )}
     </>

@@ -113,7 +113,7 @@ export function isYesterday(dateString: string) {
   );
 }
 
-interface calculateDurationProps {
+export interface calculateDurationProps {
   file: File;
   setDuration: React.Dispatch<React.SetStateAction<videoDurationType>>;
 }
