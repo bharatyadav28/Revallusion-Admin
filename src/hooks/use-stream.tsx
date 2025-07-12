@@ -20,8 +20,14 @@ interface Props {
   uploading: boolean;
   setUploading: React.Dispatch<React.SetStateAction<boolean>>;
   setVideoDuration?: React.Dispatch<React.SetStateAction<videoDurationType>>;
+  awsFileName?: string;
 }
-function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
+function useStream({
+  setFileSrc,
+  setVideoDuration,
+  setUploading,
+  awsFileName,
+}: Props) {
   const chunkSize = 50 * 1024 * 1024; // 50MB
 
   const [progress, setProgress] = useState<number>(0);
@@ -44,7 +50,7 @@ function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
 
       // Start upload
       const fileType = setVideoDuration ? null : "assignments";
-      const initData = await startUpload(contentType, fileType);
+      const initData = await startUpload(contentType, fileType, awsFileName);
 
       if (initData) {
         await uploadFileInChunks(
@@ -72,13 +78,20 @@ function useStream({ setFileSrc, setVideoDuration, setUploading }: Props) {
 
   const startUpload = async (
     contentType: string | null,
-    fileType: string | null
+    fileType: string | null,
+    awsFileName?: string
   ): Promise<UploadInitResponse | null> => {
+    const body = {
+      contentType,
+      fileType,
+      awsFileName: awsFileName || null,
+    };
+
     const res = await fetch(`${baseAddr}/api/v1/video/stream/start-upload`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contentType, fileType }),
+      body: JSON.stringify(body),
     });
 
     if (!res.ok) throw new Error("Failed to start upload");

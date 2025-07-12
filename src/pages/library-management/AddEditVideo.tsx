@@ -79,6 +79,7 @@ function AddEditVideo() {
     setFileSrc: setFileSrc,
     uploading: uploadingAssignment,
     setUploading: setUploadingAssignment,
+    awsFileName: title,
   });
 
   const [
@@ -304,88 +305,90 @@ function AddEditVideo() {
           </div>
         </div>
 
-        <div className="input-container">
-          <div className="label">Assignment</div>
-          <div className="user-input">
-            <input
-              id="resourceInput"
-              type="file"
-              className="hidden"
-              // onChange={handleFileUpload}
-              onChange={handleFileChange}
-              ref={inputRef}
-              multiple
-            />
-            {fileSrc && (
-              <div>
-                <div className="flex items-center gap-2 border border-gray-400  rounded-md px-4 py-2 w-max">
-                  <Link
-                    to={`${cdnAddr}/${fileSrc}`}
-                    className="flex items-center gap-1"
-                  >
-                    <ZipIcon size={16} />
-                    <div className="flex items-center gap-5 border  ">
-                      <span> File -</span>
-                      <span className="monospace">
-                        {" "}
-                        {truncateString(
-                          fileSrc?.split("/").pop()?.split("-").pop() || "",
-                          20
-                        )}
-                      </span>
-                    </div>
-                  </Link>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring" }}
-                    className="!p-0 m-0 sm:ml-[2rem] "
-                    onClick={() => {
-                      setFileSrc("");
-                    }}
-                  >
-                    <RemoveIcon
-                      className="hover:text-[var(--softpurple)] transition-all"
-                      size={20}
-                    />
-                  </motion.button>
-                </div>
-              </div>
-            )}
-            {!fileSrc && (
-              <div className="flex flex-col gap-2 w-max">
-                <label
-                  onClick={triggerFileUpload}
-                  className="flex items-center gap-2 px-5 py-2 bg-black backdrop-blur-md  text-white text-sm font-medium rounded-md cursor-pointer hover:bg-gray-900 transition w-[15rem] min-w-[10rem] "
-                >
-                  {!uploadingAssignment ? (
-                    <>
-                      <Upload size={16} />
-                      <div className=" w-full flex ml-2 items-center">
-                        No file choosen
+        {isEdit && (
+          <div className="input-container">
+            <div className="label">Assignment</div>
+            <div className="user-input">
+              <input
+                id="resourceInput"
+                type="file"
+                className="hidden"
+                // onChange={handleFileUpload}
+                onChange={handleFileChange}
+                ref={inputRef}
+                multiple
+              />
+              {fileSrc && (
+                <div>
+                  <div className="flex items-center gap-2 border border-gray-400  rounded-md px-4 py-2 w-max">
+                    <Link
+                      to={`${cdnAddr}/${fileSrc}`}
+                      className="flex items-center gap-1"
+                    >
+                      <ZipIcon size={16} />
+                      <div className="flex items-center gap-5 border  ">
+                        <span> File -</span>
+                        <span className="monospace">
+                          {" "}
+                          {truncateString(
+                            fileSrc?.split("/").pop()?.split("-").pop() || "",
+                            20
+                          )}
+                        </span>
                       </div>
-                    </>
-                  ) : (
-                    <div className=" w-full flex justify-center items-center">
-                      <LoadingSpinner size={16} />
+                    </Link>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ type: "spring" }}
+                      className="!p-0 m-0 sm:ml-[2rem] "
+                      onClick={() => {
+                        setFileSrc("");
+                      }}
+                    >
+                      <RemoveIcon
+                        className="hover:text-[var(--softpurple)] transition-all"
+                        size={20}
+                      />
+                    </motion.button>
+                  </div>
+                </div>
+              )}
+              {!fileSrc && (
+                <div className="flex flex-col gap-2 w-max">
+                  <label
+                    onClick={triggerFileUpload}
+                    className="flex items-center gap-2 px-5 py-2 bg-black backdrop-blur-md  text-white text-sm font-medium rounded-md cursor-pointer hover:bg-gray-900 transition w-[15rem] min-w-[10rem] "
+                  >
+                    {!uploadingAssignment ? (
+                      <>
+                        <Upload size={16} />
+                        <div className=" w-full flex ml-2 items-center">
+                          No file choosen
+                        </div>
+                      </>
+                    ) : (
+                      <div className=" w-full flex justify-center items-center">
+                        <LoadingSpinner size={16} />
+                      </div>
+                    )}
+                  </label>
+
+                  {uploadingAssignment && (
+                    <div className="flex items-center justify-center gap-2 ">
+                      <Progress
+                        value={assigmentUploadProgress}
+                        className=" w-[5rem]"
+                      />
+                      <div className="text-sm">{assigmentUploadProgress}%</div>
                     </div>
                   )}
-                </label>
+                </div>
+              )}
 
-                {uploadingAssignment && (
-                  <div className="flex items-center justify-center gap-2 ">
-                    <Progress
-                      value={assigmentUploadProgress}
-                      className=" w-[5rem]"
-                    />
-                    <div className="text-sm">{assigmentUploadProgress}%</div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <input type="file" className="hidden" />
+              <input type="file" className="hidden" />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* isEdit && (
           <div className="input-container gap-2">
