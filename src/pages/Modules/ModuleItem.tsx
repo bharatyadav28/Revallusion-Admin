@@ -146,6 +146,7 @@ function ModuleItem() {
               text={name}
               setText={setName}
               className="py-5"
+              placeholder="Type name here..."
             />
           </div>
         </div>
@@ -158,6 +159,7 @@ function ModuleItem() {
               text={description}
               setText={setDescription}
               className="h-32"
+              placeholder="Type description here..."
             />
           </div>
         </div>

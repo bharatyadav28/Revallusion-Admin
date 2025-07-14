@@ -33,6 +33,7 @@ function GatewayForm({ open, handleOpen }: PropsTypes) {
   }, [data]);
 
   useEffect(() => {
+    console.group("ud", updateData);
     if (updateData) {
       toast.success(updateData?.message);
     }

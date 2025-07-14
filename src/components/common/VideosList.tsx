@@ -93,6 +93,7 @@ function VideosList({
                     videoId={video?._id}
                     sequence={video?.sequence}
                     courseId={courseId}
+                    isActive={video?.isActive}
                   />
                 )}
               </TableCell>
@@ -102,7 +103,9 @@ function VideosList({
             <TableCell className="font-medium">
               <div className="flex gap-0 items-center">
                 <UpdateButton
+                  className={!video?.isActive ? "cursor-not-allowed" : ""}
                   handleClick={() => {
+                    if (!video?.isActive) return;
                     handleOpenDialog();
                     if (courseId)
                       setDialogData({

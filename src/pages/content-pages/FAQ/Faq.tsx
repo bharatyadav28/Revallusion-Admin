@@ -115,6 +115,7 @@ function Faq() {
               setText={setTitle}
               className="py-5"
               maxChars={80}
+              placeholder="Type title here..."
             />
           </div>
         </div>
@@ -126,6 +127,7 @@ function Faq() {
               text={description}
               setText={setDescription}
               className="h-32"
+              placeholder="Type description here..."
             />
           </div>
         </div>

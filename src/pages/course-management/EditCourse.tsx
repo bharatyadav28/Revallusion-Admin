@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IoMdAdd as AddIcon } from "react-icons/io";
 import { AnimatePresence } from "framer-motion";
 
@@ -43,7 +43,6 @@ function EditCourse() {
 
   const { id: courseId } = useParams();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   // Fetch course data
   const {
@@ -131,15 +130,6 @@ function EditCourse() {
               }}
             >
               <AddIcon size={30} className="p-0 m-0" /> Add Topic
-            </CustomButton>
-
-            <CustomButton
-              className="purple-button  px-3 py-4"
-              handleClick={() => {
-                navigate("submitted-assignments");
-              }}
-            >
-              View Assignments
             </CustomButton>
           </div>
 

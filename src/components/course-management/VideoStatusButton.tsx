@@ -10,9 +10,10 @@ interface Props {
   videoId: string;
   sequence: number;
   courseId: string;
+  isActive?: boolean;
 }
 
-function VideoStatusButton({ videoId, sequence, courseId }: Props) {
+function VideoStatusButton({ videoId, sequence, courseId, isActive }: Props) {
   const [
     updateVideoStatus,
     {
@@ -28,7 +29,7 @@ function VideoStatusButton({ videoId, sequence, courseId }: Props) {
     if (videoId) {
       updateVideoStatus({
         id: videoId,
-        isActive: sequence > 0 ? false : true,
+        isActive: isActive ? false : true,
         courseId,
       });
     }
@@ -50,17 +51,11 @@ function VideoStatusButton({ videoId, sequence, courseId }: Props) {
 
   return (
     <CustomButton
-      className={` w-[5rem] ${sequence > 0 ? "green-button" : "red-button"}`}
+      className={` w-[5rem] ${isActive ? "green-button" : "red-button"}`}
       disabled={isUpdatingStatus}
       handleClick={handleStatusUpdate}
     >
-      {isUpdatingStatus ? (
-        <LoadingSpinner />
-      ) : sequence > 0 ? (
-        "Active"
-      ) : (
-        "Inactive"
-      )}
+      {isUpdatingStatus ? <LoadingSpinner /> : isActive ? "Active" : "Inactive"}
     </CustomButton>
   );
 }

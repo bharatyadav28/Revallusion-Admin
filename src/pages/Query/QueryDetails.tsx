@@ -11,6 +11,8 @@ function QueryDetails() {
   const itemheading = "font-semibold text-lg";
   const file = query?.file;
 
+  const noFile = file?.split("/")?.join("")?.includes("undefined");
+
   return (
     <div className="main-container !gap-[0.5rem]">
       <h2 className="text-xl font-semibold border-b-[1px] pb-4 border-gray-700">
@@ -56,22 +58,24 @@ function QueryDetails() {
           <div>{query?.message}</div>
         </div>
 
-        <div className={itemClasses}>
-          <div className={itemheading}>File</div>
-          <div className="mt-2">
-            {file ? (
-              <Link
-                className="green-button px-3 py-2 rounded-sm text-sm"
-                target="_blank"
-                to={file}
-              >
-                View File
-              </Link>
-            ) : (
-              "No file attached"
-            )}
+        {!noFile && (
+          <div className={itemClasses}>
+            <div className={itemheading}>File</div>
+            <div className="mt-2">
+              {file ? (
+                <Link
+                  className="green-button px-3 py-2 rounded-sm text-sm"
+                  target="_blank"
+                  to={file}
+                >
+                  View File
+                </Link>
+              ) : (
+                "No file attached"
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -294,7 +294,9 @@ export const CustomSelectSeperate = ({
   return (
     <>
       <Select onValueChange={onChange} value={value} {...props}>
-        <SelectTrigger className={classes}>
+        <SelectTrigger
+          className={`${classes} [&>svg]:transition-transform [&>svg]:duration-200 [&[data-state=open]>svg]:rotate-180`}
+        >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>

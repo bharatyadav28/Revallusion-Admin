@@ -288,7 +288,7 @@ function Transactions() {
         </div>
 
         <Table className="custom-table">
-          <TableCaption>A list of user tranactions</TableCaption>
+          <TableCaption>A list of user transactions</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>

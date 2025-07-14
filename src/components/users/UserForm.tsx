@@ -41,7 +41,7 @@ function UserForm({ open, handleOpen, plans, user }: Props) {
   const handleSubmit = async () => {
     let formdata = {
       name,
-      email,
+      email: email.toLowerCase(),
       mobile,
       plan,
     };

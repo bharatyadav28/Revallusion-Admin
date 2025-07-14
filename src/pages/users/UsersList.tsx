@@ -165,7 +165,7 @@ function UsersList() {
               text={search}
               setText={setSearch}
               className="py-5 border-none focus-visible:ring-0 "
-              placeholder="Search..."
+              placeholder="Search by email or name"
             />
           </div>
 
