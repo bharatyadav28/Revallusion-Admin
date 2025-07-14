@@ -13,7 +13,7 @@ interface Props {
   isActive?: boolean;
 }
 
-function VideoStatusButton({ videoId, sequence, courseId, isActive }: Props) {
+function VideoStatusButton({ videoId, courseId, isActive }: Props) {
   const [
     updateVideoStatus,
     {
