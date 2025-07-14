@@ -119,7 +119,7 @@ const Signin = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 !mb-1">
+          <div className="flex items-center gap-2 !mb-1 hidden">
             <CustomCheckBox
               value={keepMeSignedIn}
               onChange={(value) => {
@@ -130,7 +130,7 @@ const Signin = () => {
           </div>
           <button
             type="submit"
-            className={` w-full px-4 py-2 font-semibold text-white bg-[var(--lightpurple)] rounded-lg hover:bg-[var(--softpurple) focus:outline-none uppercase ${
+            className={`!mt-8 w-full px-4 py-2 font-semibold text-white bg-[var(--lightpurple)] rounded-lg hover:bg-[var(--softpurple) focus:outline-none uppercase ${
               isLoading ? "cursor-not-allowed" : "cursor-pointer"
             } 
             `}
