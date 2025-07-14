@@ -79,6 +79,28 @@ export const courseApi = createApi({
       },
     }),
 
+    deleteModule: builder.mutation<
+      ResponseType,
+      { courseId: string; moduleId: string }
+    >({
+      query: ({ moduleId }) => ({
+        url: `/course/module/${moduleId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_, __, { courseId }) => [
+        { type: "Course", id: courseId },
+      ],
+
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(
+            libraryApi.util.invalidateTags([{ type: "Videos", id: "LIST" }])
+          );
+        } catch {}
+      },
+    }),
+
     // Add module
     addSubmodule: builder.mutation<
       ResponseType,
@@ -221,6 +243,7 @@ export const {
   useGetCourseQuery,
   useAddCourseModuleMutation,
   useUpdateCourseModuleNameMutation,
+  useDeleteModuleMutation,
   useAddSubmoduleMutation,
   useUpdateSubmoduleMutation,
   useDeleteSubmoduleMutation,

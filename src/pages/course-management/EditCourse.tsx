@@ -12,11 +12,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetCourseQuery } from "@/store/apis/course-apis";
+import {
+  useGetCourseQuery,
+  useDeleteModuleMutation,
+} from "@/store/apis/course-apis";
 import { showError } from "@/lib/reusable-funs";
 import { useAppDispatch } from "@/hooks/use-redux";
 import { replacePageName } from "@/store/features/generalSlice";
-import { ExpandButton, UpdateButton } from "@/components/common/Inputs";
+import {
+  DeleteButton,
+  ExpandButton,
+  UpdateButton,
+} from "@/components/common/Inputs";
 import SubmoduleList from "@/components/course-management/SubmoduleList";
 import { PageLoadingSpinner } from "@/components/common/LoadingSpinner";
 import VideosList from "@/components/common/VideosList";
@@ -24,6 +31,8 @@ import { CustomButton } from "@/components/common/Inputs";
 import AddEditItems from "@/components/course-management/AddEditItem";
 import { courseItemType } from "@/lib/interfaces-types";
 import CustomBreadcumb from "@/components/common/CustomBreadcumb";
+import DeleteDialog from "@/components/common/DeleteDialog";
+import toast from "react-hot-toast";
 
 export interface dialogDataType {
   type: string;
@@ -33,13 +42,9 @@ export interface dialogDataType {
 function EditCourse() {
   // Expand module id
   const [showModuleId, setShowModuleId] = useState<string | null>(null);
+  const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
-
-  const [dialogData, setDialogData] = useState<dialogDataType>({
-    type: "module",
-    isEdit: false,
-    item: null,
-  });
+  const [openDeleteDialgo, setOpenDeleteDialog] = useState(false);
 
   const { id: courseId } = useParams();
   const dispatch = useAppDispatch();
@@ -55,6 +60,38 @@ function EditCourse() {
 
   const handleOpenDialog = () => {
     setOpenDialog((prev) => !prev);
+  };
+
+  const handleDeleteDialog = () => {
+    setOpenDeleteDialog((prev) => !prev);
+  };
+
+  const [dialogData, setDialogData] = useState<dialogDataType>({
+    type: "module",
+    isEdit: false,
+    item: null,
+  });
+  const [deleteSubmodule, { isLoading: isDeleting }] =
+    useDeleteModuleMutation();
+
+  const handleModuleDelete = async () => {
+    if (isDeleting || !courseId) return;
+    try {
+      if (selectedModule) {
+        const response = await deleteSubmodule({
+          courseId,
+          moduleId: selectedModule,
+        }).unwrap();
+
+        handleDeleteDialog();
+        setSelectedModule(null);
+        toast.success(response.message);
+      }
+    } catch (error) {
+      const err = error as { data?: { message?: string } };
+      const message = err.data?.message || "Something went wrong";
+      toast.error(message);
+    }
   };
 
   // Show error
@@ -176,6 +213,14 @@ function EditCourse() {
                             }
                           }}
                         />
+
+                        <DeleteButton
+                          className="ml-0"
+                          handleClick={() => {
+                            handleDeleteDialog();
+                            setSelectedModule(module._id);
+                          }}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
@@ -223,6 +268,20 @@ function EditCourse() {
           moduleList={moduleList || []}
         />
       )}
+
+      {/* Delete dialog */}
+      <DeleteDialog
+        openDialog={openDeleteDialgo}
+        handleOpenDialog={handleDeleteDialog}
+        title="Delete Tool"
+        description="Are you sure you want to delete this tool?"
+        onCancel={() => {
+          handleDeleteDialog();
+          setSelectedModule(null);
+        }}
+        onConfirm={handleModuleDelete}
+        isDeleting={isDeleting}
+      />
 
       {isLoading && (
         <div>
