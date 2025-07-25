@@ -40,7 +40,7 @@ function HeroSection() {
     setOpen((prev) => !prev);
   };
 
-  const allowedNetworks = 8;
+  const allowedNetworks = 3;
 
   const {
     data,

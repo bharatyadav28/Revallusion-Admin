@@ -59,9 +59,8 @@ export const formats = [
   "direction",
 ];
 
-// export const baseAddr = "https://api.ravallusion.com";
-export const baseAddr = "https://revallusion.onrender.com";
-
+export const baseAddr = "https://api.ravallusion.com";
 // export const baseAddr = "http://localhost:4000";
+// export const baseAddr = "https://revallusion.onrender.com";
 
 export const cdnAddr = "https://d2b1ol8c9bt133.cloudfront.net";

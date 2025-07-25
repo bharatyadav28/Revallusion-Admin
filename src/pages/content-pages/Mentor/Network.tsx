@@ -4,6 +4,7 @@ import { CustomDialog } from "@/components/common/CustomDialog";
 import { CustomButton, CustomInput } from "@/components/common/Inputs";
 import { generateRandomId } from "@/lib/reusable-funs";
 import { networkType } from "@/lib/interfaces-types";
+import toast from "react-hot-toast";
 
 interface Props {
   open: boolean;
@@ -50,6 +51,9 @@ function Network({
         newNetworks[index] = { platform, followers, _id: updateId };
       }
     } else {
+      if (!platform || !followers) {
+        return toast.error("Both platform and followers are required");
+      }
       newNetworks.push({
         platform,
         followers,
