@@ -112,7 +112,7 @@ function AddEditVideo() {
 
   const handleSubmit = async () => {
     const videodata: videoType = {
-      title: title?.replace(/[^a-zA-Z0-9 ]/g, ""),
+      title: title?.trim(),
       description,
       thumbnailUrl,
       course,
