@@ -1,6 +1,6 @@
 // Component for uploading image
 
-import React, { useState } from "react";
+import React, { useState, useId } from "react";
 import toast from "react-hot-toast";
 import { MdOutlineEdit as EditIcon } from "react-icons/md";
 
@@ -23,6 +23,7 @@ const ImageUploader: React.FC<Props> = ({
   folder,
 }) => {
   const [uploading, setUploading] = useState<boolean>(false);
+  const fileInputId = useId();
 
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -97,7 +98,7 @@ const ImageUploader: React.FC<Props> = ({
             variant="outline"
             size="icon"
             className="bg-opacity-80  text-[#fff] hover:bg-opacity-50"
-            onClick={() => document.getElementById("fileInput")?.click()}
+            onClick={() => document.getElementById(fileInputId)?.click()}
           >
             <EditIcon />
           </Button>
@@ -106,7 +107,7 @@ const ImageUploader: React.FC<Props> = ({
 
       {/* Hidden File Input */}
       <input
-        id="fileInput"
+        id={fileInputId}
         type="file"
         accept="image/*"
         className="hidden"

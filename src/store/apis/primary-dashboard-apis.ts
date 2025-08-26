@@ -6,6 +6,10 @@ import { baseAddr } from "@/lib/resuable-data";
 interface ResponseType {
   data: {
     carousals?: [carousalType];
+    sideImages: {
+      dashboardLeftImage: string;
+      dashboardRightImage: string;
+    };
     content?: [dashboardSectionType];
   };
   message: string;
@@ -62,6 +66,19 @@ export const primaryDashboardApi = createApi({
       query: ({ videoId }) => ({
         url: `/carousal/${videoId}`,
         method: "DELETE",
+      }),
+
+      invalidatesTags: [{ type: "Carousal", id: "LIST" }],
+    }),
+
+    updateSideImages: builder.mutation<
+      ResponseType,
+      { leftImage: string; rightImage: string }
+    >({
+      query: ({ leftImage, rightImage }) => ({
+        url: `/carousal/side/images`,
+        method: "PUT",
+        body: { leftImage, rightImage },
       }),
 
       invalidatesTags: [{ type: "Carousal", id: "LIST" }],
@@ -142,6 +159,8 @@ export const {
   useAddCarousalMutation,
   useUpdateCarousalSequenceMutation,
   useDeleteCarousalItemMutation,
+
+  useUpdateSideImagesMutation,
 
   useGetContentQuery,
   useAddSectionMutation,
