@@ -26,6 +26,7 @@ import dashboardApi from "./apis/dashboard-apis";
 import leaderBoardApi from "./apis/leaderboard-apis";
 import appConfigApi from "./apis/app-congif-apis";
 import timestampApi from "./apis/timestamp-apis";
+import footerApi from "./apis/content-mangement/footer-links-apis";
 
 export const store = configureStore({
   reducer: {
@@ -54,6 +55,7 @@ export const store = configureStore({
     [leaderBoardApi.reducerPath]: leaderBoardApi.reducer,
     [appConfigApi.reducerPath]: appConfigApi.reducer,
     [timestampApi.reducerPath]: timestampApi.reducer,
+    [footerApi.reducerPath]: footerApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -80,7 +82,8 @@ export const store = configureStore({
       .concat(dashboardApi.middleware)
       .concat(leaderBoardApi.middleware)
       .concat(appConfigApi.middleware)
-      .concat(timestampApi.middleware),
+      .concat(timestampApi.middleware)
+      .concat(footerApi.middleware),
 
   devTools: process.env.NODE_ENV !== "production",
 

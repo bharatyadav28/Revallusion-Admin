@@ -329,3 +329,9 @@ export interface TimeStampType {
   time: string;
   title: string;
 }
+
+export interface FooterLinkType {
+  _id?: string;
+  iconPath: string;
+  url: string;
+}

@@ -113,6 +113,11 @@ function AppSidebar() {
           Icon: ListIcon,
           path: "/faq",
         },
+        {
+          name: "Footer Links",
+          Icon: ListIcon,
+          path: "/footer",
+        },
       ],
     },
 

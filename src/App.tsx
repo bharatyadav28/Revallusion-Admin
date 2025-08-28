@@ -44,6 +44,7 @@ import UsersDetails from "./pages/users/UsersDetails";
 import Transactions from "./pages/Transactions";
 import LeaderBoard from "./pages/leader-board/LeaderBoard";
 import DeletedUsers from "./pages/users/DeletedUsers";
+import FooterLinks from "./pages/content-pages/Footer/FooterLinks";
 
 function App() {
   const { data, isFetching } = useSendMeQuery();
@@ -91,6 +92,8 @@ function App() {
             <Route path=":id" element={<Faq />} />
             <Route path="add" element={<Faq />} />
           </Route>
+
+          <Route path="footer" element={<FooterLinks />} />
 
           <Route path="static-pages">
             <Route index element={<StaticPages />} />
