@@ -76,3 +76,7 @@ input[type="date"] {
 .sub-heading {
   @apply font-semibold text-[0.9rem];
 }
+
+.cswitch {
+  @apply border border-[#fff] [&>span]:bg-[#000];
+}

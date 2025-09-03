@@ -97,6 +97,38 @@ export const libraryApi = createApi({
 
       invalidatesTags: [{ type: "Videos", id: "LIST" }],
     }),
+
+    forwardRestrict: builder.mutation<ResponseType, string>({
+      query: (id) => ({
+        url: `forward-restrict/${id}`,
+        method: "PUT",
+      }),
+
+      invalidatesTags: [{ type: "Videos", id: "LIST" }],
+
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(courseApi.util.invalidateTags([{ type: "Course" }]));
+        } catch {}
+      },
+    }),
+
+    lockRestrict: builder.mutation<ResponseType, string>({
+      query: (id) => ({
+        url: `lock-restrict/${id}`,
+        method: "PUT",
+      }),
+
+      invalidatesTags: [{ type: "Videos", id: "LIST" }],
+
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(courseApi.util.invalidateTags([{ type: "Course" }]));
+        } catch {}
+      },
+    }),
   }),
 });
 
@@ -107,6 +139,9 @@ export const {
   useDeleteVideoMutation,
   // useGetVideoListQuery,
   useGetVideoListMutation,
+
+  useForwardRestrictMutation,
+  useLockRestrictMutation,
 } = libraryApi;
 
 export default libraryApi;

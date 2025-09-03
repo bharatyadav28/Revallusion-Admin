@@ -112,6 +112,8 @@ export interface videoType {
   isActive?: boolean;
   module?: string;
   assignment?: string;
+  disableForward?: boolean;
+  lock?: boolean;
   submodule?: string;
   createdAt?: string;
   updatedAt?: string;

@@ -35,6 +35,7 @@ import TimestampForm from "@/components/timestamp/TimestampForm";
 import useStream from "@/hooks/use-stream";
 import { cdnAddr } from "@/lib/resuable-data";
 import { Progress } from "@/components/ui/progress";
+import { Switch } from "@/components/ui/switch";
 
 function AddEditVideo() {
   const [title, setTitle] = useState("");
@@ -58,6 +59,8 @@ function AddEditVideo() {
   const [fileSrc, setFileSrc] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploadingAssignment, setUploadingAssignment] = useState(false);
+  const [disableForward, setDisableForward] = useState(false);
+  const [lock, setLock] = useState(false);
 
   const handleTimestampForm = (timestamp?: TimeStampType) => {
     setOpenForm((prev) => !prev);
@@ -118,6 +121,8 @@ function AddEditVideo() {
       course,
       module,
       submodule,
+      disableForward,
+      lock,
       assignment: fileSrc,
     };
 
@@ -205,6 +210,9 @@ function AddEditVideo() {
       setThumbnailUrl(video.thumbnailUrl);
       setVideoUrl(video.videoUrl);
       setCourse(video.course);
+      setDisableForward(video?.disableForward || false);
+      setLock(video?.lock || false);
+
       if (video.module) setModule(video.module);
       if (video.submodule) setSubModule(video.submodule);
       if (video.assignment) setFileSrc(video.assignment);
@@ -212,6 +220,8 @@ function AddEditVideo() {
       navigate("..");
     }
   }, [dispatch, isEdit, video]);
+
+  console.log(lock, disableForward);
 
   return (
     <>
@@ -402,6 +412,34 @@ function AddEditVideo() {
             </div>
           </div>
         )*/}
+
+        <div className="input-container">
+          <div className="label">Disable forward</div>
+          <div className="user-input">
+            <Switch
+              className="cswitch"
+              checked={disableForward}
+              onClick={() => {
+                setDisableForward((prev) => !prev);
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="input-container">
+          <div className="label">Lock </div>
+          <div className="user-input">
+            <div className="user-input">
+              <Switch
+                className="cswitch"
+                checked={lock}
+                onClick={() => {
+                  setLock((prev) => !prev);
+                }}
+              />
+            </div>
+          </div>
+        </div>
 
         <div className="mt-2 lg:ml-[17.3rem] flex gap-2">
           <CustomButton

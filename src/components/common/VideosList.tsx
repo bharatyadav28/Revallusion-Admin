@@ -13,6 +13,15 @@ import {
 import { courseVideoType } from "@/lib/interfaces-types";
 import { DeleteButton, UpdateButton } from "./Inputs";
 import VideoStatusButton from "../course-management/VideoStatusButton";
+import { Switch } from "@/components/ui/switch";
+import {
+  useForwardRestrictMutation,
+  useLockRestrictMutation,
+} from "@/store/apis/library-apis";
+import { useEffect } from "react";
+import { showError } from "@/lib/reusable-funs";
+import toast from "react-hot-toast";
+import { BeatLoader } from "react-spinners";
 
 interface Props {
   data: courseVideoType[];
@@ -56,6 +65,52 @@ function VideosList({
 
   const sortedData = data;
 
+  const [
+    forwardRestrict,
+    {
+      isLoading: isForwardRestricting,
+      isSuccess: forwardRestrictSuccess,
+      error: forwardRestrictError,
+      data: forwardRestrictData,
+    },
+  ] = useForwardRestrictMutation();
+
+  const [
+    lockRestrict,
+    {
+      isLoading: isLockRestricting,
+      isSuccess: lockRestrictSuccess,
+      error: lockRestrictError,
+      data: lockRestrictData,
+    },
+  ] = useLockRestrictMutation();
+
+  const handleForwardRestrict = async (id: string | undefined) => {
+    if (!id) return;
+    await forwardRestrict(id);
+  };
+
+  const handleLockRestrict = async (id: string | undefined) => {
+    if (!id) return;
+    await lockRestrict(id);
+  };
+
+  useEffect(() => {
+    if (forwardRestrictError) showError(forwardRestrictError);
+  }, [forwardRestrictError]);
+
+  useEffect(() => {
+    if (lockRestrictError) showError(lockRestrictError);
+  }, [lockRestrictError]);
+
+  useEffect(() => {
+    if (forwardRestrictData) toast.success(forwardRestrictData?.message);
+  }, [forwardRestrictSuccess, lockRestrictSuccess]);
+
+  useEffect(() => {
+    if (lockRestrictData) toast.success(lockRestrictData?.message);
+  }, [lockRestrictSuccess]);
+
   const MainTable = (
     <Table className={`custom-table  w-full ${className}`}>
       <TableCaption>{caption || `A list of videos`}</TableCaption>
@@ -66,7 +121,23 @@ function VideosList({
             <TableHead className="min-w-[6rem]">Video Description</TableHead>
           )}
           <TableHead>Sequence</TableHead>
+
+          {courseId && (
+            <TableHead>
+              <div className="max-w-max">Disable Forward</div>
+            </TableHead>
+          )}
+
+          {courseId && (
+            <TableHead>
+              <div className="">
+                Lock <span className="opacity-0">Disable</span>
+              </div>
+            </TableHead>
+          )}
+
           {courseId && <TableHead>Status</TableHead>}
+
           <TableHead className="">Action</TableHead>
         </TableRow>
       </TableHeader>
@@ -85,6 +156,37 @@ function VideosList({
                 {video?.sequence > 0 ? video?.sequence : "NA"}
               </span>
             </TableCell>
+
+            {courseId && (
+              <TableCell>
+                {isForwardRestricting ? (
+                  <BeatLoader color="#f1f1f1" size={10} />
+                ) : (
+                  <Switch
+                    className="cswitch"
+                    checked={video?.disableForward}
+                    onClick={() => {
+                      handleForwardRestrict(video?._id);
+                    }}
+                  />
+                )}
+              </TableCell>
+            )}
+            {courseId && (
+              <TableCell>
+                {isLockRestricting ? (
+                  <BeatLoader color="#f1f1f1" size={10} />
+                ) : (
+                  <Switch
+                    className="cswitch"
+                    checked={video?.lock}
+                    onClick={() => {
+                      handleLockRestrict(video?._id);
+                    }}
+                  />
+                )}
+              </TableCell>
+            )}
 
             {courseId && (
               <TableCell>
