@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { courseType } from "@/lib/interfaces-types";
+import { courseType, RecommendedVideoType } from "@/lib/interfaces-types";
 import libraryApi from "./library-apis";
 import { baseAddr } from "@/lib/resuable-data";
 
@@ -15,6 +15,7 @@ interface ResponseType {
 interface courseResponseType {
   data: {
     course: courseType;
+    hasSuggestionVideos: boolean;
   };
   message: string;
   success: boolean;
@@ -26,7 +27,7 @@ export const courseApi = createApi({
     baseUrl: baseAddr + "/api/v1",
     credentials: "include",
   }),
-  tagTypes: ["Courses", "Course"],
+  tagTypes: ["Courses", "Course", "RecommendedVideos"],
   endpoints: (builder) => ({
     // Fetch Courses data
     getCourses: builder.query<ResponseType, void>({
@@ -235,6 +236,75 @@ export const courseApi = createApi({
     getCourseTitle: builder.query<courseResponseType, string>({
       query: (id) => `/course/${id}/title`,
     }),
+
+    getCourseRecommendedVideos: builder.query<
+      {
+        data: { videos: RecommendedVideoType[] };
+        message: string;
+        success: boolean;
+      },
+      string
+    >({
+      query: (courseId) => `/recommended-videos/course/${courseId}`,
+      providesTags: (_, __, courseId) => [
+        { type: "RecommendedVideos", id: courseId },
+      ],
+    }),
+
+    addRecommendedVideos: builder.mutation<
+      { message: string; success: boolean },
+      { courseId: string; videos: string[] }
+    >({
+      query: ({ courseId, videos }) => ({
+        url: `/recommended-videos/course/${courseId}`,
+        method: "POST",
+        body: { videos },
+      }),
+      invalidatesTags: (_, __, { courseId }) => [
+        { type: "RecommendedVideos", id: courseId },
+      ],
+    }),
+
+    deleteRecommendedVideo: builder.mutation<
+      { message: string; success: boolean },
+      { courseId: string; id: string }
+    >({
+      query: ({ id }) => ({
+        url: `/recommended-videos/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_, __, { courseId }) => [
+        { type: "RecommendedVideos", id: courseId },
+      ],
+    }),
+
+    updateRecommendedVideoSequence: builder.mutation<
+      { message: string; success: boolean },
+      { courseId: string; id: string; sequence: number }
+    >({
+      query: ({ id, sequence }) => ({
+        url: `/recommended-videos/${id}`,
+        method: "PUT",
+        body: { sequence },
+      }),
+      invalidatesTags: (_, __, { courseId }) => [
+        { type: "RecommendedVideos", id: courseId },
+      ],
+    }),
+
+    updateRecommendedVideoStatus: builder.mutation<
+      { message: string; success: boolean },
+      { id: string; isActive: boolean; courseId: string }
+    >({
+      query: ({ id, isActive }) => ({
+        url: `/recommended-videos/${id}/status`,
+        method: "PUT",
+        body: { isActive },
+      }),
+      invalidatesTags: (_, __, { courseId }) => [
+        { type: "RecommendedVideos", id: courseId },
+      ],
+    }),
   }),
 });
 
@@ -250,6 +320,12 @@ export const {
   useUpdateVideoSequenceMutation,
   useUpdateVideoStatusMutation,
   useGetCourseTitleQuery,
+
+  useUpdateRecommendedVideoSequenceMutation,
+  useGetCourseRecommendedVideosQuery,
+  useAddRecommendedVideosMutation,
+  useDeleteRecommendedVideoMutation,
+  useUpdateRecommendedVideoStatusMutation,
 } = courseApi;
 
 export default courseApi;

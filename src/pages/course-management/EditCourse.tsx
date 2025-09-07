@@ -33,6 +33,7 @@ import { courseItemType } from "@/lib/interfaces-types";
 import CustomBreadcumb from "@/components/common/CustomBreadcumb";
 import DeleteDialog from "@/components/common/DeleteDialog";
 import toast from "react-hot-toast";
+import SuggestedVideos from "@/components/course-management/recommeded-videos/RVideos";
 
 export interface dialogDataType {
   type: string;
@@ -107,6 +108,7 @@ function EditCourse() {
   }, []);
 
   const course = data?.data?.course;
+  const hasSuggestionVideos = data?.data?.hasSuggestionVideos;
   const modules = course?.modules;
 
   // Menu for module combobox
@@ -127,6 +129,8 @@ function EditCourse() {
       },
     ],
   };
+
+  console.log("Course data: ", course);
 
   return (
     <>
@@ -282,6 +286,10 @@ function EditCourse() {
         onConfirm={handleModuleDelete}
         isDeleting={isDeleting}
       />
+
+      {course && hasSuggestionVideos && (
+        <SuggestedVideos courseId={course?._id} />
+      )}
 
       {isLoading && (
         <div>

@@ -337,3 +337,15 @@ export interface FooterLinkType {
   iconPath: string;
   url: string;
 }
+
+export interface RecommendedVideoType {
+  _id: string;
+  sequence: number;
+  video: {
+    _id: string;
+    title: string;
+    description: string;
+  };
+
+  isActive: boolean;
+}

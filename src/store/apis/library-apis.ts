@@ -98,6 +98,19 @@ export const libraryApi = createApi({
       invalidatesTags: [{ type: "Videos", id: "LIST" }],
     }),
 
+    getSuggestionVideos: builder.mutation<
+      ResponseType,
+      { searchQuery: string; excludeVideos?: string[]; currentCourseId: string }
+    >({
+      query: ({ searchQuery, excludeVideos, currentCourseId }) => ({
+        url: `recommended?${searchQuery}`,
+        method: "POST",
+        body: { excludeVideos, currentCourseId },
+      }),
+
+      invalidatesTags: [{ type: "Videos", id: "LIST" }],
+    }),
+
     forwardRestrict: builder.mutation<ResponseType, string>({
       query: (id) => ({
         url: `forward-restrict/${id}`,
@@ -139,6 +152,7 @@ export const {
   useDeleteVideoMutation,
   // useGetVideoListQuery,
   useGetVideoListMutation,
+  useGetSuggestionVideosMutation,
 
   useForwardRestrictMutation,
   useLockRestrictMutation,

@@ -10,8 +10,6 @@ interface Props {
 const VideoPlayer = ({ open, handleOpen, source }: Props) => {
   const playerRef = useRef(null);
 
-  console.log("Source: ", source);
-
   return (
     <CustomDialog
       open={open}
