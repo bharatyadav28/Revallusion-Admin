@@ -1,4 +1,5 @@
 import {
+  AssignmentResourceType,
   assignmentType,
   SubmittedAssignmentType,
 } from "@/lib/interfaces-types";
@@ -35,13 +36,26 @@ interface UserAssigmentResponseType {
   };
 }
 
+interface AssignmentResourceResponseType {
+  message: string;
+  success: boolean;
+  data: {
+    assignmentResources: AssignmentResourceType;
+  };
+}
+
 export const assignmentApi = createApi({
   reducerPath: "assignmentApi",
   baseQuery: fetchBaseQuery({
     baseUrl: baseAddr + "/api/v1/",
     credentials: "include",
   }),
-  tagTypes: ["Assignments", "SubmittedAssignments", "UserAssignments"],
+  tagTypes: [
+    "Assignments",
+    "SubmittedAssignments",
+    "UserAssignments",
+    "AssignmentResources",
+  ],
   endpoints: (builder) => ({
     // Get submitted assignments by course
     getSubmittedAssignments: builder.query<SubmittedResponseType, string>({
@@ -82,6 +96,30 @@ export const assignmentApi = createApi({
         { type: "UserAssignments", id: "LIST" },
       ],
     }),
+
+    getAssignmentResources: builder.query<
+      AssignmentResourceResponseType,
+      string
+    >({
+      query: (videoId) => `assignment-resources/${videoId}`,
+      providesTags: (_, __, videoId) => [
+        { type: "AssignmentResources", id: videoId },
+      ],
+    }),
+
+    updateAssignmentResources: builder.mutation<
+      AssignmentResourceResponseType,
+      AssignmentResourceType
+    >({
+      query: (data) => ({
+        url: `assignment-resources/${data.video}`,
+        method: "PUT",
+        body: { ...data },
+      }),
+      invalidatesTags: (_, __, { video }) => [
+        { type: "AssignmentResources", id: video },
+      ],
+    }),
   }),
 });
 
@@ -90,6 +128,9 @@ export const {
   useGetUserAssignmentsQuery,
   useUpdateAssignmentScoreMutation,
   useRevokeAssignmentMutation,
+
+  useGetAssignmentResourcesQuery,
+  useUpdateAssignmentResourcesMutation,
 } = assignmentApi;
 
 export default assignmentApi;

@@ -349,3 +349,10 @@ export interface RecommendedVideoType {
 
   isActive: boolean;
 }
+
+export interface AssignmentResourceType {
+  assignment: string;
+  finalCutVideoUrl: string;
+  assetsUrl: string;
+  video?: string;
+}

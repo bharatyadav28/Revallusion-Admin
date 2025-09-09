@@ -1,9 +1,9 @@
 // Add or Edit video
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaFileZipper as ZipIcon } from "react-icons/fa6";
-import { RxCrossCircled as RemoveIcon } from "react-icons/rx";
+import { Plus as PlusIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { Upload } from "lucide-react";
 
@@ -32,10 +32,9 @@ import { showError, truncateString } from "@/lib/reusable-funs";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 // import TimeStampList from "@/components/timestamp/TimestampList";
 import TimestampForm from "@/components/timestamp/TimestampForm";
-import useStream from "@/hooks/use-stream";
 import { cdnAddr } from "@/lib/resuable-data";
-import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
+import Assigment from "@/components/library-management/Assignment";
 
 function AddEditVideo() {
   const [title, setTitle] = useState("");
@@ -57,16 +56,19 @@ function AddEditVideo() {
     undefined
   );
   const [fileSrc, setFileSrc] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [uploadingAssignment, setUploadingAssignment] = useState(false);
   const [disableForward, setDisableForward] = useState(false);
   const [lock, setLock] = useState(false);
+  const [openAssignmentSheet, setOpenAssignmentSheet] = useState(false);
 
   const handleTimestampForm = (timestamp?: TimeStampType) => {
     setOpenForm((prev) => !prev);
     if (timestamp) {
       setTimestamp(timestamp);
     }
+  };
+
+  const handleAssignmentSheet = () => {
+    setOpenAssignmentSheet((prev) => !prev);
   };
 
   // const {
@@ -77,13 +79,6 @@ function AddEditVideo() {
   //   triggerFileUpload,
   //   setFileSrc,
   // } = useUploadFile("assignments");
-
-  const { handleFileChange, progress: assigmentUploadProgress } = useStream({
-    setFileSrc: setFileSrc,
-    uploading: uploadingAssignment,
-    setUploading: setUploadingAssignment,
-    awsFileName: title,
-  });
 
   const [
     addVideo,
@@ -137,11 +132,6 @@ function AddEditVideo() {
         id: video._id,
       });
     }
-  };
-
-  const triggerFileUpload = () => {
-    if (uploading) return;
-    inputRef.current?.click();
   };
 
   //   Create course menu
@@ -319,15 +309,6 @@ function AddEditVideo() {
           <div className="input-container">
             <div className="label">Assignment</div>
             <div className="user-input">
-              <input
-                id="resourceInput"
-                type="file"
-                className="hidden"
-                // onChange={handleFileUpload}
-                onChange={handleFileChange}
-                ref={inputRef}
-                multiple
-              />
               {fileSrc && (
                 <div>
                   <div className="flex items-center gap-2 border border-gray-400  rounded-md px-4 py-2 w-max">
@@ -351,47 +332,27 @@ function AddEditVideo() {
                       whileHover={{ scale: 1.05 }}
                       transition={{ type: "spring" }}
                       className="!p-0 m-0 sm:ml-[2rem] "
-                      onClick={() => {
-                        setFileSrc("");
-                      }}
+                      onClick={handleAssignmentSheet}
                     >
-                      <RemoveIcon
+                      <PlusIcon
                         className="hover:text-[var(--softpurple)] transition-all"
-                        size={20}
+                        size={15}
                       />
                     </motion.button>
                   </div>
                 </div>
               )}
               {!fileSrc && (
-                <div className="flex flex-col gap-2 w-max">
-                  <label
-                    onClick={triggerFileUpload}
-                    className="flex items-center gap-2 px-5 py-2 bg-black backdrop-blur-md  text-white text-sm font-medium rounded-md cursor-pointer hover:bg-gray-900 transition w-[15rem] min-w-[10rem] "
-                  >
-                    {!uploadingAssignment ? (
-                      <>
-                        <Upload size={16} />
-                        <div className=" w-full flex ml-2 items-center">
-                          No file choosen
-                        </div>
-                      </>
-                    ) : (
-                      <div className=" w-full flex justify-center items-center">
-                        <LoadingSpinner size={16} />
-                      </div>
-                    )}
-                  </label>
-
-                  {uploadingAssignment && (
-                    <div className="flex items-center justify-center gap-2 ">
-                      <Progress
-                        value={assigmentUploadProgress}
-                        className=" w-[5rem]"
-                      />
-                      <div className="text-sm">{assigmentUploadProgress}%</div>
+                <div
+                  className="flex flex-col gap-2 w-max"
+                  onClick={handleAssignmentSheet}
+                >
+                  <label className="flex items-center gap-2 px-5 py-2 bg-black backdrop-blur-md  text-white text-sm font-medium rounded-md cursor-pointer hover:bg-gray-900 transition w-[15rem] min-w-[10rem] ">
+                    <Upload size={16} />
+                    <div className=" w-full flex ml-2 items-center">
+                      No file choosen
                     </div>
-                  )}
+                  </label>
                 </div>
               )}
 
@@ -445,7 +406,7 @@ function AddEditVideo() {
           <CustomButton
             className="purple-button "
             handleClick={handleSubmit}
-            disabled={isAdding || uploading || uploadingAssignment}
+            disabled={isAdding || uploading}
           >
             {isAdding || isUpdating ? <LoadingSpinner /> : "Save"}
           </CustomButton>
@@ -473,6 +434,15 @@ function AddEditVideo() {
           clearTimestamp={() => setTimestamp(undefined)}
         />
       )}
+
+      <Assigment
+        open={openAssignmentSheet}
+        handleOpen={handleAssignmentSheet}
+        fileSrc={fileSrc}
+        setFileSrc={setFileSrc}
+        title={video?.title || ""}
+        videoId={video?._id}
+      />
     </>
   );
 }
