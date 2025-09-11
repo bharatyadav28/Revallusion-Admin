@@ -150,7 +150,9 @@ function SuggestedVideoList({ data, courseId, isLoading }: Props) {
                     <TableCell>{doc?.video?.description}</TableCell>
                     <TableCell>
                       {" "}
-                      <span className="highlight-digit">{doc?.sequence}</span>
+                      <span className="highlight-digit">
+                        {doc?.sequence > 0 ? doc?.sequence : "NA"}
+                      </span>
                     </TableCell>
 
                     <TableCell>

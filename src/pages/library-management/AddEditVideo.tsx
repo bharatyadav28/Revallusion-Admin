@@ -307,7 +307,7 @@ function AddEditVideo() {
 
         {isEdit && (
           <div className="input-container">
-            <div className="label">Assignment</div>
+            <div className="label">Upload assets</div>
             <div className="user-input">
               {fileSrc && (
                 <div>
