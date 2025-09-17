@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "lucide-react";
 import { IoMdAdd as AddIcon } from "react-icons/io";
+import * as XLSX from "xlsx";
 import DeleteDialog from "@/components/common/DeleteDialog";
 
 import {
@@ -30,13 +31,17 @@ import {
 import { useGetPlansQuery } from "@/store/apis/content-mangement/plans-apis";
 import { showError } from "@/lib/reusable-funs";
 import { userDetailsType } from "@/lib/interfaces-types";
-import { TableLoader } from "@/components/common/LoadingSpinner";
+import {
+  LoadingSpinner,
+  TableLoader,
+} from "@/components/common/LoadingSpinner";
 import CustomPagination from "@/components/common/CustomPagination";
 import EmptyValue from "@/components/common/EmptyValue";
 import UserForm from "@/components/users/UserForm";
 import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "@/hooks/use-redux";
 import { setSelectedPlan } from "@/store/features/selectedPlanSlice";
+import { baseAddr } from "@/lib/resuable-data";
 
 // import DeleteQuery from "./DeleteQuery";
 
@@ -46,6 +51,7 @@ function UsersList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [openSheet, setOpenSheet] = useState(false);
   const [openDeleteDialgo, setOpenDeleteDialog] = useState(false);
+  const [downloading, setIsDownloading] = useState(false);
 
   const selectedPlan = useAppSelector(
     (state) => state.selectedPlan.selectedPlan
@@ -123,6 +129,50 @@ function UsersList() {
     dispatch(setSelectedPlan(value)); // Update Redux store
   };
 
+  const exportContacts = async () => {
+    if (isLoading) return;
+    try {
+      setIsDownloading(true);
+      const response = await fetch(
+        `${baseAddr}/api/v1/admin/users/csv/download?search=${deboounceSearch}&currentPage=${currentPage}&selectedPlan=${selectedPlan}`,
+        {
+          credentials: "include",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Download invoices failed");
+      }
+
+      const data = await response.arrayBuffer();
+
+      const workbook = XLSX.read(data, { type: "array" });
+      const xlsxData = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+
+      const blob = new Blob([xlsxData], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute("download", `Ravallusion.xlsx`);
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(link.href);
+
+      toast.success("File Downloaded Successfully");
+    } catch (error) {
+      console.log("Error", error);
+      toast.error("An error occured");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   // Show error
   useEffect(() => {
     if (loadingError) {
@@ -158,7 +208,7 @@ function UsersList() {
   return (
     <>
       <div className="main-container">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 flex-wrap items-center">
           <div className="w-[20rem] max-w-full flex items-center border border-gray-400 rounded-md ps-2 ">
             <SearchIcon size={18} />
             <CustomInput
@@ -187,6 +237,16 @@ function UsersList() {
             }}
           >
             <AddIcon size={30} className="p-0 m-0" /> Add User
+          </CustomButton>
+
+          <CustomButton
+            className="green-button px-2 py-5 min-w-[7rem] "
+            handleClick={exportContacts}
+            disabled={
+              isLoading || data?.data?.users?.length === 0 || downloading
+            }
+          >
+            {downloading ? <LoadingSpinner /> : "Export Contacts"}
           </CustomButton>
         </div>
 
